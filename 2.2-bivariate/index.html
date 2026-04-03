@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>カイ二乗検定 | 統計検定 3級 学習リファレンス</title>
+    <title>データの記述と関連（2変数） | 統計検定 3級 学習リファレンス</title>
     <meta name="description" content="統計検定2級の合格を目指す学習リファレンス。確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
-    <meta property="og:title" content="カイ二乗検定 | 統計検定 3級 学習リファレンス" />
+    <meta property="og:title" content="データの記述と関連（2変数） | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説する2級対策サイト。" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
@@ -22,26 +22,29 @@
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9102538151148380"
      crossorigin="anonymous"></script>
-    <script type="module" crossorigin src="../assets/index-rF4UMnrp.js"></script>
+    <script type="module" crossorigin src="../assets/index-Bvz4CALq.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-DOSaYwx8.css">
   </head>
   <body>
     <noscript id="seo-data">
-    <h1>カイ二乗検定</h1>
+    <h1>データの記述と関連（2変数）</h1>
     <p>💡 **このモジュールで学ぶこと**
 
-「サイコロは本当に1〜6が等しく出るのか？」「性別とコーヒーの好みに関係があるか？」——この2つは一見似ているようで、実は異なる問いです。前者は「ある分布に従うか」を検定する**適合度検定**、後者は「2つのカテゴリ変数が独立か」を検定する**独立性の検定**です。どちらも $\chi^2$（カイ二乗）統計量を使いますが、自由度の求め方と期待度数の計算が異なります。この違いを中心に学びましょう。
+「勉強時間とテストの点数に関係はあるか」「性別によって好みの製品機能に違いはあるか」。このように、2つのデータの関連性を調べるアプローチを学びます。量的データの関係を見る「散布図」「相関係数」「回帰分析」、質的データの関係を見る「クロス集計表」は、実務でも非常によく使われる基礎スキルです。
 
 ---
 
-### 1. カイ二乗統計量：「観測と期待のずれ」を測る
+### 1. 散布図と相関係数（量的データの関係）
 
-サイコロを600回振って「1〜6が各100回ずつ出れば公正」が**期待値**です。実際に振ったら「1が85回、2が110回...」と多少のズレが生じました。このズレが「偶然の範囲内か、不公正の証拠か」を判断するのが**カイ二乗検定**です。
+2つの量的データ（例：身長と体重）それぞれの値を座標平面に打ったグラフを**散布図**といいます。
+散布図の形状から、一方が増えるともう一方も増える傾向（**正の相関**）や、一方が増えると一方が減る傾向（**負の相関**）を視覚的に把握できます。
 
-**観測度数 $O_i$**：実際に観測された各カテゴリの件数。
-**期待度数 $E_i$**：帰無仮説が正しいと仮定したときに期待される件数。
+直線的な関係性の強さを $-1$ から $1$ までの数値で表したものが**ピアソンの積率相関係数（$r$）**です。
+- $r = 1$：完全な正の相関（すべての点が一直線上に右上がりに並ぶ）
+- $r = -1$：完全な負の相関（すべての点が一直線上に右下がりに並ぶ）
+- $r = 0$：直線的な相関関係がない（無相関）
 
-\chi^2 = \sum_{i=1}^k \frac{(O_i - E_i)^2}{E_i}...</p>
+⚠️ **相関係数...</p>
   </noscript>
     <div id="root"></div>
   </body>

@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ベイズの定理 | 統計検定 3級 学習リファレンス</title>
+    <title>確率の基礎と確率分布 | 統計検定 3級 学習リファレンス</title>
     <meta name="description" content="統計検定2級の合格を目指す学習リファレンス。確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
-    <meta property="og:title" content="ベイズの定理 | 統計検定 3級 学習リファレンス" />
+    <meta property="og:title" content="確率の基礎と確率分布 | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説する2級対策サイト。" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
@@ -22,25 +22,30 @@
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9102538151148380"
      crossorigin="anonymous"></script>
-    <script type="module" crossorigin src="../assets/index-rF4UMnrp.js"></script>
+    <script type="module" crossorigin src="../assets/index-Bvz4CALq.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-DOSaYwx8.css">
   </head>
   <body>
     <noscript id="seo-data">
-    <h1>ベイズの定理</h1>
+    <h1>確率の基礎と確率分布</h1>
     <p>💡 **このモジュールで学ぶこと**
 
-「検査で陽性反応が出ました。本当に病気の確率は何%でしょうか？」——多くの人は「90%以上」と直感的に答えますが、実際の答えはずっと低いことがあります。その理由を説明するのがベイズの定理です。「データを見る前の信念（事前確率）」に「新しいデータ」を組み合わせて「更新された信念（事後確率）」を求める——このベイズ更新の考え方は、医療診断・迷惑メールフィルター・気象予報など幅広い場面に応用されています。
+データを元にした推測の土台となるのが「確率」です。3級では複雑な公式は要求されませんが、確率の基本定理（加法定理・乗法定理）を迷わず使えることと、標準正規分布を用いた確率の計算（Zスコア）が完璧にできることが最も重要になります。
 
 ---
 
-### 1. 全確率の公式：「原因ごとに分解して合算する」
+### 1. 事象と確率の基本規則
 
-工場の例で考えましょう。製品の60%を工場X、40%を工場Yが生産しており、不良率はXが2%、Yが5%です。「ランダムに選んだ1つの製品が不良品である確率」を求めるにはどうすればよいでしょうか。
+サイコロやコインの確率を計算するためのルールです。
 
-製品の出所（工場X or Y）が「原因」、不良品かどうかが「結果」です。「工場Xから来て不良品」と「工場Yから来て不良品」はそれぞれ確率を計算できます。この2つの経路（原因）を合計したものが求める確率です。
+- **排反（はいはん）**
+  2つの事象が「絶対に同時に起こらない」こと（例：サイコロで偶数の目と奇数の目が同時に出ること）。このとき、どちらかが起こる確率は単純に足し算できます（**加法定理**）。
+   P(A \text{ または } B) = P(A) + P(B) 
+  もし排反でない（同時に起こり得る共有部分がある）場合は、ダブルカウントを防ぐために引く必要があります。
+   P(A \cup B) = P(A) + P(B) - P(A \cap B) 
 
-この考え方を定式化したものが**全確率の公式**です。互いに排反かつ標本...</p>
+- **独立（どくりつ）**
+  2つの事象が「互いに全く影響を及ぼさない」こと（例：コインを2回投げて1回目と2回目の結果の関係）。このとき、...</p>
   </noscript>
     <div id="root"></div>
   </body>
