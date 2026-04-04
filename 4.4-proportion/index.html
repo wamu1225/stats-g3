@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>データの記述と関連（2変数） | 統計検定 3級 学習リファレンス</title>
+    <title>母比率の推定・検定 | 統計検定 3級 学習リファレンス</title>
     <meta name="description" content="統計検定2級の合格を目指す学習リファレンス。確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
-    <meta property="og:title" content="データの記述と関連（2変数） | 統計検定 3級 学習リファレンス" />
+    <meta property="og:title" content="母比率の推定・検定 | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説する2級対策サイト。" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
@@ -22,29 +22,27 @@
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9102538151148380"
      crossorigin="anonymous"></script>
-    <script type="module" crossorigin src="../assets/index-4ru3QhHu.js"></script>
+    <script type="module" crossorigin src="../assets/index-D_dAZHdm.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-DOSaYwx8.css">
   </head>
   <body>
     <noscript id="seo-data">
-    <h1>データの記述と関連（2変数）</h1>
+    <h1>母比率の推定・検定</h1>
     <p>💡 **このモジュールで学ぶこと**
 
-「勉強時間とテストの点数に関係はあるか」「性別によって好みの製品機能に違いはあるか」。このように、2つのデータの関連性を調べるアプローチを学びます。量的データの関係を見る「散布図」「相関係数」「回帰分析」、質的データの関係を見る「クロス集計表」は、実務でも非常によく使われる基礎スキルです。
+「この薬の治癒率は本当に50%より高いか？」「A社とB社の商品の不良品率に差があるか？」——結果が「成功か失敗か（治癒した・しない、不良品・良品）」という2値データでは、関心のある母数は**母比率** $p$（母集団における成功の割合）です。母平均の推定・検定と同様の考え方で、母比率の信頼区間と仮説検定を構築できます。
 
 ---
 
-### 1. 散布図と相関係数（量的データの関係）
+### 1. 母比率の点推定と区間推定
 
-2つの量的データ（例：身長と体重）それぞれの値を座標平面に打ったグラフを**散布図**といいます。
-散布図の形状から、一方が増えるともう一方も増える傾向（**正の相関**）や、一方が増えると一方が減る傾向（**負の相関**）を視覚的に把握できます。
+$n$ 個の独立な試行で成功が $X$ 回だったとします。**標本比率** $\hat{p} = X/n$ は母比率 $p$ の不偏推定量です。
 
-直線的な関係性の強さを $-1$ から $1$ までの数値で表したものが**ピアソンの積率相関係数（$r$）**です。
-- $r = 1$：完全な正の相関（すべての点が一直線上に右上がりに並ぶ）
-- $r = -1$：完全な負の相関（すべての点が一直線上に右下がりに並ぶ）
-- $r = 0$：直線的な相関関係がない（無相関）
+$X \sim B(n, p)$（二項分布）なので $E[\hat{p}] = p$、$V[\hat{p}] = p(1-p)/n$ です。中心極限定理より $n$ が大きいとき：
 
-⚠️ **相関係数...</p>
+\hat{p} \approx N\!\left(p,\; \frac{p(1-p)}{n}\right)
+
+標準誤差 $SE = \sqrt{p(1-p)/n}$ ですが $p$ は未知なので $\hat{p}$ で代入します。母比率の近似 $1-...</p>
   </noscript>
     <div id="root"></div>
   </body>

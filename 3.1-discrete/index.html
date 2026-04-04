@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>確率の基礎と確率分布 | 統計検定 3級 学習リファレンス</title>
+    <title>離散型確率分布 | 統計検定 3級 学習リファレンス</title>
     <meta name="description" content="統計検定2級の合格を目指す学習リファレンス。確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
-    <meta property="og:title" content="確率の基礎と確率分布 | 統計検定 3級 学習リファレンス" />
+    <meta property="og:title" content="離散型確率分布 | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説する2級対策サイト。" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
@@ -22,30 +22,23 @@
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9102538151148380"
      crossorigin="anonymous"></script>
-    <script type="module" crossorigin src="../assets/index-4ru3QhHu.js"></script>
+    <script type="module" crossorigin src="../assets/index-D_dAZHdm.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-DOSaYwx8.css">
   </head>
   <body>
     <noscript id="seo-data">
-    <h1>確率の基礎と確率分布</h1>
+    <h1>離散型確率分布</h1>
     <p>💡 **このモジュールで学ぶこと**
 
-データを元にした推測の土台となるのが「確率」です。3級では複雑な公式は要求されませんが、確率の基本定理（加法定理・乗法定理）を迷わず使えることと、標準正規分布を用いた確率の計算（Zスコア）が完璧にできることが最も重要になります。
+「サイコロの目」「コインを10回投げたときの表の枚数」「1時間にコールセンターにかかってくる電話の件数」——これらはどれも整数値（0, 1, 2, ...）をとる**離散型確率変数**です。このような確率変数の分布を扱うのが離散型確率分布の理論です。代表的な二項分布とポアソン分布の性質と公式を、具体的な計算例を通して習得しましょう。
 
 ---
 
-### 1. 事象と確率の基本規則
+### 1. 確率変数・確率質量関数・期待値
 
-サイコロやコインの確率を計算するためのルールです。
+サイコロを1回振る試行を考えます。結果（出た目）は試行するまでわかりませんが、1〜6のどれかになることはわかっています。このように「試行の結果によって値が決まる変数」を**確率変数**といいます。サイコロの出た目 $X$ は $\{1, 2, 3, 4, 5, 6\}$ の整数値をとる**離散型確率変数**です。
 
-- **排反（はいはん）**
-  2つの事象が「絶対に同時に起こらない」こと（例：サイコロで偶数の目と奇数の目が同時に出ること）。このとき、どちらかが起こる確率は単純に足し算できます（**加法定理**）。
-   P(A \text{ または } B) = P(A) + P(B) 
-  もし排反でない（同時に起こり得る共有部分がある）場合は、ダブルカウントを防ぐために引く必要があります。
-   P(A \cup B) = P(A) + P(B) - P(A \cap B) 
-
-- **独立（どくりつ）**
-  2つの事象が「互いに全く影響を及ぼさない」こと（例：コインを2回投げて1回目と2回目の結果の関係）。このとき、...</p>
+各値が起こる確率をまとめた関数を**確率質量関数（PMF: Probability Mass Function）**といいます。公正なサイコロでは $P(X=1) = P(X=2) = \cdots = P(X=6) = 1/6$ です。PMF...</p>
   </noscript>
     <div id="root"></div>
   </body>

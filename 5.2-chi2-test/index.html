@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>データの記述と要約（1変数） | 統計検定 3級 学習リファレンス</title>
+    <title>カイ二乗検定 | 統計検定 3級 学習リファレンス</title>
     <meta name="description" content="統計検定2級の合格を目指す学習リファレンス。確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
-    <meta property="og:title" content="データの記述と要約（1変数） | 統計検定 3級 学習リファレンス" />
+    <meta property="og:title" content="カイ二乗検定 | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説する2級対策サイト。" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
@@ -22,27 +22,26 @@
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9102538151148380"
      crossorigin="anonymous"></script>
-    <script type="module" crossorigin src="../assets/index-4ru3QhHu.js"></script>
+    <script type="module" crossorigin src="../assets/index-D_dAZHdm.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-DOSaYwx8.css">
   </head>
   <body>
     <noscript id="seo-data">
-    <h1>データの記述と要約（1変数）</h1>
+    <h1>カイ二乗検定</h1>
     <p>💡 **このモジュールで学ぶこと**
 
-集まった大量のデータを要約し、特徴を掴むのが「**記述統計**」の基本です。
-まずデータの性質（数なのか記号なのか）を見極める「尺度」を理解し、その後でデータの中心を表す「代表値」と、ばらつきを表す「散布度」の計算方法をマスターしましょう。
+「サイコロは本当に1〜6が等しく出るのか？」「性別とコーヒーの好みに関係があるか？」——この2つは一見似ているようで、実は異なる問いです。前者は「ある分布に従うか」を検定する**適合度検定**、後者は「2つのカテゴリ変数が独立か」を検定する**独立性の検定**です。どちらも $\chi^2$（カイ二乗）統計量を使いますが、自由度の求め方と期待度数の計算が異なります。この違いを中心に学びましょう。
 
 ---
 
-### 1. データの種類と4つの尺度
+### 1. カイ二乗統計量：「観測と期待のずれ」を測る
 
-データは**質的データ（カテゴリや分類）**と**量的データ（数値）**に分かれます。さらに細かく4つの「尺度水準」に分類されます。
+サイコロを600回振って「1〜6が各100回ずつ出れば公正」が**期待値**です。実際に振ったら「1が85回、2が110回...」と多少のズレが生じました。このズレが「偶然の範囲内か、不公正の証拠か」を判断するのが**カイ二乗検定**です。
 
-1. **名義尺度**：分類するためだけに付けられた記号（例：性別、血液型、郵便番号）。度数のカウントは可能ですが、順序や計算には意味がありません。
-2. **順序尺度**：大小や順序には意味があるが、間隔は均等ではない値（例：アンケートの5段階評価、徒競走の順位）。中央値を取ることはできます。
-3. **間隔尺度**：値の差（間隔）には意味があるが、「絶対的なゼロ」が存在しない値（例：気温（摂氏℃）、西暦）。20℃は10℃の2倍の熱量を持っていません。足し算・引き算が可能です。
-4. **比例尺度**：絶対的なゼロ（そ...</p>
+**観測度数 $O_i$**：実際に観測された各カテゴリの件数。
+**期待度数 $E_i$**：帰無仮説が正しいと仮定したときに期待される件数。
+
+\chi^2 = \sum_{i=1}^k \frac{(O_i - E_i)^2}{E_i}...</p>
   </noscript>
     <div id="root"></div>
   </body>

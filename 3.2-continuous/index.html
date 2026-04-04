@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>推測統計の入門 | 統計検定 3級 学習リファレンス</title>
+    <title>連続型確率分布 | 統計検定 3級 学習リファレンス</title>
     <meta name="description" content="統計検定2級の合格を目指す学習リファレンス。確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
-    <meta property="og:title" content="推測統計の入門 | 統計検定 3級 学習リファレンス" />
+    <meta property="og:title" content="連続型確率分布 | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説する2級対策サイト。" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
@@ -22,27 +22,25 @@
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9102538151148380"
      crossorigin="anonymous"></script>
-    <script type="module" crossorigin src="../assets/index-4ru3QhHu.js"></script>
+    <script type="module" crossorigin src="../assets/index-D_dAZHdm.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-DOSaYwx8.css">
   </head>
   <body>
     <noscript id="seo-data">
-    <h1>推測統計の入門</h1>
+    <h1>連続型確率分布</h1>
     <p>💡 **このモジュールで学ぶこと**
 
-「100人にアンケートをとったら支持率は40%だった。では全国での実際の支持率は40%だと言い切ってよいだろうか？」
-このように、手元の「標本（サンプル）」から見えない「母集団全体」の真実を確率的に予測するのが**推測統計**です。3級では複雑な公式の丸暗記は求められません。実際のデータ分析で使われる「区間推定」と「仮説検定」の考え方を学びます。
+「サイコロの目は1〜6の整数しかとらないが、人間の身長は165.3cmや170.1cmなど小数点以下の値もとる」——この違いが離散型と連続型確率変数の本質的な差です。連続型では「ちょうど165.000...cmになる確率」は0であり、「165cm以上170cm以下の確率」というように区間で確率を考えます。身長・気温・待ち時間など連続データの確率計算に不可欠な正規分布と指数分布を、直感的なイメージとともに習得しましょう。
 
 ---
 
-### 1. 母集団と標本・2つの大定理
+### 1. 確率密度関数（PDF）と累積分布関数（CDF）
 
-例えば、日本全国の高校生の平均身長を知りたいとき、全員を測ることはできません。そこで一部の生徒を測り、そこから全国の平均を推測します。
+離散型確率変数では「$X = 3$ になる確率」 $P(X=3)$ のように特定の値の確率が意味を持ちます。一方、連続型確率変数では「ちょうど165.000...cmになる確率」は0です。なぜなら実数の直線上で特定の1点は長さ0の区間だからです。
 
-- **母集団**：知りたい対象の全体像。その中にある本当の平均や比率のことを**母数（パラメーター）**と呼びます。
-- **標本**：調査のために選び出された一部。ここから計算された平均や比率のことを統計量と呼びます。
+そこで連続型では「ある区間に入る確率」を**確率密度関数（PDF: Probability Density Function）** $f(x)$ を使って積分で求めます。
 
-標本を抽出するたびに、調査結果は微妙に揺れ動きます。これを標本誤差といいます。しかし、標本のサイズ（数）を増やすことで真実に近づいていく性質があり、これを支える2つの数学の定理があります。...</p>
+P(a \le X \le b) ...</p>
   </noscript>
     <div id="root"></div>
   </body>
