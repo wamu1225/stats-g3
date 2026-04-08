@@ -9,9 +9,11 @@
     <meta property="og:title" content="データの可視化 | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="棒グラフ・ヒストグラム・茎葉図・度数分布表・箱ひげ図で1変数のデータを視覚化します。2変数の関係（散布図・相関・クロス集計）は次のモジュールで学びます。" />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://study-apps.com/stats-g3/1.2-visualization/" />
+    <link rel="canonical" href="https://study-apps.com/stats-g3/1.2-visualization/" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="統計検定 3級 学習リファレンス" />
-    <meta name="twitter:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
+    <meta name="twitter:title" content="データの可視化 | 統計検定 3級 学習リファレンス" />
+    <meta name="twitter:description" content="棒グラフ・ヒストグラム・茎葉図・度数分布表・箱ひげ図で1変数のデータを視覚化します。2変数の関係（散布図・相関・クロス集計）は次のモジュールで学びます。" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-G6K27V3P4S"></script>
     <script>
@@ -25,22 +27,35 @@
     <script type="module" crossorigin src="../assets/index-BJ3BowtY.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-BMgy0mkZ.css">
   </head>
+    <script>
+      // Restore URL after GitHub Pages 404 redirect (?/path/ → /stats-g3/path/)
+      (function () {
+        var s = window.location.search;
+        if (s[1] === '/') {
+          var decoded = s.slice(1).split('&').map(function (p) { return p.replace(/~and~/g, '&'); });
+          window.history.replaceState(
+            null, null,
+            '/stats-g3' + decoded[0] +
+            (decoded.slice(1).length ? '?' + decoded.slice(1).join('&') : '') +
+            window.location.hash
+          );
+        }
+      })();
+    </script>
+  </head>
   <body>
     <noscript id="seo-data">
     <h1>データの可視化</h1>
-    <p>💡 **このモジュールで学ぶこと**
+    <p>このモジュールで学ぶこと
 
 「数値の表を眺めているだけでは気づかなかったことが、グラフを描いた瞬間に見えてくる」——これがデータ可視化の醍醐味です。たとえば100人分の身長データが数字の羅列として並んでいても、分布の形・外れ値の存在は一目ではわかりません。適切なグラフや表を選んで描くことで、データが「語りかけてくる」ようになります。このモジュールでは1変数のデータを整理・可視化する基本ツールを学びます。2変数の関係（散布図・相関係数・クロス集計）は次のモジュール「散布図・相関・クロス集計」で扱います。
 
----
-
-### 1. 基本的な統計グラフ：目的に合わせて選ぶ
+基本的な統計グラフ：目的に合わせて選ぶ
 
 統計グラフは「何を伝えたいか」によって使い分けます。グラフの種類を間違えると、データの特徴が正確に伝わりません。試験では「このデータにはどのグラフが適切か」という問いが頻出です。
 
-**1変数のデータを見るグラフ：**
-- **棒グラフ**：「血液型別の人数」「月別の販売数」など、カテゴリごとの数量を比較する。棒の高さが値を表し、棒の間に隙間がある。
-- **積み上げ棒グラフ**：棒グラフを積み上げた形。各...</p>
+1変数のデータを見るグラフ：
+棒グラフ：「血液型別の人数」「月別の...</p>
   </noscript>
     <div id="root"></div>
   </body>

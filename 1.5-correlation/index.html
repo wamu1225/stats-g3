@@ -9,9 +9,11 @@
     <meta property="og:title" content="散布図・相関・クロス集計 | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="散布図と相関係数で2変数の量的関係を、クロス集計表で質的変数の関係を分析します。" />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://study-apps.com/stats-g3/1.5-correlation/" />
+    <link rel="canonical" href="https://study-apps.com/stats-g3/1.5-correlation/" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="統計検定 3級 学習リファレンス" />
-    <meta name="twitter:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
+    <meta name="twitter:title" content="散布図・相関・クロス集計 | 統計検定 3級 学習リファレンス" />
+    <meta name="twitter:description" content="散布図と相関係数で2変数の量的関係を、クロス集計表で質的変数の関係を分析します。" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-G6K27V3P4S"></script>
     <script>
@@ -25,28 +27,40 @@
     <script type="module" crossorigin src="../assets/index-BJ3BowtY.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-BMgy0mkZ.css">
   </head>
+    <script>
+      // Restore URL after GitHub Pages 404 redirect (?/path/ → /stats-g3/path/)
+      (function () {
+        var s = window.location.search;
+        if (s[1] === '/') {
+          var decoded = s.slice(1).split('&').map(function (p) { return p.replace(/~and~/g, '&'); });
+          window.history.replaceState(
+            null, null,
+            '/stats-g3' + decoded[0] +
+            (decoded.slice(1).length ? '?' + decoded.slice(1).join('&') : '') +
+            window.location.hash
+          );
+        }
+      })();
+    </script>
+  </head>
   <body>
     <noscript id="seo-data">
     <h1>散布図・相関・クロス集計</h1>
-    <p>💡 **このモジュールで学ぶこと**
+    <p>このモジュールで学ぶこと
 
 前のモジュールではヒストグラムや箱ひげ図で「1つの変数の分布」を見ました。では「2つの変数の関係」はどうやって可視化するのでしょうか。「勉強時間が長いほどテストの点は高いのか？」「性別によってコーヒーの好みに違いはあるか？」——このような問いに答えるのがこのモジュールで学ぶツールです。
 
----
+散布図と相関係数：2変数の量的関係を見る
 
-### 1. 散布図と相関係数：2変数の量的関係を見る
-
-2つの量的変数の関係を視覚化するツールが**散布図**です。「広告費（X軸）と売上（Y軸）」「勉強時間（X軸）とテスト点数（Y軸）」のように、各データ点を平面上の1点として打ちます。
+2つの量的変数の関係を視覚化するツールが散布図です。「広告費（X軸）と売上（Y軸）」「勉強時間（X軸）とテスト点数（Y軸）」のように、各データ点を平面上の1点として打ちます。
 
 散布図から読み取れる関係の種類：
 
-- **正の相関**：右上がりの点の群。広告費が多いほど売上も多い。
-- **負の相関**：右下がりの点の群。気温が下がるほどコーヒーの販売量が増える。
-- **無相関**：点がランダムに散らばる。靴のサイズと英語の成績には関係がない。
+正の相関：右上がりの点の群。広告費が多いほど売上も多い。
+負の相関：右下がりの点の群。気温が下がるほどコーヒーの販売量が増える。
+無相関：点がランダムに散らばる。靴のサイズと英語の成績には関係がない。
 
-**共分散：2変数が同じ方向にずれるかを測る**
-
-散布図から読み取れる「関係の向き」を数値化する第一歩が**共分散（covariance...</p>
+共分散：2変数が同じ...</p>
   </noscript>
     <div id="root"></div>
   </body>

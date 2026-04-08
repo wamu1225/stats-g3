@@ -9,9 +9,11 @@
     <meta property="og:title" content="離散型確率分布 | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="確率変数・PMF・期待値・分散・二項分布を基礎から積み上げて学びます。" />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://study-apps.com/stats-g3/3.1-discrete/" />
+    <link rel="canonical" href="https://study-apps.com/stats-g3/3.1-discrete/" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="統計検定 3級 学習リファレンス" />
-    <meta name="twitter:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
+    <meta name="twitter:title" content="離散型確率分布 | 統計検定 3級 学習リファレンス" />
+    <meta name="twitter:description" content="確率変数・PMF・期待値・分散・二項分布を基礎から積み上げて学びます。" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-G6K27V3P4S"></script>
     <script>
@@ -25,22 +27,34 @@
     <script type="module" crossorigin src="../assets/index-BJ3BowtY.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-BMgy0mkZ.css">
   </head>
+    <script>
+      // Restore URL after GitHub Pages 404 redirect (?/path/ → /stats-g3/path/)
+      (function () {
+        var s = window.location.search;
+        if (s[1] === '/') {
+          var decoded = s.slice(1).split('&').map(function (p) { return p.replace(/~and~/g, '&'); });
+          window.history.replaceState(
+            null, null,
+            '/stats-g3' + decoded[0] +
+            (decoded.slice(1).length ? '?' + decoded.slice(1).join('&') : '') +
+            window.location.hash
+          );
+        }
+      })();
+    </script>
+  </head>
   <body>
     <noscript id="seo-data">
     <h1>離散型確率分布</h1>
-    <p>💡 **このモジュールで学ぶこと**
+    <p>このモジュールで学ぶこと
 
-前のChapterでは「確率とは何か」「条件付き確率と独立性」を学びました。確率とは「事象に割り当てた数値」でしたが、ここからは一歩進んで「試行の**結果**に数値を割り当てた変数」——**確率変数**を扱います。
+前のChapterでは「確率とは何か」「条件付き確率と独立性」を学びました。確率とは「事象に割り当てた数値」でしたが、ここからは一歩進んで「試行の結果に数値を割り当てた変数」——確率変数を扱います。
 
-「コインを2回投げたとき、表は何回出るか？」——0回かもしれないし、1回かもしれないし、2回かもしれません。このように「試行前には決まっていないが、起こりうる値とその確率がわかる変数」を確率変数といいます。このモジュールでは確率変数の基本概念（PMF・期待値・分散）を学び、「成功か失敗かの試行を $n$ 回繰り返したとき、成功回数の分布はどうなるか」——**二項分布**——を理解します。
+「コインを2回投げたとき、表は何回出るか？」——0回かもしれないし、1回かもしれないし、2回かもしれません。このように「試行前には決まっていないが、起こりうる値とその確率がわかる変数」を確率変数といいます。このモジュールでは確率変数の基本概念（PMF・期待値・分散）を学び、「成功か失敗かの試行を  回繰り返したとき、成功回数の分布はどうなるか」——二項分布——を理解します。
 
----
+確率変数と確率質量関数（PMF）
 
-### 1. 確率変数と確率質量関数（PMF）
-
-コインを2回投げる試行を考えます。表の回数 $X$ は 0, 1, 2 のいずれかです。このように「試行の結果によって値が決まる変数」を**確率変数**（random variable）といいます。
-
-特に $X$ が 0, 1, 2 のような**整数値（とびとびの値）**しかとらない...</p>
+コインを2回投げる試行を考えます。表の回数  は 0, 1, 2 のいずれかです。このように「試行の結果によって値が決まる変数」を確率変数（random ...</p>
   </noscript>
     <div id="root"></div>
   </body>

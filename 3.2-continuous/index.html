@@ -9,9 +9,11 @@
     <meta property="og:title" content="連続型確率分布 | 統計検定 3級 学習リファレンス" />
     <meta property="og:description" content="確率密度関数・正規分布・標準化を学び、連続型確率変数の確率計算をマスターします。" />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://study-apps.com/stats-g3/3.2-continuous/" />
+    <link rel="canonical" href="https://study-apps.com/stats-g3/3.2-continuous/" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="統計検定 3級 学習リファレンス" />
-    <meta name="twitter:description" content="確率・確率分布・推定・検定・回帰分析をインタラクティブな図と数式で解説。" />
+    <meta name="twitter:title" content="連続型確率分布 | 統計検定 3級 学習リファレンス" />
+    <meta name="twitter:description" content="確率密度関数・正規分布・標準化を学び、連続型確率変数の確率計算をマスターします。" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-G6K27V3P4S"></script>
     <script>
@@ -25,20 +27,34 @@
     <script type="module" crossorigin src="../assets/index-BJ3BowtY.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-BMgy0mkZ.css">
   </head>
+    <script>
+      // Restore URL after GitHub Pages 404 redirect (?/path/ → /stats-g3/path/)
+      (function () {
+        var s = window.location.search;
+        if (s[1] === '/') {
+          var decoded = s.slice(1).split('&').map(function (p) { return p.replace(/~and~/g, '&'); });
+          window.history.replaceState(
+            null, null,
+            '/stats-g3' + decoded[0] +
+            (decoded.slice(1).length ? '?' + decoded.slice(1).join('&') : '') +
+            window.location.hash
+          );
+        }
+      })();
+    </script>
+  </head>
   <body>
     <noscript id="seo-data">
     <h1>連続型確率分布</h1>
-    <p>💡 **このモジュールで学ぶこと**
+    <p>このモジュールで学ぶこと
 
-前のモジュールで学んだ離散型確率変数では、期待値 $E[X]$ や分散 $V[X]$ を「確率 × 値の和」で計算しました。連続型でも同じ概念が使われます——違いは、確率の計算が足し算から**積分**に変わる点だけです。
+前のモジュールで学んだ離散型確率変数では、期待値  や分散  を「確率 × 値の和」で計算しました。連続型でも同じ概念が使われます——違いは、確率の計算が足し算から積分に変わる点だけです。
 
 「サイコロの目は1〜6の整数しかとらないが、人間の身長は165.3cmや170.1cmなど小数点以下の値もとる」——この違いが離散型と連続型確率変数の本質的な差です。連続型では「ちょうど165.000...cmになる確率」は0であり、「165cm以上170cm以下の確率」というように区間で確率を考えます。このモジュールでは確率密度関数（PDF）と、最も重要な連続型分布である正規分布・標準化を学びます。大数の法則と中心極限定理は次のモジュールで扱います。
 
----
+確率密度関数（PDF）と累積分布関数（CDF）
 
-### 1. 確率密度関数（PDF）と累積分布関数（CDF）
-
-離散型確率変数では「$X = 3$ になる確率」 $P(X=3)$ のように特定の値の確率が意味を持ちます。一方、連続型確率変数では「ちょうど165.000...cmになる確率」は0です。なぜなら実数...</p>
+離散型確率変数では「 になる確率」  のように特定の値の確率が意味を持...</p>
   </noscript>
     <div id="root"></div>
   </body>
