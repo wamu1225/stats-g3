@@ -4,16 +4,16 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>大数の法則と中心極限定理 | 統計検定 3級 学習リファレンス</title>
-    <meta name="description" content="大数の法則・中心極限定理・二項分布の正規近似を理解し、統計的推測の理論的根拠を学びます。" />
-    <meta property="og:title" content="大数の法則と中心極限定理 | 統計検定 3級 学習リファレンス" />
-    <meta property="og:description" content="大数の法則・中心極限定理・二項分布の正規近似を理解し、統計的推測の理論的根拠を学びます。" />
+    <title>中心極限定理と二項分布の正規近似 | 統計検定 3級 学習リファレンス</title>
+    <meta name="description" content="中心極限定理・標準誤差・二項分布の正規近似を理解し、統計的推測（Chapter 4）の土台を作ります。" />
+    <meta property="og:title" content="中心極限定理と二項分布の正規近似 | 統計検定 3級 学習リファレンス" />
+    <meta property="og:description" content="中心極限定理・標準誤差・二項分布の正規近似を理解し、統計的推測（Chapter 4）の土台を作ります。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://study-apps.com/stats-g3/3.3-clt/" />
     <link rel="canonical" href="https://study-apps.com/stats-g3/3.3-clt/" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="大数の法則と中心極限定理 | 統計検定 3級 学習リファレンス" />
-    <meta name="twitter:description" content="大数の法則・中心極限定理・二項分布の正規近似を理解し、統計的推測の理論的根拠を学びます。" />
+    <meta name="twitter:title" content="中心極限定理と二項分布の正規近似 | 統計検定 3級 学習リファレンス" />
+    <meta name="twitter:description" content="中心極限定理・標準誤差・二項分布の正規近似を理解し、統計的推測（Chapter 4）の土台を作ります。" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-G6K27V3P4S"></script>
     <script>
@@ -39,23 +39,25 @@
         }
       })();
     </script>
-    <script type="module" crossorigin src="../assets/index-pTH8yxtV.js"></script>
+    <script type="module" crossorigin src="../assets/index-xBNZve3V.js"></script>
     <link rel="stylesheet" crossorigin href="../assets/index-BMgy0mkZ.css">
   </head>
   <body>
     <noscript id="seo-data">
-    <h1>大数の法則と中心極限定理</h1>
+    <h1>中心極限定理と二項分布の正規近似</h1>
     <p>このモジュールで学ぶこと
 
-前のモジュールで正規分布と標準化を学びました。正規分布は身長や試験点数に自然に現れますが、実は「ほとんどどんな分布でも、サンプルサイズを大きくすると標本平均の分布が正規分布に近づく」という驚くべき定理があります。これが中心極限定理（CLT）です。この定理があるからこそ、Chapter 4で学ぶ信頼区間や仮説検定が成り立ちます。
+Chapter 4 では「標本から母集団を推測する」方法を学びます。でも、なぜそんなことが可能なのでしょうか？
 
-大数の法則と中心極限定理
+その根拠となる定理が中心極限定理（CLT）です。「母集団がどんな形の分布でも、サンプルサイズが大きければ標本平均の分布は正規分布で近似できる」という驚くべき事実です。正規分布で近似できるから確率計算ができる——だから推定や仮説検定が成り立ちます。
 
-大数の法則（Law of Large Numbers） は「標本サイズ  を大きくすると、標本平均  が母平均  に確率収束する」という定理です。
+まず直感から——「平均を取ると安定する」
 
-コインを10回投げると表の割合がかなりばらつきますが、1000回・10000回と増やすと割合は 0.5 に近づいていきます——これが大数の法則の直感です。「多く集めるほど真の値に近づく」という標本調査の根拠でもあります。
+1つのサイコロを1回振ると、出る目は1〜6のどれか。バラツキが大きいです。
 
-中心極限定理（CLT） は「母集団の分...</p>
+では、10人それぞれがサイコロを1回ずつ振って10人の平均を求めたらどうなるでしょう？ 1人だけが「6」を出しても、他の9人の目が平均的なら、10人の平均は大きく外れません。さらに100人の平均を取れば、もっと安定します。
+
+人数が増えるほど、極端な値が打ち消し合い、平均はブレにくくな...</p>
   </noscript>
     <div id="root"></div>
   </body>
