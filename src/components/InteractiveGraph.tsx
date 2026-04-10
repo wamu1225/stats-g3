@@ -3,7 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, Area, AreaChart, BarChart, Bar } from 'recharts';
 
 interface Props {
-  type: 'normal' | 'binomial' | 'histogram' | 'scatter' | 'boxplot';
+  type: string;
   renderContent?: (text: string) => React.ReactNode;
 }
 
@@ -28,7 +28,7 @@ function NormalGraph() {
         <AreaChart data={data}>
           <XAxis dataKey="x" tickFormatter={v => v.toFixed(1)} />
           <YAxis />
-          <Tooltip formatter={(v: number) => v.toFixed(4)} />
+          <Tooltip formatter={(v) => typeof v === 'number' ? v.toFixed(4) : String(v)} />
           <Area type="monotone" dataKey="y" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.15} dot={false} />
           <ReferenceLine x={mean} stroke="var(--primary)" strokeDasharray="3 3" label="μ" />
         </AreaChart>
@@ -70,7 +70,7 @@ function BinomialGraph() {
         <BarChart data={data}>
           <XAxis dataKey="k" label={{ value: '成功回数 k', position: 'insideBottom', offset: -5 }} />
           <YAxis />
-          <Tooltip formatter={(v: number) => v.toFixed(4)} />
+          <Tooltip formatter={(v) => typeof v === 'number' ? v.toFixed(4) : String(v)} />
           <Bar dataKey="prob" fill="var(--primary)" fillOpacity={0.7} />
         </BarChart>
       </ResponsiveContainer>
