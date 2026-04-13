@@ -43,9 +43,11 @@
     <link rel="stylesheet" crossorigin href="../assets/index-DOSaYwx8.css">
   </head>
   <body>
-    <noscript id="seo-data">
-    <h1>母比率の推定・検定</h1>
-    <p>このモジュールで学ぶこと
+    <div id="root"><article id="static-fallback" style="font-family:sans-serif;line-height:1.7;max-width:860px;margin:0 auto;padding:24px 16px">
+  <nav style="margin-bottom:16px"><a href="/stats-g3/" style="color:#2563eb;text-decoration:none">← 学習リファレンス ホーム</a></nav>
+  <h1 style="font-size:1.6rem;font-weight:700;border-bottom:2px solid #2563eb;padding-bottom:8px;margin-bottom:12px">母比率の推定・検定</h1>
+  <p style="color:#555;margin-bottom:20px;font-size:1.05rem">母比率の点推定・信頼区間・z検定の考え方と計算を学びます。</p>
+  <div style="white-space:pre-line;color:#333">このモジュールで学ぶこと
 
 「推定」・「仮説検定」モジュールでは「連続型の量的データ（身長・血圧・点数など）の平均」を推定・検定してきました。今回はデータの種類が変わります。
 
@@ -59,8 +61,22 @@
 
 標準誤差  ですが  は未知なので  で代入します。母比率の近似  信頼区間は：
 
-例：、（治癒4...</p>
-  </noscript>
-    <div id="root"></div>
+例：、（治癒40%）の95%信頼区間。、、。
+
+母比率の仮説検定（z検定）
+
+「治癒率が50%より高い（）か」を検定したいとき、帰無仮説  を立てます。
+
+ が正しいとすると  は近似的に  に従うので、検定統計量は：
+
+信頼区間と検定で SE の計算が変わる理由： 信頼区間は「 が何かわからないから推定する」ので、 の代わりに手元の  を使います。検定は「 が正しいと仮定した世界での分布」を作るので、仮定した値  を使います。同じ標本データを使っていても、目的が違うから SE の計算式が変わります。
+
+例：, ,  の片側検定。。有意水準5%の片側棄却域  に入らないので  を棄却できない。
+
+ 試験ポイント： 母比率の検定では  に （帰無仮説の値）を使い、信頼区間では （標本比率）を使う。この使い分けを問う問題が頻出です。</div>
+  <nav style="margin-top:32px;border-top:1px solid #ddd;padding-top:16px">
+    <a href="/stats-g3/" style="color:#2563eb;text-decoration:none">← ホームへ戻る</a>
+  </nav>
+</article></div>
   </body>
 </html>
