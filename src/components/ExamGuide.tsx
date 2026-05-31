@@ -1,6 +1,7 @@
 // src/components/ExamGuide.tsx  (stats-g3)
 import React from 'react';
 import { CheckCircle2, Target, Lightbulb } from 'lucide-react';
+import { EXAM_CONFIG } from '../data/examConfig';
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="card" style={{ marginBottom: '1.5rem' }}>
@@ -75,8 +76,8 @@ export const ExamGuide: React.FC = () => (
     <Section title="試験の概要">
       <Row label="実施方式" value="CBT（Computer Based Testing）— 全国のテストセンターで通年受験可" />
       <Row label="出題形式" value="多肢選択式（コンピュータ画面上で解答）" />
-      <Row label="問題数 / 試験時間" value="30問程度 / 60分（1問あたり約2分）" />
-      <Row label="合格基準" value="100点満点中 70点以上（概ね21問正答が目安）" />
+      <Row label="問題数 / 試験時間" value={`${EXAM_CONFIG.questionCount} / ${EXAM_CONFIG.duration}分（1問あたり約2分）`} />
+      <Row label="合格基準" value={`${EXAM_CONFIG.passingScoreLabel}（概ね${EXAM_CONFIG.passingQuestions}正答が目安）`} />
       <Row label="受験料" value="一般 6,000円 / 学割 4,000円（税込）" />
       <Row label="電卓" value="持ち込み可（四則演算・ルート・メモリのある一般電卓。関数電卓は不可）" />
       <Row label="再受験" value="前回受験終了から最短1週間後に可" />

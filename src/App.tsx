@@ -4,6 +4,7 @@ import './App.css';
 import { modules } from './data/modules';
 import { comprehensiveQuizQuestions } from './data/comprehensiveQuiz';
 import { glossary } from './data/glossary';
+import { chapterNames } from './data/chapters';
 import { InteractiveGraph } from './components/InteractiveGraph';
 import { MathDisplay } from './components/MathDisplay';
 import { Quiz } from './components/Quiz';
@@ -12,14 +13,6 @@ import { DistributionSelector } from './components/DistributionSelector';
 import { ExamGuide } from './components/ExamGuide';
 import { ChevronLeft, Book, LayoutDashboard, ArrowRight, Search as SearchIcon, X, Lightbulb, Target, ArrowDown, Dumbbell, Trash2, FileText, Shuffle, CheckCircle2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const chapterNames: Record<number, string> = {
-  1: 'データの記述',
-  2: '確率の基礎',
-  3: '確率分布',
-  4: '統計的推測',
-  5: '応用手法',
-};
 
 const PROGRESS_KEY = 'stats-g3-progress';
 const COMPREHENSIVE_KEY = '__comprehensive__';
