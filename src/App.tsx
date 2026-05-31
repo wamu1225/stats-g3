@@ -21,7 +21,8 @@ const chapterNames: Record<number, string> = {
   5: '応用手法',
 };
 
-const PROGRESS_KEY = 'stats-app-progress';
+const PROGRESS_KEY = 'stats-g3-progress';
+const COMPREHENSIVE_KEY = '__comprehensive__';
 
 interface ProgressEntry { score: number; total: number; completedAt: string; }
 type Progress = Record<string, ProgressEntry>;
@@ -91,6 +92,10 @@ function App() {
     } else {
       setRqResults(newResults);
       setRqDone(true);
+      const entry: ProgressEntry = { score: newResults.filter(r => r.correct).length, total: newResults.length, completedAt: new Date().toLocaleDateString('ja-JP') };
+      const next = { ...loadProgress(), [COMPREHENSIVE_KEY]: entry };
+      saveProgress(next);
+      setProgress(next);
       window.scrollTo(0, 0);
     }
   };
@@ -295,7 +300,7 @@ function App() {
   }, [activeModuleId]);
   const findModulesByTerm = useCallback((termId: string) => modules.filter(m => m.content.includes(`[[term:${termId}]]`)), []);
 
-  const completedCount = Object.keys(progress).length;
+  const completedCount = Object.keys(progress).filter(id => modules.some(m => m.id === id)).length;
   const totalModules = modules.length;
 
   return (
@@ -543,6 +548,26 @@ function App() {
                   );
                   return acc;
                 }, [])}
+                {!searchQuery && (
+                  <>
+                    <div className="chapter-header">
+                      <span className="badge-chapter" style={{ fontSize: '0.7rem' }}>全範囲</span>
+                      <h3 className="content-h3" style={{ margin: '0.25rem 0 0' }}>まとめ</h3>
+                    </div>
+                    <div className="card-module" style={{ cursor: 'pointer' }} onClick={startRandomQuiz}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span className="badge-chapter" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Shuffle size={12} /> 全範囲</span>
+                        {progress[COMPREHENSIVE_KEY] && (
+                          <span className={`progress-badge ${progress[COMPREHENSIVE_KEY].score === progress[COMPREHENSIVE_KEY].total ? 'perfect' : ''}`}>
+                            {progress[COMPREHENSIVE_KEY].score === progress[COMPREHENSIVE_KEY].total ? '✓ ' : ''}{progress[COMPREHENSIVE_KEY].score}/{progress[COMPREHENSIVE_KEY].total}点
+                          </span>
+                        )}
+                      </div>
+                      <h4>全範囲クイズ</h4>
+                      <div className="module-desc">全モジュールからランダム出題</div>
+                    </div>
+                  </>
+                )}
               </div>
             </motion.div>
           ) : view === 'about' ? (

@@ -73,6 +73,22 @@ scripts/module*_check.md
 # Backup files
 *.bak
 
+# Root-level one-time scratch/debug scripts and artifacts (kept locally only)
+/check_*
+/fix_*
+/dump_*
+/extract_*
+/safe_fix_*
+/update_*
+/verify.*
+/DESIGN.md
+/playwright.config.ts
+/tests/
+*-old.ts
+quiz_violations*.txt
+temp_*.txt
+src/data/*.ts.[0-9a-f]*
+
 # Test/scratch files in data
 src/data/test.ts
 src/data/*_rebuilt.ts
