@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>統計手法の使い分けガイド | 統計検定 3級 学習リファレンス</title>
+    <meta name="description" content="統計検定3級の範囲で、データのまとめ方・グラフ・確率分布・推定・検定・回帰を「目的から逆引き」できる早見表。代表値やグラフの選び方、二項・正規分布、母比率の推定・検定などを整理。" />
+    <meta property="og:title" content="統計手法の使い分けガイド | 統計検定 3級 学習リファレンス" />
+    <meta property="og:description" content="統計検定3級の範囲で、データのまとめ方・グラフ・確率分布・推定・検定・回帰を「目的から逆引き」できる早見表。代表値やグラフの選び方、二項・正規分布、母比率の推定・検定などを整理。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://study-apps.com/stats-g3/usecase/" />
+    <link rel="canonical" href="https://study-apps.com/stats-g3/usecase/" />
+    <meta property="og:image" content="https://study-apps.com/stats-g3/ogp.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="統計手法の使い分けガイド | 統計検定 3級 学習リファレンス" />
+    <meta name="twitter:description" content="統計検定3級の範囲で、データのまとめ方・グラフ・確率分布・推定・検定・回帰を「目的から逆引き」できる早見表。代表値やグラフの選び方、二項・正規分布、母比率の推定・検定などを整理。" />
+    <meta name="twitter:image" content="https://study-apps.com/stats-g3/ogp.png" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G6K27V3P4S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G6K27V3P4S');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9102538151148380"
+     crossorigin="anonymous"></script>
+    <script>
+      // Restore URL after GitHub Pages 404 redirect (?/path/ → /stats-g3/path/)
+      (function () {
+        var s = window.location.search;
+        if (s[1] === '/') {
+          var decoded = s.slice(1).split('&').map(function (p) { return p.replace(/~and~/g, '&'); });
+          window.history.replaceState(
+            null, null,
+            '/stats-g3' + decoded[0] +
+            (decoded.slice(1).length ? '?' + decoded.slice(1).join('&') : '') +
+            window.location.hash
+          );
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="../assets/index-D2Weil-n.js"></script>
+    <link rel="stylesheet" crossorigin href="../assets/index-80w5gwMS.css">
+  </head>
+  <body>
+    <div id="root"><div style="background:#eff6ff;border-bottom:1px solid #bfdbfe;padding:10px 16px;font-size:0.88rem;text-align:center;margin-bottom:16px;border-radius:6px;max-width:860px;margin-left:auto;margin-right:auto"><a href="https://study-apps.com/" style="color:#1e3a8a;text-decoration:none;font-weight:600">← study-apps.com 学習サイト集トップへ</a></div><article id="static-fallback" style="font-family:sans-serif;line-height:1.7;max-width:860px;margin:0 auto;padding:24px 16px">
+  <nav style="margin-bottom:16px"><a href="/stats-g3/" style="color:#2563eb;text-decoration:none">← ホームへ戻る</a></nav>
+  <h1 style="font-size:1.6rem;font-weight:700;border-bottom:2px solid #2563eb;padding-bottom:8px;margin-bottom:20px">統計手法の使い分けガイド</h1>
+  <p style="color:#555;margin-bottom:24px">統計検定3級の範囲で「このデータ・この目的には、どのまとめ方／どのグラフ／どの分布・手法を使うか」を逆引きできる早見表です。各行は本サイトの対応モジュールにリンクしています。個別の解説はリンク先で、ここでは<strong>目的から手法を選ぶ視点</strong>を整理します。</p>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 8px">1. データのまとめ方・見せ方</h2>
+  <p style="color:#444;margin-bottom:4px">「何を知りたいか」から、まとめ方やグラフを選びます。</p>
+  <div style="overflow-x:auto;margin:8px 0 20px"><table style="border-collapse:collapse;width:100%;min-width:520px"><thead><tr><th style="text-align:left;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;font-size:0.9rem;white-space:nowrap">目的</th><th style="text-align:left;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;font-size:0.9rem;white-space:nowrap">使う手法</th><th style="text-align:left;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;font-size:0.9rem;white-space:nowrap">参照</th></tr></thead><tbody>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">データの中心を1つの数で表す</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">平均値・中央値・最頻値（外れ値が多いときは中央値）</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/1.1-descriptive/" style="color:#2563eb;text-decoration:none">1.1</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">データのばらつきを表す</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">分散・標準偏差・四分位範囲</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/1.1-descriptive/" style="color:#2563eb;text-decoration:none">1.1</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">分布の形を視覚的に見る</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">ヒストグラム・箱ひげ図</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/1.2-visualization/" style="color:#2563eb;text-decoration:none">1.2</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">2つの量の関係を見る</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">散布図・相関係数</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/1.5-correlation/" style="color:#2563eb;text-decoration:none">1.5</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">時間にそった変化を読む</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">折れ線グラフ・移動平均</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/1.4-timeseries/" style="color:#2563eb;text-decoration:none">1.4</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">偏りなくデータを集める</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">標本調査・実験の設計</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/1.3-data-collection/" style="color:#2563eb;text-decoration:none">1.3</a></td></tr>
+  </tbody></table></div>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 8px">2. 確率・分布の選び方</h2>
+  <p style="color:#444;margin-bottom:4px">「どんな現象か」から、当てはめる分布を選びます。</p>
+  <div style="overflow-x:auto;margin:8px 0 20px"><table style="border-collapse:collapse;width:100%;min-width:520px"><thead><tr><th style="text-align:left;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;font-size:0.9rem;white-space:nowrap">状況</th><th style="text-align:left;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;font-size:0.9rem;white-space:nowrap">使うもの</th><th style="text-align:left;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;font-size:0.9rem;white-space:nowrap">参照</th></tr></thead><tbody>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">起こりやすさを数で表す</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">確率（場合の数・余事象）</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/2.1-probability/" style="color:#2563eb;text-decoration:none">2.1</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">n回の試行での成功回数</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">二項分布</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/3.1-discrete/" style="color:#2563eb;text-decoration:none">3.1</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">連続量で左右対称・釣鐘型に分布する量</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">正規分布</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/3.2-continuous/" style="color:#2563eb;text-decoration:none">3.2</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">標本平均・標本比率の分布（大標本）</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">正規分布で近似（中心極限定理）</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/3.3-clt/" style="color:#2563eb;text-decoration:none">3.3</a></td></tr>
+  </tbody></table></div>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 8px">3. 推測（推定・検定・予測）の選び方</h2>
+  <p style="color:#444;margin-bottom:4px">「標本から母集団について何を言いたいか」で選びます。</p>
+  <div style="overflow-x:auto;margin:8px 0 20px"><table style="border-collapse:collapse;width:100%;min-width:520px"><thead><tr><th style="text-align:left;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;font-size:0.9rem;white-space:nowrap">知りたいこと</th><th style="text-align:left;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;font-size:0.9rem;white-space:nowrap">使う手法</th><th style="text-align:left;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;font-size:0.9rem;white-space:nowrap">参照</th></tr></thead><tbody>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">母平均を区間で見積もる</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">母平均の推定（区間推定）</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/4.1-estimation/" style="color:#2563eb;text-decoration:none">4.1</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">母比率を見積もる・調べる</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">母比率の推定・検定</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/4.4-proportion/" style="color:#2563eb;text-decoration:none">4.4</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">差や効果があると言えるか判断する</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">仮説検定</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/4.2-testing/" style="color:#2563eb;text-decoration:none">4.2</a></td></tr>
+  <tr><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">ある変数から別の変数を予測する</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444">回帰分析（最小二乗法）</td><td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:0.9rem;color:#444"><a href="/stats-g3/5.1-regression/" style="color:#2563eb;text-decoration:none">5.1</a></td></tr>
+  </tbody></table></div>
+
+  <p style="margin-top:8px;font-size:0.85rem;color:#888">※ 早見表は典型的な対応を示すものです。データの種類（質的・量的）や標本の大きさによって適切な手法は変わります。詳細は各モジュールをご確認ください。</p>
+  <p style="margin-top:16px"><a href="/stats-g3/" style="color:#2563eb">← ホームへ戻る</a></p>
+</article></div>
+  </body>
+</html>
