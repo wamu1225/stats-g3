@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import sharp from 'sharp';
 import { modules } from '../src/data/modules';
+import { buildUsecaseHtml } from '../src/data/usecaseGuide';
 import { glossary } from '../src/data/glossary';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
@@ -52,6 +53,7 @@ ${moduleListHtml}
     <a href="/stats-g3/glossary/" style="color:#2563eb">用語集</a>
     <a href="/stats-g3/cheatsheet/" style="color:#2563eb">公式集</a>
     <a href="/stats-g3/guide/" style="color:#2563eb">試験ガイド</a>
+    <a href="/stats-g3/usecase/" style="color:#2563eb">統計手法の使い分けガイド</a>
     <a href="/stats-g3/about/" style="color:#2563eb">サイトについて</a>
     <a href="/stats-g3/privacy/" style="color:#2563eb;font-size:0.85rem">プライバシーポリシー</a>
   </nav>
@@ -197,6 +199,11 @@ ${glossaryTermsHtml}
   <p style="margin-top:16px"><a href="/stats-g3/" style="color:#2563eb">← ホームへ戻る</a></p>
 </article>`
   },
+  usecase: {
+    title: '統計手法の使い分けガイド',
+    description: '統計検定3級の範囲で、データのまとめ方・グラフ・確率分布・推定・検定・回帰を「目的から逆引き」できる早見表。代表値やグラフの選び方、二項・正規分布、母比率の推定・検定などを整理。',
+    bodyHtml: buildUsecaseHtml('/stats-g3')
+  },
   about: {
     title: 'サイトについて',
     description: '統計検定3級 学習リファレンスについて。サイトの目的・コンテンツ構成・利用方法を説明します。',
@@ -309,7 +316,7 @@ const moduleUrls = modules.map(m =>
   `  <url>\n    <loc>${BASE_URL}/${m.id}/</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>`
 ).join('\n');
 
-const staticUrls = ['glossary', 'cheatsheet', 'guide', 'about', 'privacy'].map(p =>
+const staticUrls = ['glossary', 'cheatsheet', 'guide', 'usecase', 'about', 'privacy'].map(p =>
   `  <url>\n    <loc>${BASE_URL}/${p}/</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>`
 ).join('\n');
 
