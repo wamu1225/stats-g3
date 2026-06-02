@@ -41,7 +41,7 @@
         }
       })();
     </script>
-    <script type="module" crossorigin src="../assets/index-BjpT6AGn.js"></script>
+    <script type="module" crossorigin src="../assets/index-BioNe-gG.js"></script>
     <link rel="modulepreload" crossorigin href="../assets/rolldown-runtime-COnpUsM8.js">
     <link rel="modulepreload" crossorigin href="../assets/motion-Ml2aNURp.js">
     <link rel="modulepreload" crossorigin href="../assets/react-DL9wba-t.js">
@@ -85,7 +85,21 @@
 
 有意水準5%の片側棄却域  に入らないので  を棄却できない。
 
- 試験ポイント： 母比率の検定では  に （帰無仮説の値）を使い、信頼区間では （標本比率）を使う。この使い分けを問う問題が頻出です。</div>
+ 試験ポイント： 母比率の検定では  に （帰無仮説の値）を使い、信頼区間では （標本比率）を使う。この使い分けを問う問題が頻出です。
+
+ よくある誤解・つまずき
+
+標準誤差  の使い分けに注意。 信頼区間は手元の 、検定は仮定値  を使います（目的が違うため）。
+比率の推定・検定は正規近似（中心極限定理）が前提です。  が小さい、または  が0や1に極端に近いと近似が崩れます。
+区間の幅を半分にするには  を4倍にする必要があります（）。
+標本比率  は割合（0〜1）です。 個数  と取り違えないこと（）。
+
+ ここまでのまとめ
+
+標本比率  は母比率  の不偏推定量。
+大標本では （正規近似）。
+信頼区間：。
+検定統計量：。SE は区間＝、検定＝。</div>
   <nav style="margin-top:32px;border-top:1px solid #ddd;padding-top:16px">
     <a href="/stats-g3/" style="color:#2563eb;text-decoration:none">← ホームへ戻る</a>
   </nav>

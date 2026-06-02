@@ -41,7 +41,7 @@
         }
       })();
     </script>
-    <script type="module" crossorigin src="../assets/index-BjpT6AGn.js"></script>
+    <script type="module" crossorigin src="../assets/index-BioNe-gG.js"></script>
     <link rel="modulepreload" crossorigin href="../assets/rolldown-runtime-COnpUsM8.js">
     <link rel="modulepreload" crossorigin href="../assets/motion-Ml2aNURp.js">
     <link rel="modulepreload" crossorigin href="../assets/react-DL9wba-t.js">
@@ -91,7 +91,21 @@
 
  の範囲をとり、1に近いほど当てはまりが良く、0は「回帰モデルが  の変動を全く説明できない」を意味します。例えば  なら「広告費を知っても売上の10%しか説明できない」、 なら「広告費だけで売上の変動の90%が説明できる」良いモデルです。単回帰では （ピアソン相関係数の二乗）が成り立ちます。
 
- 試験ポイント：  の解釈「 が1単位増えたときの  の期待増加量」、最小二乗法は「残差二乗和の最小化」、 は「 の変動のうちモデルで説明できる割合」、単回帰では （相関係数の二乗）——この4点を正確に言葉で説明できるようにしましょう。</div>
+ 試験ポイント：  の解釈「 が1単位増えたときの  の期待増加量」、最小二乗法は「残差二乗和の最小化」、 は「 の変動のうちモデルで説明できる割合」、単回帰では （相関係数の二乗）——この4点を正確に言葉で説明できるようにしましょう。
+
+ よくある誤解・つまずき
+
+回帰は因果関係を保証しません。 「 で  を予測できる」ことと「 を変えれば  が変わる」ことは別です（相関≠因果と同じ）。
+データ範囲外での予測（外挿）は危険です。 観測した  の範囲を大きく外れた予測は信頼できません。
+が高い＝正しいモデル・因果がある、ではありません。 当てはまりの良さと因果・妥当性は別問題。
+最小二乗法が最小化するのは「残差（縦の距離）の二乗和」です。 回帰直線は必ず平均点  を通ります。
+
+ ここまでのまとめ
+
+単回帰モデル 。 は「 が1増えたときの  の期待変化量」。
+最小二乗法：残差二乗和を最小化。、直線は  を通る。
+決定係数 ： の変動のうちモデルが説明する割合（0〜1）。単回帰では 。
+回帰 ≠ 因果、外挿に注意。</div>
   <nav style="margin-top:32px;border-top:1px solid #ddd;padding-top:16px">
     <a href="/stats-g3/" style="color:#2563eb;text-decoration:none">← ホームへ戻る</a>
   </nav>
