@@ -1,6 +1,6 @@
 // src/components/InteractiveGraph.tsx  (stats-g3)
 import React, { useState, useCallback } from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, Area, AreaChart, BarChart, Bar } from 'recharts';
+import { XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, Area, AreaChart, BarChart, Bar, ScatterChart, Scatter, ZAxis } from 'recharts';
 
 interface Props {
   type: string;
@@ -140,15 +140,18 @@ function ScatterGraph() {
         <input type="range" min="-1" max="1" step="0.1" value={r} onChange={e => setR(Number(e.target.value))} />
       </div>
       <ResponsiveContainer width="100%" height={220}>
-        <LineChart data={data.sort((a, b) => a.x - b.x)}>
-          <XAxis dataKey="x" tickFormatter={v => v.toFixed(1)} />
-          <YAxis />
-          <Tooltip />
-          <Line type="monotone" dataKey="y" stroke="none" dot={{ fill: 'var(--primary)', r: 4 }} />
-        </LineChart>
+        <ScatterChart margin={{ top: 10, right: 12, bottom: 4, left: -8 }}>
+          <XAxis type="number" dataKey="x" domain={[-3, 3]} tickFormatter={v => v.toFixed(0)} />
+          <YAxis type="number" dataKey="y" domain={[-3, 3]} tickFormatter={v => v.toFixed(0)} />
+          <ZAxis range={[36, 36]} />
+          <Tooltip cursor={{ strokeDasharray: '3 3' }} formatter={(v) => typeof v === 'number' ? v.toFixed(2) : String(v)} />
+          {/* 回帰直線 y = r·x（標準化データなので傾き＝r）。r=1 なら全点がこの線上に並ぶ */}
+          <ReferenceLine segment={[{ x: -3, y: -3 * r }, { x: 3, y: 3 * r }]} stroke="#dd5b2a" strokeWidth={2} ifOverflow="hidden" />
+          <Scatter data={data} fill="var(--primary)" fillOpacity={0.75} />
+        </ScatterChart>
       </ResponsiveContainer>
       <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-        r が +1 に近いほど右上がり、-1 に近いほど右下がりになります
+        オレンジは回帰直線（傾き＝r）。r が +1 に近いほど点が直線に集まり右上がり、−1 で右下がり、0 でばらばらになります。
       </p>
     </div>
   );
