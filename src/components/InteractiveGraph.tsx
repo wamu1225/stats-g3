@@ -160,6 +160,9 @@ export const InteractiveGraph: React.FC<Props> = ({ type }) => {
     case 'binomial': return <BinomialGraph />;
     case 'histogram': return <HistogramGraph />;
     case 'scatter': return <ScatterGraph />;
+    // モジュールが使う型名を実在するグラフへ対応づける（未対応だと null で描画されず空になる）
+    case 'regression': return <ScatterGraph />;   // 回帰＝散布図・相関で可視化
+    case 't': return <NormalGraph />;              // 検定＝分布を可視化（暫定。将来的に棄却域つき図へ）
     default: return null;
   }
 };

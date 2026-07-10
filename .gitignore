@@ -96,3 +96,6 @@ src/data/*_rebuilt.ts
 # Vite template default assets (replace with site logo if needed)
 src/assets/react.svg
 src/assets/vite.svg
+
+# ③改善ループのローカル専用ドキュメント
+docs/ROADMAP.md
