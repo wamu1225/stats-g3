@@ -164,7 +164,7 @@ function App() {
 
   const parseInlineContent = useCallback((text: string): React.ReactNode => {
     function parseInline(t: string): React.ReactNode {
-      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
+      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
       const parts = t.split(regex);
       return (
         <>
@@ -234,6 +234,37 @@ function App() {
                 </figcaption>
               </figure>
             );
+            if (part === '[[timeseries]]') {
+              const N = 24, x0 = 30, y0 = 16, plotW = 288, plotH = 116;
+              let seed = 7;
+              const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+              const raw: number[] = [];
+              for (let t = 0; t < N; t++) raw.push(1 + 0.05 * t + 0.6 * Math.sin((2 * Math.PI * t) / 12) + (rnd() - 0.5) * 0.7);
+              const half = 2;
+              const ma = raw.map((_, t) => { let s = 0, c = 0; for (let j = -half; j <= half; j++) { if (t + j >= 0 && t + j < N) { s += raw[t + j]; c++; } } return s / c; });
+              const all = raw.concat(ma), mn = Math.min(...all), mx = Math.max(...all);
+              const sx = (t: number) => x0 + (t / (N - 1)) * plotW;
+              const sy = (v: number) => y0 + plotH - ((v - mn) / (mx - mn)) * plotH;
+              const rawPoly = raw.map((v, t) => `${sx(t).toFixed(1)},${sy(v).toFixed(1)}`).join(' ');
+              const maPoly = ma.map((v, t) => `${sx(t).toFixed(1)},${sy(v).toFixed(1)}`).join(' ');
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 328 182" role="img" aria-label="時系列：ぎざぎざの生データと、なめらかな移動平均のトレンド線" className="g3-fig-svg">
+                    <line x1={x0} y1={y0 + plotH} x2={x0 + plotW} y2={y0 + plotH} stroke="#cbd5e1" strokeWidth={1} />
+                    <polyline points={rawPoly} fill="none" stroke="#94a3b8" strokeWidth={1.3} />
+                    {raw.map((v, t) => <circle key={t} cx={sx(t)} cy={sy(v)} r={1.7} fill="#94a3b8" />)}
+                    <polyline points={maPoly} fill="none" stroke="var(--primary)" strokeWidth={2.8} />
+                    <line x1={x0} y1={y0 + plotH + 16} x2={x0 + 18} y2={y0 + plotH + 16} stroke="#94a3b8" strokeWidth={1.3} />
+                    <text x={x0 + 22} y={y0 + plotH + 19} fontSize={9.5} fill="#64748b">生データ（ノイズ）</text>
+                    <line x1={x0 + 150} y1={y0 + plotH + 16} x2={x0 + 168} y2={y0 + plotH + 16} stroke="var(--primary)" strokeWidth={2.8} />
+                    <text x={x0 + 172} y={y0 + plotH + 19} fontSize={9.5} fill="var(--primary)">移動平均＝トレンド</text>
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    生データ（灰）は短期のノイズで上下にぎざぎざ揺れて、長期の傾向が見えにくい。各点を「前後数点の平均」に置きかえる移動平均（色つき）を取ると、ノイズが打ち消し合ってなめらかになり、右肩上がりのトレンドがはっきり見える。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part === '[[venn]]') return (
               <figure key={key} className="g3-figure">
                 <svg viewBox="0 0 320 172" role="img" aria-label="加法定理のベン図：A∪B は A と B を足して重なり A∩B を引く" className="g3-fig-svg">
