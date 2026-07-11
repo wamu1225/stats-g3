@@ -299,6 +299,17 @@
   line-height: 1.7;
 }
 
+/* ── 概念図（自作SVG） ── */
+.g3-figure { margin: 1.25rem 0; padding: 0.25rem 0; text-align: center; }
+.g3-fig-svg { width: 100%; max-width: 420px; height: auto; display: block; margin: 0 auto; }
+.g3-fig-cap {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0.5rem auto 0;
+  max-width: 480px;
+}
+
 .katex-display {
   overflow-x: auto;
   overflow-y: hidden;

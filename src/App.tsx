@@ -164,7 +164,7 @@ function App() {
 
   const parseInlineContent = useCallback((text: string): React.ReactNode => {
     function parseInline(t: string): React.ReactNode {
-      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
+      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
       const parts = t.split(regex);
       return (
         <>
@@ -207,6 +207,48 @@ function App() {
                   <div className="shell shell-mid"><span className="shell-label">個人の差 (クラス)</span><div className="shell shell-inner">データ</div></div>
                 </div>
               </div>
+            );
+            if (part === '[[boxplot]]') return (
+              <figure key={key} className="g3-figure">
+                <svg viewBox="0 0 360 116" role="img" aria-label="箱ひげ図：最小値・Q1・中央値・Q3・最大値と外れ値。箱の長さがIQR" className="g3-fig-svg">
+                  <line x1={60} y1={60} x2={110} y2={60} stroke="#64748b" strokeWidth={1.5} />
+                  <line x1={200} y1={60} x2={250} y2={60} stroke="#64748b" strokeWidth={1.5} />
+                  <line x1={60} y1={47} x2={60} y2={73} stroke="#64748b" strokeWidth={1.5} />
+                  <line x1={250} y1={47} x2={250} y2={73} stroke="#64748b" strokeWidth={1.5} />
+                  <rect x={110} y={40} width={90} height={40} fill="var(--primary)" fillOpacity={0.15} stroke="var(--primary)" strokeWidth={1.6} />
+                  <line x1={150} y1={40} x2={150} y2={80} stroke="var(--primary)" strokeWidth={2.6} />
+                  <circle cx={300} cy={60} r={4} fill="none" stroke="#dc2626" strokeWidth={1.6} />
+                  <line x1={110} y1={30} x2={200} y2={30} stroke="#94a3b8" strokeWidth={1} />
+                  <line x1={110} y1={30} x2={110} y2={36} stroke="#94a3b8" strokeWidth={1} />
+                  <line x1={200} y1={30} x2={200} y2={36} stroke="#94a3b8" strokeWidth={1} />
+                  <text x={155} y={23} textAnchor="middle" fontSize={11} fontWeight={700} fill="#475569">IQR = Q₃ − Q₁</text>
+                  <text x={60} y={101} textAnchor="middle" fontSize={10} fill="#64748b">最小値</text>
+                  <text x={110} y={101} textAnchor="middle" fontSize={11} fontWeight={700} fill="var(--primary)">Q₁</text>
+                  <text x={150} y={101} textAnchor="middle" fontSize={10} fontWeight={700} fill="var(--primary)">中央値</text>
+                  <text x={200} y={101} textAnchor="middle" fontSize={11} fontWeight={700} fill="var(--primary)">Q₃</text>
+                  <text x={250} y={101} textAnchor="middle" fontSize={10} fill="#64748b">最大値</text>
+                  <text x={300} y={101} textAnchor="middle" fontSize={10} fill="#b91c1c">外れ値</text>
+                </svg>
+                <figcaption className="g3-fig-cap">
+                  箱ひげ図の読み方。箱の左端が Q₁、右端が Q₃ で、箱の長さが四分位範囲 IQR ＝ Q₃−Q₁（中央50%の散らばり）。箱の中の線が中央値。ひげは外れ値を除いた最小値・最大値まで伸び、その外側の点（赤）が外れ値。平均と標準偏差では見えない「分布の形・外れ値」が一目でわかる。
+                </figcaption>
+              </figure>
+            );
+            if (part === '[[venn]]') return (
+              <figure key={key} className="g3-figure">
+                <svg viewBox="0 0 320 172" role="img" aria-label="加法定理のベン図：A∪B は A と B を足して重なり A∩B を引く" className="g3-fig-svg">
+                  <circle cx={124} cy={84} r={62} fill="var(--primary)" fillOpacity={0.16} stroke="var(--primary)" strokeWidth={1.8} />
+                  <circle cx={196} cy={84} r={62} fill="#f59e0b" fillOpacity={0.14} stroke="#d97706" strokeWidth={1.8} />
+                  <text x={86} y={62} textAnchor="middle" fontSize={17} fontWeight={800} fill="var(--primary)">A</text>
+                  <text x={234} y={62} textAnchor="middle" fontSize={17} fontWeight={800} fill="#b45309">B</text>
+                  <text x={160} y={80} textAnchor="middle" fontSize={11} fontWeight={700} fill="#334155">A∩B</text>
+                  <text x={160} y={94} textAnchor="middle" fontSize={8.5} fill="#64748b">（重なり）</text>
+                  <text x={160} y={162} textAnchor="middle" fontSize={11} fontWeight={700} fill="#334155">P(A∪B) ＝ P(A) ＋ P(B) − P(A∩B)</text>
+                </svg>
+                <figcaption className="g3-fig-cap">
+                  「A または B」（A∪B）の確率は、A と B をそのまま足すと重なり A∩B を<strong>二重に数えて</strong>しまう。だから重なりの分 P(A∩B) を1回引く——これが加法定理。A と B が同時に起こらない（排反）なら重なりが無いので、そのまま足せる。
+                </figcaption>
+              </figure>
             );
             if (part.startsWith('[[interactive:')) {
               const typeMatch = part.match(/\[\[interactive:(.*?)\]\]/);
