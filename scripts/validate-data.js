@@ -9,9 +9,10 @@ const root = path.join(__dirname, '..');
 const filesToWatch = ['src/data/modules.ts', 'src/data/glossary.ts'];
 let errors = [];
 
-// Supported interactive types (Must match InteractiveGraph.tsx)
+// Supported interactive types (Must match InteractiveGraph.tsx switch)
+// InteractiveGraph implements: normal, binomial, histogram, scatter, plus aliases regression→scatter, t→normal.
 const validInteractiveTypes = [
-  'normal', 't', 'chi2', 'f', 'pca', 'regression', 'logistic', 'mcmc', 'gibbs', 'update', 'overfit', 'outlier', 'multico', 'skewkurt'
+  'normal', 'binomial', 'histogram', 'scatter', 'regression', 't'
 ];
 
 const mathKeywords = [
