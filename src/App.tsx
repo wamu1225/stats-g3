@@ -436,8 +436,30 @@ function App() {
   return (
     <div className="container" style={{ maxWidth: activeModuleId ? '800px' : view === 'glossary' ? '1000px' : '800px' }}>
       <header className="header">
-        <h1 className="title" onClick={() => updateModuleId(null)} style={{ cursor: 'pointer' }}>統計検定 3級</h1>
-        <p className="subtitle">学習リファレンス</p>
+        <div className="masthead" onClick={() => updateModuleId(null)}>
+          <svg className="masthead-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <rect x={5} y={23} width={7.5} height={12} rx={2.2} fill="currentColor" fillOpacity={0.45} />
+            <rect x={16.25} y={15} width={7.5} height={20} rx={2.2} fill="currentColor" fillOpacity={0.7} />
+            <rect x={27.5} y={7} width={7.5} height={28} rx={2.2} fill="currentColor" />
+            <path d="M6 13 L18 9 L28 5" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M23.5 4.5 L28.5 4.5 L28.5 9.5" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <div>
+            <h1 className="title">統計検定 <span className="title-lv">3級</span></h1>
+            <p className="subtitle">はじめての統計・やさしい学習ノート</p>
+          </div>
+        </div>
+        {!activeModuleId && view === 'dashboard' && (
+          <div className="hero-banner">
+            <p className="hero-lead">グラフと図解で、統計の「第一歩」をやさしく。</p>
+            <div className="hero-chips">
+              <span className="hero-chip">図解つき</span>
+              <span className="hero-chip">動かせるグラフ</span>
+              <span className="hero-chip">逆引き診断</span>
+              <span className="hero-chip">全範囲クイズ</span>
+            </div>
+          </div>
+        )}
       </header>
 
       {!activeModuleId && (

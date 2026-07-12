@@ -11,11 +11,23 @@
 /* ── Header ──────────────────────────────────────── */
 
 .header {
-  text-align: center;
   margin-bottom: 1.5rem;
   padding-top: 0.5rem;
 }
 
+/* 題字：成長する棒グラフのブランドマーク＋タイトル（左寄せ） */
+.masthead {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  cursor: pointer;
+}
+.masthead-mark {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  color: var(--primary);
+}
 .title {
   font-family: var(--font-display);
   font-size: 1.85rem;
@@ -24,13 +36,49 @@
   margin: 0;
   cursor: pointer;
   letter-spacing: -0.3px;
-  line-height: 1.2;
+  line-height: 1.15;
 }
+.title .title-lv { color: var(--primary); }
 
 .subtitle {
-  font-size: 0.875rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
   color: var(--text-muted);
-  margin-top: 0.25rem;
+  margin: 0.15rem 0 0 0;
+}
+
+/* ホームのヒーロー：やさしい歓迎バナー */
+.hero-banner {
+  margin-top: 1rem;
+  padding: 1.1rem 1.25rem;
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-card);
+  background: linear-gradient(180deg, #ffffff 0%, var(--primary-light) 100%);
+  box-shadow: 4px 4px 0 rgba(18, 134, 75, 0.10);
+}
+.hero-lead {
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--primary-hover);
+  margin: 0;
+  line-height: 1.55;
+}
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+.hero-chip {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--primary-text);
+  background: #ffffff;
+  border: 1px solid rgba(18, 134, 75, 0.3);
+  border-radius: var(--radius-pill);
+  padding: 0.22rem 0.72rem;
 }
 
 /* ── Navigation Tabs ─────────────────────────────── */
