@@ -164,7 +164,7 @@ function App() {
 
   const parseInlineContent = useCallback((text: string): React.ReactNode => {
     function parseInline(t: string): React.ReactNode {
-      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
+      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
       const parts = t.split(regex);
       return (
         <>
@@ -234,6 +234,68 @@ function App() {
                 </figcaption>
               </figure>
             );
+            if (part === '[[histshapes]]') {
+              const panels: { label: string; h: (i: number) => number }[] = [
+                { label: '左右対称（山型）', h: (i) => Math.exp(-((i - 3.5) ** 2) / 4) },
+                { label: '右裾が長い（右歪み）', h: (i) => Math.exp(-((i - 1.5) ** 2) / 2.2) + 0.15 * Math.exp(-((i - 5) ** 2) / 6) },
+                { label: '左裾が長い（左歪み）', h: (i) => Math.exp(-((i - 5.5) ** 2) / 2.2) + 0.15 * Math.exp(-((i - 2) ** 2) / 6) },
+                { label: '双峰型（2つの山）', h: (i) => Math.exp(-((i - 1.5) ** 2) / 1.6) + Math.exp(-((i - 5.5) ** 2) / 1.6) },
+              ];
+              const bins = 8, pw = 74, gap = 10, ph = 60, baseY = 74, x0 = 4;
+              const nodes: React.ReactNode[] = [];
+              panels.forEach((p, pi) => {
+                const px = x0 + pi * (pw + gap);
+                const hs = Array.from({ length: bins }, (_, i) => p.h(i));
+                const mx = Math.max(...hs);
+                hs.forEach((hv, i) => {
+                  const bw = pw / bins;
+                  const bh = (hv / mx) * ph;
+                  nodes.push(<rect key={`${pi}-${i}`} x={px + i * bw + 0.6} y={baseY - bh} width={bw - 1.2} height={bh} fill="var(--primary)" fillOpacity={0.7} />);
+                });
+                nodes.push(<line key={`${pi}-b`} x1={px} y1={baseY} x2={px + pw} y2={baseY} stroke="#cbd5e1" strokeWidth={1} />);
+                nodes.push(<text key={`${pi}-l`} x={px + pw / 2} y={baseY + 13} textAnchor="middle" fontSize={8.5} fill="#475569">{p.label}</text>);
+              });
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 340 92" role="img" aria-label="ヒストグラムの4つの形：左右対称・右歪み・左歪み・双峰" className="g3-fig-svg">{nodes}</svg>
+                  <figcaption className="g3-fig-cap">
+                    ヒストグラムの形で分布の性質が読める。<strong>左右対称</strong>は平均付近に集中（標準的）。<strong>右歪み</strong>は少数の大きな値が裾を引く（年収など）。<strong>左歪み</strong>はその逆（簡単な試験）。<strong>双峰型</strong>は山が2つ＝別グループ（男女など）が混ざっているサイン。
+                  </figcaption>
+                </figure>
+              );
+            }
+            if (part === '[[sampling]]') {
+              const panels = [{ title: '単純無作為', cx: 8 }, { title: '層化', cx: 116 }, { title: 'クラスター', cx: 224 }];
+              const pw = 96, py = 22, ph = 94;
+              let seed = 3;
+              const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+              const nodes: React.ReactNode[] = [];
+              panels.forEach((p) => {
+                nodes.push(<text key={p.title + 't'} x={p.cx + pw / 2} y={14} textAnchor="middle" fontSize={10} fontWeight={700} fill="#334155">{p.title}</text>);
+                nodes.push(<rect key={p.title + 'r'} x={p.cx} y={py} width={pw} height={ph} rx={6} fill="none" stroke="#cbd5e1" strokeWidth={1} />);
+                if (p.title === '層化') for (let b = 0; b < 3; b++) nodes.push(<rect key={p.title + 'b' + b} x={p.cx} y={py + b * (ph / 3)} width={pw} height={ph / 3} fill={b % 2 ? 'var(--primary)' : '#f59e0b'} fillOpacity={0.06} />);
+                if (p.title === 'クラスター') { nodes.push(<rect key={p.title + 'k0'} x={p.cx + 4} y={py + 6} width={40} height={38} rx={4} fill="var(--primary)" fillOpacity={0.14} stroke="var(--primary)" strokeWidth={1.2} />); nodes.push(<rect key={p.title + 'k1'} x={p.cx + pw / 2 + 4} y={py + ph / 2 - 2} width={40} height={38} rx={4} fill="var(--primary)" fillOpacity={0.14} stroke="var(--primary)" strokeWidth={1.2} />); }
+                for (let i = 0; i < 26; i++) {
+                  const dx = p.cx + 8 + rnd() * (pw - 16), dy = py + 8 + rnd() * (ph - 16);
+                  let picked = false;
+                  if (p.title === '単純無作為') picked = rnd() < 0.28;
+                  else if (p.title === '層化') picked = rnd() < 0.28;
+                  else picked = (dx > p.cx + 4 && dx < p.cx + 44 && dy > py + 6 && dy < py + 44) || (dx > p.cx + pw / 2 + 4 && dy > py + ph / 2 - 2);
+                  nodes.push(<circle key={p.title + 'd' + i} cx={dx.toFixed(1)} cy={dy.toFixed(1)} r={2.4} fill={picked ? 'var(--primary)' : '#cbd5e1'} />);
+                }
+              });
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 328 136" role="img" aria-label="標本抽出法：単純無作為・層化・クラスターの違い" className="g3-fig-svg">
+                    {nodes}
+                    <text x={164} y={132} textAnchor="middle" fontSize={9} fill="#64748b">濃い点＝標本に選ばれた個体</text>
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    <strong>単純無作為抽出</strong>は母集団全体から等確率でばらばらに選ぶ。<strong>層化抽出</strong>は似た者どうしの層（例：年代）に分けて各層から選び、偏りを抑える。<strong>クラスター抽出</strong>は集団（例：学校・地区）に分け、選んだ集団を丸ごと調べる（コストは低いが精度は下がりやすい）。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part === '[[timeseries]]') {
               const N = 24, x0 = 30, y0 = 16, plotW = 288, plotH = 116;
               let seed = 7;
