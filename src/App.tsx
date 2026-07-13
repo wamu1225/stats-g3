@@ -12,7 +12,7 @@ import { TermText } from './components/TermGlossary';
 import { DistributionSelector } from './components/DistributionSelector';
 import { ExamGuide } from './components/ExamGuide';
 import { buildUsecaseHtml } from './data/usecaseGuide';
-import { ChevronLeft, Book, LayoutDashboard, ArrowRight, Search as SearchIcon, X, Lightbulb, Target, ArrowDown, Dumbbell, Trash2, FileText, Shuffle, CheckCircle2, XCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Book, LayoutDashboard, ArrowRight, Search as SearchIcon, X, Lightbulb, Target, ArrowDown, Dumbbell, Trash2, FileText, Shuffle, CheckCircle2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const PROGRESS_KEY = 'stats-g3-progress';
@@ -675,53 +675,59 @@ function App() {
                   {searchQuery && <button onClick={() => setSearchQuery('')} className="search-clear"><X size={16} /></button>}
                 </div>
               </div>
-              <div className="roadmap-grid">
-                {filteredModules.reduce<React.ReactNode[]>((acc, m, idx) => {
-                  const prev = filteredModules[idx - 1];
-                  if (!prev || prev.chapter !== m.chapter) {
-                    acc.push(
-                      <div key={`ch-${m.chapter}`} className="chapter-header">
-                        <span className="badge-chapter" style={{ fontSize: '0.7rem' }}>Chapter {m.chapter}</span>
-                        <h3 className="content-h3" style={{ margin: '0.25rem 0 0' }}>{chapterNames[m.chapter]}</h3>
+              <div className="toc">
+                {(() => {
+                  const groups: { chapter: number; mods: typeof filteredModules }[] = [];
+                  filteredModules.forEach((m) => {
+                    const g = groups[groups.length - 1];
+                    if (!g || g.chapter !== m.chapter) groups.push({ chapter: m.chapter, mods: [m] });
+                    else g.mods.push(m);
+                  });
+                  return groups.map((g) => (
+                    <section key={g.chapter} className="chapter-card">
+                      <div className="chapter-card-head">
+                        <span className="chapter-num">{g.chapter}</span>
+                        <div>
+                          <span className="chapter-kicker">第{g.chapter}章</span>
+                          <h3 className="chapter-name">{chapterNames[g.chapter]}</h3>
+                        </div>
                       </div>
-                    );
-                  }
-                  const p = progress[m.id];
-                  acc.push(
-                    <div key={m.id} className="card-module" onClick={() => updateModuleId(m.id)}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span className="badge-chapter">Chapter {m.chapter}</span>
-                        {p && (
-                          <span className={`progress-badge ${p.score === p.total ? 'perfect' : ''}`}>
-                            {p.score === p.total ? '✓ ' : ''}{p.score}/{p.total}点
-                          </span>
-                        )}
+                      <div className="toc-rows">
+                        {g.mods.map((m) => {
+                          const p = progress[m.id];
+                          return (
+                            <button key={m.id} className="toc-row" onClick={() => updateModuleId(m.id)}>
+                              <span className="toc-main">
+                                <span className="toc-title">{parseContent(m.title)}</span>
+                                <span className="module-desc">{parseContent(m.description)}</span>
+                              </span>
+                              {p && (
+                                <span className={`progress-badge ${p.score === p.total ? 'perfect' : ''}`}>
+                                  {p.score === p.total ? '✓ ' : ''}{p.score}/{p.total}
+                                </span>
+                              )}
+                              <ChevronRight className="toc-chev" size={18} />
+                            </button>
+                          );
+                        })}
                       </div>
-                      <h4>{parseContent(m.title)}</h4>
-                      <div className="module-desc">{parseContent(m.description)}</div>
-                    </div>
-                  );
-                  return acc;
-                }, [])}
+                    </section>
+                  ));
+                })()}
                 {!searchQuery && (
-                  <>
-                    <div className="chapter-header">
-                      <span className="badge-chapter" style={{ fontSize: '0.7rem' }}>全範囲</span>
-                      <h3 className="content-h3" style={{ margin: '0.25rem 0 0' }}>まとめ</h3>
-                    </div>
-                    <div className="card-module" style={{ cursor: 'pointer' }} onClick={startRandomQuiz}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span className="badge-chapter" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Shuffle size={12} /> 全範囲</span>
-                        {progress[COMPREHENSIVE_KEY] && (
-                          <span className={`progress-badge ${progress[COMPREHENSIVE_KEY].score === progress[COMPREHENSIVE_KEY].total ? 'perfect' : ''}`}>
-                            {progress[COMPREHENSIVE_KEY].score === progress[COMPREHENSIVE_KEY].total ? '✓ ' : ''}{progress[COMPREHENSIVE_KEY].score}/{progress[COMPREHENSIVE_KEY].total}点
-                          </span>
-                        )}
-                      </div>
-                      <h4>全範囲クイズ</h4>
-                      <div className="module-desc">全モジュールからランダム出題</div>
-                    </div>
-                  </>
+                  <button className="chapter-card quiz-card" onClick={startRandomQuiz}>
+                    <span className="quiz-card-icon"><Shuffle size={20} /></span>
+                    <span className="quiz-card-main">
+                      <span className="toc-title">全範囲クイズ</span>
+                      <span className="module-desc">全13分野からランダム出題。総仕上げに。</span>
+                    </span>
+                    {progress[COMPREHENSIVE_KEY] && (
+                      <span className={`progress-badge ${progress[COMPREHENSIVE_KEY].score === progress[COMPREHENSIVE_KEY].total ? 'perfect' : ''}`}>
+                        {progress[COMPREHENSIVE_KEY].score === progress[COMPREHENSIVE_KEY].total ? '✓ ' : ''}{progress[COMPREHENSIVE_KEY].score}/{progress[COMPREHENSIVE_KEY].total}
+                      </span>
+                    )}
+                    <ChevronRight className="toc-chev" size={18} />
+                  </button>
                 )}
               </div>
             </motion.div>
