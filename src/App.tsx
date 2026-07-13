@@ -164,7 +164,7 @@ function App() {
 
   const parseInlineContent = useCallback((text: string): React.ReactNode => {
     function parseInline(t: string): React.ReactNode {
-      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
+      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[graphtypes\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
       const parts = t.split(regex);
       return (
         <>
@@ -208,6 +208,49 @@ function App() {
                 </div>
               </div>
             );
+            if (part === '[[graphtypes]]') {
+              const cols = ['#12864b', '#f0913a', '#5b8def', '#e0607e'];
+              // pie slices (棒: skip). build a 3-slice pie path
+              const pie = (cx: number, cy: number, r: number) => {
+                const segs = [0.45, 0.35, 0.2]; let a0 = -Math.PI / 2; const paths: React.ReactNode[] = [];
+                segs.forEach((s, i) => { const a1 = a0 + s * 2 * Math.PI; const x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0), x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1); const large = s > 0.5 ? 1 : 0; paths.push(<path key={i} d={`M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${r},${r} 0 ${large} 1 ${x1.toFixed(1)},${y1.toFixed(1)} Z`} fill={cols[i]} fillOpacity={0.75} />); a0 = a1; });
+                return paths;
+              };
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 344 104" role="img" aria-label="代表的なグラフ：棒グラフ・円グラフ・折れ線グラフ・散布図" className="g3-fig-svg">
+                    {/* 棒グラフ */}
+                    <g>
+                      {[26, 40, 32, 52].map((h, i) => <rect key={i} x={12 + i * 13} y={72 - h} width={9} height={h} rx={1.5} fill="var(--primary)" fillOpacity={0.75} />)}
+                      <line x1={10} y1={72} x2={70} y2={72} stroke="#cbd5e1" strokeWidth={1} />
+                      <text x={40} y={94} textAnchor="middle" fontSize={9} fontWeight={700} fill="#475569">棒グラフ</text>
+                      <text x={40} y={104} textAnchor="middle" fontSize={7.5} fill="#94a3b8">量の比較</text>
+                    </g>
+                    {/* 円グラフ */}
+                    <g>{pie(126, 46, 26)}<text x={126} y={94} textAnchor="middle" fontSize={9} fontWeight={700} fill="#475569">円グラフ</text><text x={126} y={104} textAnchor="middle" fontSize={7.5} fill="#94a3b8">構成比</text></g>
+                    {/* 折れ線 */}
+                    <g>
+                      <polyline points="182,60 196,44 210,52 224,30 238,36" fill="none" stroke="var(--primary)" strokeWidth={2.2} />
+                      {[[182, 60], [196, 44], [210, 52], [224, 30], [238, 36]].map((p, i) => <circle key={i} cx={p[0]} cy={p[1]} r={2.4} fill="var(--primary)" />)}
+                      <line x1={180} y1={72} x2={240} y2={72} stroke="#cbd5e1" strokeWidth={1} />
+                      <text x={210} y={94} textAnchor="middle" fontSize={9} fontWeight={700} fill="#475569">折れ線</text>
+                      <text x={210} y={104} textAnchor="middle" fontSize={7.5} fill="#94a3b8">時間の変化</text>
+                    </g>
+                    {/* 散布図 */}
+                    <g>
+                      {[[286, 58], [296, 50], [300, 60], [308, 42], [316, 48], [322, 34], [330, 40], [292, 62], [312, 54]].map((p, i) => <circle key={i} cx={p[0]} cy={p[1]} r={2.3} fill="var(--primary)" fillOpacity={0.7} />)}
+                      <line x1={282} y1={72} x2={336} y2={72} stroke="#cbd5e1" strokeWidth={1} />
+                      <line x1={282} y1={72} x2={282} y2={30} stroke="#cbd5e1" strokeWidth={1} />
+                      <text x={309} y={94} textAnchor="middle" fontSize={9} fontWeight={700} fill="#475569">散布図</text>
+                      <text x={309} y={104} textAnchor="middle" fontSize={7.5} fill="#94a3b8">2変数の関係</text>
+                    </g>
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    グラフは「何を伝えたいか」で選ぶ。<strong>棒グラフ</strong>は量の大小をくらべる、<strong>円グラフ</strong>は全体に占める割合（構成比）、<strong>折れ線</strong>は時間による変化やトレンド、<strong>散布図</strong>は2つの量の関係を見るのに向く。目的に合わないグラフを選ぶと誤解のもとになる。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part === '[[boxplot]]') return (
               <figure key={key} className="g3-figure">
                 <svg viewBox="0 0 360 116" role="img" aria-label="箱ひげ図：最小値・Q1・中央値・Q3・最大値と外れ値。箱の長さがIQR" className="g3-fig-svg">
