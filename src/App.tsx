@@ -164,7 +164,7 @@ function App() {
 
   const parseInlineContent = useCallback((text: string): React.ReactNode => {
     function parseInline(t: string): React.ReactNode {
-      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[graphtypes\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
+      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[graphtypes\]\]|\[\[rejection\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
       const parts = t.split(regex);
       return (
         <>
@@ -208,6 +208,45 @@ function App() {
                 </div>
               </div>
             );
+            if (part === '[[rejection]]') {
+              const cxc = 170, yb = 116, ph = 84, sc = 46; // x in ~[-3.4,3.4]
+              const c = 2.0;
+              const px = (x: number) => cxc + x * sc;
+              const py = (y: number) => yb - y * ph;
+              const f = (x: number) => Math.exp(-(x * x) / 2);
+              const build = (from: number, to: number) => {
+                let pts = `${px(from).toFixed(1)},${yb} `;
+                for (let x = from; x <= to + 1e-9; x += 0.1) pts += `${px(x).toFixed(1)},${py(f(x)).toFixed(1)} `;
+                pts += `${px(to).toFixed(1)},${yb}`;
+                return pts;
+              };
+              let curve = '';
+              for (let x = -3.4; x <= 3.4001; x += 0.1) curve += `${px(x).toFixed(1)},${py(f(x)).toFixed(1)} `;
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 340 156" role="img" aria-label="仮説検定の棄却域：両裾の赤い領域が棄却域、中央が採択域" className="g3-fig-svg">
+                    <polygon points={build(-3.4, -c)} fill="#dc2626" fillOpacity={0.45} />
+                    <polygon points={build(-c, c)} fill="var(--primary)" fillOpacity={0.12} />
+                    <polygon points={build(c, 3.4)} fill="#dc2626" fillOpacity={0.45} />
+                    <polyline points={curve.trim()} fill="none" stroke="#475569" strokeWidth={1.8} />
+                    <line x1={px(-3.4)} y1={yb} x2={px(3.4)} y2={yb} stroke="#94a3b8" strokeWidth={1} />
+                    <line x1={px(-c)} y1={yb} x2={px(-c)} y2={py(f(c)) - 4} stroke="#b91c1c" strokeWidth={1.3} strokeDasharray="3 2" />
+                    <line x1={px(c)} y1={yb} x2={px(c)} y2={py(f(c)) - 4} stroke="#b91c1c" strokeWidth={1.3} strokeDasharray="3 2" />
+                    <text x={cxc} y={py(0.42)} textAnchor="middle" fontSize={10.5} fontWeight={700} fill="var(--primary-hover)">採択域</text>
+                    <text x={cxc} y={py(0.42) + 12} textAnchor="middle" fontSize={8} fill="#64748b">H₀ を棄却しない（95%）</text>
+                    <text x={px(-2.7)} y={py(0.05) - 4} textAnchor="middle" fontSize={9} fontWeight={700} fill="#b91c1c">棄却域</text>
+                    <text x={px(2.7)} y={py(0.05) - 4} textAnchor="middle" fontSize={9} fontWeight={700} fill="#b91c1c">棄却域</text>
+                    <text x={px(-c)} y={yb + 13} textAnchor="middle" fontSize={8.5} fill="#334155">−臨界値</text>
+                    <text x={px(c)} y={yb + 13} textAnchor="middle" fontSize={8.5} fill="#334155">＋臨界値</text>
+                    <text x={px(-2.7)} y={yb + 13} textAnchor="middle" fontSize={7.5} fill="#b91c1c">2.5%</text>
+                    <text x={px(2.7)} y={yb + 13} textAnchor="middle" fontSize={7.5} fill="#b91c1c">2.5%</text>
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    有意水準5%の両側検定のイメージ。分布の両裾にある赤い部分が<strong>棄却域</strong>（各2.5%）。検定統計量がこの赤い領域に入るほど「偶然では起こりにくい」ので、帰無仮説 H₀ を棄却する。中央の広い部分（採択域）に入れば「偶然の範囲」として H₀ を棄却しない。臨界値がその境目。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part === '[[graphtypes]]') {
               const cols = ['#12864b', '#f0913a', '#5b8def', '#e0607e'];
               // pie slices (棒: skip). build a 3-slice pie path

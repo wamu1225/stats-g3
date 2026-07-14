@@ -12,7 +12,7 @@ interface Question {
 const flow: Record<string, Question> = {
   start: {
     id: 'start',
-    text: '知りたいことはどれですか？',
+    text: 'いま、どんなことを知りたい？',
     options: [
       { label: 'データの整理・グラフの読み方を学びたい', nextId: 'desc' },
       { label: '確率の計算を学びたい', nextId: 'prob' },
@@ -89,8 +89,8 @@ export const DistributionSelector: React.FC<Props> = ({ onSelect }) => {
       <div className="diag-head">
         <span className="diag-icon"><Sparkles size={18} /></span>
         <div>
-          <h3 className="diag-title">目的から選ぼう</h3>
-          <span className="diag-kicker">逆引き診断</span>
+          <h3 className="diag-title">どこから始める？</h3>
+          <span className="diag-kicker">はじめの一歩ナビ</span>
         </div>
       </div>
 
@@ -119,7 +119,7 @@ export const DistributionSelector: React.FC<Props> = ({ onSelect }) => {
 
       <div className="diag-foot">
         <HelpCircle size={14} />
-        <span>知りたいことを選ぶだけで、ぴったりの学習ページへ案内します。</span>
+        <span>えらぶだけで、いまのあなたにちょうどいい学習ページへ案内します。</span>
       </div>
     </div>
   );
