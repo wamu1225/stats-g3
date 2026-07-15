@@ -164,7 +164,7 @@ function App() {
 
   const parseInlineContent = useCallback((text: string): React.ReactNode => {
     function parseInline(t: string): React.ReactNode {
-      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[graphtypes\]\]|\[\[rejection\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
+      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[graphtypes\]\]|\[\[rejection\]\]|\[\[ci\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
       const parts = t.split(regex);
       return (
         <>
@@ -208,6 +208,40 @@ function App() {
                 </div>
               </div>
             );
+            if (part === '[[ci]]') {
+              const muX = 176, n = 20, half = 30, top = 20, gap = 6.6;
+              let seed = 13;
+              const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+              const bars = Array.from({ length: n }, (_, i) => {
+                let off = (rnd() - 0.5) * 52;
+                if (i === 6) off = 42; // force one clear miss (~1/20)
+                return { cx: muX + off, y: top + i * gap, miss: Math.abs(off) > half };
+              });
+              const H = top + n * gap + 8;
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox={`0 0 340 ${H + 20}`} role="img" aria-label="信頼区間の被覆：多数の95%信頼区間のうち約95%が母平均を含む" className="g3-fig-svg">
+                    <line x1={muX} y1={top - 8} x2={muX} y2={H} stroke="#334155" strokeWidth={1.4} strokeDasharray="4 3" />
+                    <text x={muX} y={top - 12} textAnchor="middle" fontSize={10} fontWeight={700} fill="#334155">母平均 μ</text>
+                    {bars.map((b, i) => {
+                      const col = b.miss ? '#dc2626' : 'var(--primary)';
+                      return (
+                        <g key={i}>
+                          <line x1={b.cx - half} y1={b.y} x2={b.cx + half} y2={b.y} stroke={col} strokeWidth={2} />
+                          <line x1={b.cx - half} y1={b.y - 2.5} x2={b.cx - half} y2={b.y + 2.5} stroke={col} strokeWidth={1.5} />
+                          <line x1={b.cx + half} y1={b.y - 2.5} x2={b.cx + half} y2={b.y + 2.5} stroke={col} strokeWidth={1.5} />
+                          <circle cx={b.cx} cy={b.y} r={2} fill={col} />
+                        </g>
+                      );
+                    })}
+                    <text x={muX + 78} y={bars[6].y + 3} fontSize={8.5} fontWeight={700} fill="#b91c1c">← μを外した区間</text>
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    「95%信頼区間」の正しい意味。同じ調査を何度も行うと、標本ごとに少しずつ違う区間ができる。このうち<strong>約95%が母平均 μ を含み、約5%（20回に1回ほど）は外す（赤）</strong>。だから「この1本の区間に μ が入る確率が95%」ではなく「この作り方をくり返すと95%の区間が μ を含む」が正確な言い方。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part === '[[rejection]]') {
               const cxc = 170, yb = 116, ph = 84, sc = 46; // x in ~[-3.4,3.4]
               const c = 2.0;
