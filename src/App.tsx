@@ -164,7 +164,7 @@ function App() {
 
   const parseInlineContent = useCallback((text: string): React.ReactNode => {
     function parseInline(t: string): React.ReactNode {
-      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[graphtypes\]\]|\[\[rejection\]\]|\[\[ci\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
+      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[graphtypes\]\]|\[\[skewmean\]\]|\[\[ogive\]\]|\[\[rejection\]\]|\[\[ci\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
       const parts = t.split(regex);
       return (
         <>
@@ -380,6 +380,65 @@ function App() {
                 </figure>
               );
             }
+            if (part === '[[skewmean]]') {
+              const x0 = 22, pw = 300, baseY = 84, top = 22;
+              const f = (t: number) => t * t * Math.exp(-1.1 * t);
+              const N = 80, tmax = 7;
+              const fs = Array.from({ length: N + 1 }, (_, k) => f((k / N) * tmax));
+              const mx = Math.max(...fs);
+              const X = (t: number) => x0 + (t / tmax) * pw;
+              const Y = (v: number) => baseY - (v / mx) * (baseY - top);
+              const pts = fs.map((v, k) => `${X((k / N) * tmax).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+              const vline = (t: number, color: string, label: string, ly: number) => {
+                const x = X(t);
+                return (<g key={label}><line x1={x} y1={ly + 4} x2={x} y2={baseY} stroke={color} strokeWidth={1.7} strokeDasharray="3 2" /><text x={x} y={ly} textAnchor="middle" fontSize={9.5} fontWeight={700} fill={color}>{label}</text></g>);
+              };
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 344 112" role="img" aria-label="右に歪んだ分布での最頻値・中央値・平均の位置関係" className="g3-fig-svg">
+                    <polygon points={`${X(0).toFixed(1)},${baseY} ${pts} ${X(tmax).toFixed(1)},${baseY}`} fill="var(--primary)" fillOpacity={0.1} />
+                    <polyline points={pts} fill="none" stroke="var(--primary)" strokeWidth={2} />
+                    <line x1={x0} y1={baseY} x2={x0 + pw} y2={baseY} stroke="#cbd5e1" strokeWidth={1} />
+                    {vline(1.82, '#12864b', '最頻値', 14)}
+                    {vline(2.30, '#5b8def', '中央値', 31)}
+                    {vline(2.73, '#e0607e', '平均', 14)}
+                    <text x={x0 + pw} y={99} textAnchor="end" fontSize={8} fill="#94a3b8">値 →（右に長い裾）</text>
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    右に歪んだ分布（少数の大きな値が右の裾を作る）では、山の頂上が<strong>最頻値</strong>、真ん中が<strong>中央値</strong>、裾に引っぱられて右に寄るのが<strong>平均</strong>。この順で「最頻値 ≤ 中央値 ≤ 平均」になる。左右対称の分布なら三つは同じ位置に重なる。
+                  </figcaption>
+                </figure>
+              );
+            }
+            if (part === '[[ogive]]') {
+              const x0 = 46, y0 = 90, pw = 268, ph = 62;
+              const X = (s: number) => x0 + ((s - 40) / 60) * pw;
+              const Y = (c: number) => y0 - c * ph;
+              const data: [number, number][] = [[40, 0], [50, 0.08], [60, 0.30], [70, 0.62], [80, 0.86], [90, 0.97], [100, 1]];
+              const line = data.map(([s, c]) => `${X(s).toFixed(1)},${Y(c).toFixed(1)}`).join(' ');
+              const medS = 66;
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 344 112" role="img" aria-label="累積相対度数グラフ（オージャイブ）からの中央値の読み取り" className="g3-fig-svg">
+                    <line x1={x0} y1={y0} x2={x0 + pw} y2={y0} stroke="#cbd5e1" strokeWidth={1} />
+                    <line x1={x0} y1={y0} x2={x0} y2={y0 - ph - 4} stroke="#cbd5e1" strokeWidth={1} />
+                    <line x1={x0} y1={Y(0.5)} x2={X(medS)} y2={Y(0.5)} stroke="#e0607e" strokeWidth={1.3} strokeDasharray="3 2" />
+                    <line x1={X(medS)} y1={Y(0.5)} x2={X(medS)} y2={y0} stroke="#e0607e" strokeWidth={1.3} strokeDasharray="3 2" />
+                    <polyline points={line} fill="none" stroke="var(--primary)" strokeWidth={2} />
+                    {data.map(([s, c], i) => <circle key={i} cx={X(s)} cy={Y(c)} r={2.2} fill="var(--primary)" />)}
+                    <text x={x0 - 5} y={Y(0.5) + 3} textAnchor="end" fontSize={8.5} fontWeight={700} fill="#e0607e">0.5</text>
+                    <text x={x0 - 5} y={Y(1) + 3} textAnchor="end" fontSize={8} fill="#94a3b8">1.0</text>
+                    <text x={x0 - 5} y={y0 + 3} textAnchor="end" fontSize={8} fill="#94a3b8">0</text>
+                    <text x={X(medS)} y={y0 + 12} textAnchor="middle" fontSize={9.5} fontWeight={700} fill="#e0607e">中央値≈66</text>
+                    <text x={x0 + pw} y={y0 + 12} textAnchor="end" fontSize={8} fill="#94a3b8">点数 →</text>
+                    <text x={x0 - 8} y={y0 - ph - 8} textAnchor="start" fontSize={8} fill="#94a3b8">累積相対度数</text>
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    累積相対度数グラフ（オージャイブ）。横軸は点数（階級の上限）、縦軸はそこまでに全体の何割が入るか。<strong>縦軸の 0.5 から水平にたどり、曲線と交わった点の横軸が中央値</strong>（この例では約66点）。「70点以下は何％か」なども曲線から直接読み取れる。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part === '[[sampling]]') {
               const panels = [{ title: '単純無作為', cx: 8 }, { title: '層化', cx: 116 }, { title: 'クラスター', cx: 224 }];
               const pw = 96, py = 22, ph = 94;
@@ -506,25 +565,47 @@ function App() {
     const lines = text.split('\n');
     const result: React.ReactNode[] = [];
     let currentList: React.ReactNode[] = [];
+    let currentTable: string[] = [];
     const flushList = (key: string) => {
       if (currentList.length > 0) {
         result.push(<ul key={`list-${key}`}>{currentList}</ul>);
         currentList = [];
       }
     };
+    const isSep = (cells: string[]) => cells.length > 0 && cells.every(c => /^:?-{2,}:?$/.test(c));
+    const flushTable = (key: string) => {
+      if (currentTable.length === 0) return;
+      const rows = currentTable.map(r => r.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map(c => c.trim()));
+      currentTable = [];
+      const header = rows[0];
+      const bodyStart = rows[1] && isSep(rows[1]) ? 2 : 1;
+      const body = rows.slice(bodyStart).filter(r => !isSep(r));
+      const th: React.CSSProperties = { border: '1px solid #e2e8f0', padding: '7px 10px', background: 'var(--primary)', color: '#fff', textAlign: 'left', fontWeight: 700, whiteSpace: 'nowrap' };
+      const td: React.CSSProperties = { border: '1px solid #e2e8f0', padding: '7px 10px', verticalAlign: 'top' };
+      result.push(
+        <div key={`tbl-${key}`} style={{ overflowX: 'auto', margin: '16px 0' }}>
+          <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: '0.92rem', lineHeight: 1.7 }}>
+            <thead><tr>{header.map((c, i) => <th key={i} style={th}>{parseInlineContent(c)}</th>)}</tr></thead>
+            <tbody>{body.map((r, ri) => <tr key={ri} style={ri % 2 ? { background: 'rgba(0,0,0,0.025)' } : undefined}>{r.map((c, ci) => <td key={ci} style={td}>{parseInlineContent(c)}</td>)}</tr>)}</tbody>
+          </table>
+        </div>
+      );
+    };
+    const flushBlocks = (key: string) => { flushList(key); flushTable(key); };
     lines.forEach((line, lineIdx) => {
       const trimmedLine = line.trim();
       const key = `line-${lineIdx}`;
-      if (trimmedLine.startsWith('#### ')) { flushList(key); result.push(<h4 key={key} className="content-h4">{parseInlineContent(trimmedLine.slice(5))}</h4>); return; }
-      if (trimmedLine.startsWith('### ')) { flushList(key); result.push(<h3 key={key} className="content-h3">{parseInlineContent(trimmedLine.slice(4))}</h3>); return; }
-      if (trimmedLine.startsWith('## ')) { flushList(key); result.push(<h2 key={key} className="content-h2">{parseInlineContent(trimmedLine.slice(3))}</h2>); return; }
-      if (trimmedLine.startsWith('---')) { flushList(key); result.push(<hr key={key} className="content-hr" />); return; }
-      if (trimmedLine.startsWith('- ')) { currentList.push(<li key={`li-${lineIdx}`}>{parseInlineContent(trimmedLine.slice(2))}</li>); return; }
-      if (trimmedLine === '') { flushList(key); return; }
-      flushList(key);
+      if (trimmedLine.startsWith('|') && trimmedLine.endsWith('|') && trimmedLine.length > 1) { flushList(key); currentTable.push(trimmedLine); return; }
+      if (trimmedLine.startsWith('#### ')) { flushBlocks(key); result.push(<h4 key={key} className="content-h4">{parseInlineContent(trimmedLine.slice(5))}</h4>); return; }
+      if (trimmedLine.startsWith('### ')) { flushBlocks(key); result.push(<h3 key={key} className="content-h3">{parseInlineContent(trimmedLine.slice(4))}</h3>); return; }
+      if (trimmedLine.startsWith('## ')) { flushBlocks(key); result.push(<h2 key={key} className="content-h2">{parseInlineContent(trimmedLine.slice(3))}</h2>); return; }
+      if (trimmedLine.startsWith('---')) { flushBlocks(key); result.push(<hr key={key} className="content-hr" />); return; }
+      if (trimmedLine.startsWith('- ')) { flushTable(key); currentList.push(<li key={`li-${lineIdx}`}>{parseInlineContent(trimmedLine.slice(2))}</li>); return; }
+      if (trimmedLine === '') { flushBlocks(key); return; }
+      flushBlocks(key);
       result.push(<p key={key} className="content-p">{parseInlineContent(line)}</p>);
     });
-    flushList('final');
+    flushBlocks('final');
     return <>{result}</>;
   }, [parseInlineContent]);
 
