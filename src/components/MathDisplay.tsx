@@ -34,7 +34,15 @@ export const MathDisplay: React.FC<Props> = ({ formula, block }) => {
     }
   }, [formula, block]);
 
-  const activeSymbols = Object.keys(symbolGuide).filter(s => formula.includes(s));
+  // 記号の抽出：\mu 等のコマンド記号はそのまま含有判定。
+  // 単一文字（e, x, n）は、\text や \frac 等のコマンド名に含まれる文字を誤検出しないよう、
+  // コマンドを除去したうえで「独立した変数として現れる」場合だけ拾う（範囲=最大値−最小値 に e・x が出た不具合の修正）。
+  const strippedFormula = formula.replace(/\\[a-zA-Z]+/g, ' ');
+  const activeSymbols = Object.keys(symbolGuide).filter(s =>
+    s.startsWith('\\')
+      ? formula.includes(s)
+      : new RegExp(`(^|[^a-zA-Z])${s}([^a-zA-Z]|$)`).test(strippedFormula)
+  );
 
   if (!block) {
     return (
