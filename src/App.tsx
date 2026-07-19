@@ -164,7 +164,7 @@ function App() {
 
   const parseInlineContent = useCallback((text: string): React.ReactNode => {
     function parseInline(t: string): React.ReactNode {
-      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[graphtypes\]\]|\[\[skewmean\]\]|\[\[ogive\]\]|\[\[rejection\]\]|\[\[ci\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
+      const regex = /(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$|\*\*[\s\S]*?\*\*|\[\[term:.*?\]\][\s\S]*?\[\[\/term\]\]|\[\[translate:.*?\]\][\s\S]*?\[\[\/translate\]\]|\[\[darts\]\]|\[\[practical:.*?\]\][\s\S]*?\[\[\/practical\]\]|\[\[conjugate\]\]|\[\[hierarchy\]\]|\[\[boxplot\]\]|\[\[venn\]\]|\[\[timeseries\]\]|\[\[histshapes\]\]|\[\[sampling\]\]|\[\[graphtypes\]\]|\[\[skewmean\]\]|\[\[ogive\]\]|\[\[deviation\]\]|\[\[rejection\]\]|\[\[ci\]\]|\[\[interactive:.*?\]\]|\[\[regularization-card\]\])/g;
       const parts = t.split(regex);
       return (
         <>
@@ -376,6 +376,34 @@ function App() {
                   <svg viewBox="0 0 340 92" role="img" aria-label="ヒストグラムの4つの形：左右対称・右歪み・左歪み・双峰" className="g3-fig-svg">{nodes}</svg>
                   <figcaption className="g3-fig-cap">
                     ヒストグラムの形で分布の性質が読める。<strong>左右対称</strong>は平均付近に集中（標準的）。<strong>右歪み</strong>は少数の大きな値が裾を引く（年収など）。<strong>左歪み</strong>はその逆（簡単な試験）。<strong>双峰型</strong>は山が2つ＝別グループ（男女など）が混ざっているサイン。
+                  </figcaption>
+                </figure>
+              );
+            }
+            if (part === '[[deviation]]') {
+              const x0 = 30, x1 = 314, axisY = 62;
+              const X = (v: number) => x0 + ((v - 6) / 8) * (x1 - x0);
+              const vals = [6, 8, 10, 12, 14];
+              const devs = ['−4', '−2', '0', '+2', '+4'];
+              const mean = 10, Xm = X(mean);
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 344 94" role="img" aria-label="6,8,10,12,14 の各データと平均10との偏差" className="g3-fig-svg">
+                    <line x1={x0 - 6} y1={axisY} x2={x1 + 6} y2={axisY} stroke="#cbd5e1" strokeWidth={1.2} />
+                    <line x1={Xm} y1={24} x2={Xm} y2={axisY + 18} stroke="#64748b" strokeWidth={1.4} strokeDasharray="3 2" />
+                    <text x={Xm} y={17} textAnchor="middle" fontSize={9.5} fontWeight={700} fill="#64748b">平均 10</text>
+                    {vals.map((v, i) => {
+                      const x = X(v); const zero = v === mean; const neg = v < mean;
+                      const col = zero ? '#64748b' : neg ? '#5b8def' : '#e0607e';
+                      return (<g key={i}>
+                        <circle cx={x} cy={axisY} r={3.4} fill="var(--primary)" />
+                        <text x={x} y={axisY + 15} textAnchor="middle" fontSize={9} fill="#475569">{v}</text>
+                        <text x={x} y={axisY - 9} textAnchor="middle" fontSize={9.5} fontWeight={700} fill={col}>{devs[i]}</text>
+                      </g>);
+                    })}
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    各データと平均10との差が<strong>偏差</strong>（点の上の数）。平均より小さい側が負・大きい側が正で、左右にちょうど打ち消し合うため<strong>偏差の合計は0</strong>になる。だから二乗してから平均する——それが分散。
                   </figcaption>
                 </figure>
               );
