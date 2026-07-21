@@ -12,6 +12,7 @@ const BASE_URL = 'https://study-apps.com/stats-g3';
 function stripMarkdown(text: string): string {
   return text
     .replace(/\[\[.*?\]\]/g, '')           // [[term:id]] / [[/term]] markers
+    .replace(/\[([^\]\n]+)\]\([^)\n]+\)/g, '$1') // [ラベル](URL) → ラベルだけ残す
     .replace(/\$\$[\s\S]*?\$\$/g, '')      // $$math$$ blocks
     .replace(/\$[^$]+\$/g, '')             // $inline math$
     .replace(/^#{1,6}\s+/gm, '')           // ## headings
