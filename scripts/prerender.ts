@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import sharp from 'sharp';
+import katex from 'katex';
 import { modules } from '../src/data/modules';
 import { buildUsecaseHtml } from '../src/data/usecaseGuide';
 import { glossary } from '../src/data/glossary';
@@ -10,13 +11,30 @@ const INDEX_HTML_PATH = path.join(DIST_DIR, 'index.html');
 const BASE_URL = 'https://study-apps.com/stats-g3';
 
 const escHtml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-// 数式($...$)は静的HTMLでは描画できないため既存どおり除去。[[...]]は図SVG埋め込み・term系マーカー
-const inlineHtml = (s: string) => escHtml(
-  s.replace(/\[\[.*?\]\]/g, '')
-   .replace(/\[([^\]\n]+)\]\([^)\n]+\)/g, '$1')
-   .replace(/\$\$[\s\S]*?\$\$/g, '')
-   .replace(/\$[^$]+\$/g, '')
-).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+// KaTeXでサーバーサイド描画（2026-07-30・O-2-6続報：$...$を除去すると地の文が破綻するため実描画に変更）。
+// MathDisplay.tsx と同じオプション・同じクラス名を使い、ハイドレーション後との見た目の一致を狙う。
+function renderMath(formula: string, block: boolean): string {
+  try {
+    const html = katex.renderToString(formula, { displayMode: block, throwOnError: false, output: 'html' });
+    return block ? `<div class="math-block-container" style="margin:1rem 0"><div class="katex-display">${html}</div></div>` : `<span class="katex-inline">${html}</span>`;
+  } catch {
+    return escHtml(formula);
+  }
+}
+
+// [[...]]は図SVG埋め込み・term系マーカーのため除去。$$...$$/$...$はrenderMathでHTML化（escHtmlしない）。
+const inlineHtml = (raw: string): string => {
+  const s = raw.replace(/\[\[.*?\]\]/g, '').replace(/\[([^\]\n]+)\]\([^)\n]+\)/g, '$1');
+  const tokens = s.split(/(\$\$[\s\S]+?\$\$|\$[^$\n]+\$)/g);
+  return tokens
+    .map((t) => {
+      if (t.startsWith('$$') && t.endsWith('$$') && t.length >= 4) return renderMath(t.slice(2, -2), true);
+      if (t.startsWith('$') && t.endsWith('$') && t.length >= 2) return renderMath(t.slice(1, -1), false);
+      return escHtml(t).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    })
+    .join('');
+};
 
 // 表・見出し・リストを静的HTMLへ変換（旧stripMarkdownは表を丸ごと削除していたため新設。
 // 本サイトはApp.tsx側にコールアウト専用スタイルが無いため💡⚠️等は地の文としてそのまま出す）
