@@ -38,12 +38,227 @@ const inlineHtml = (raw: string): string => {
 
 // 表・見出し・リストを静的HTMLへ変換（旧stripMarkdownは表を丸ごと削除していたため新設。
 // 本サイトはApp.tsx側にコールアウト専用スタイルが無いため💡⚠️等は地の文としてそのまま出す）
+
+// App.tsx内のJSX図（[[key]]でReact専用に描画されるSVG）を静的HTMLでも表示する（2026-07-30・O-2-6続報）。
+// 固定座標・固定数式（seeded PRNGを含め props/state非依存）のもののみ複製。regularization-cardは未使用のため対象外。
+function mulberryRndG3(seed: number) {
+  let s = seed;
+  return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+}
+function ciSvgG3(): string {
+  const muX = 176, n = 20, half = 30, top = 20, gap = 6.6;
+  const rnd = mulberryRndG3(13);
+  const bars = Array.from({ length: n }, (_, i) => {
+    let off = (rnd() - 0.5) * 52;
+    if (i === 6) off = 42;
+    return { cx: muX + off, y: top + i * gap, miss: Math.abs(off) > half };
+  });
+  const H = top + n * gap + 8;
+  const rows = bars.map((b) => {
+    const col = b.miss ? '#dc2626' : 'var(--primary)';
+    return `<g><line x1="${b.cx - half}" y1="${b.y}" x2="${b.cx + half}" y2="${b.y}" stroke="${col}" stroke-width="2" /><line x1="${b.cx - half}" y1="${b.y - 2.5}" x2="${b.cx - half}" y2="${b.y + 2.5}" stroke="${col}" stroke-width="1.5" /><line x1="${b.cx + half}" y1="${b.y - 2.5}" x2="${b.cx + half}" y2="${b.y + 2.5}" stroke="${col}" stroke-width="1.5" /><circle cx="${b.cx}" cy="${b.y}" r="2" fill="${col}" /></g>`;
+  }).join('');
+  return `<svg viewBox="0 0 340 ${H + 20}" role="img" aria-label="信頼区間の被覆：多数の95%信頼区間のうち約95%が母平均を含む" class="g3-fig-svg">
+    <line x1="${muX}" y1="${top - 8}" x2="${muX}" y2="${H}" stroke="#334155" stroke-width="1.4" stroke-dasharray="4 3" />
+    <text x="${muX}" y="${top - 12}" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">母平均 μ</text>${rows}
+    <text x="${muX + 78}" y="${bars[6].y + 3}" font-size="8.5" font-weight="700" fill="#b91c1c">← μを外した区間</text>
+  </svg>`;
+}
+function rejectionSvg(): string {
+  const cxc = 170, yb = 116, ph = 84, sc = 46, c = 2.0;
+  const px = (x: number) => cxc + x * sc;
+  const py = (y: number) => yb - y * ph;
+  const f = (x: number) => Math.exp(-(x * x) / 2);
+  const build = (from: number, to: number) => { let pts = `${px(from).toFixed(1)},${yb} `; for (let x = from; x <= to + 1e-9; x += 0.1) pts += `${px(x).toFixed(1)},${py(f(x)).toFixed(1)} `; pts += `${px(to).toFixed(1)},${yb}`; return pts; };
+  let curve = ''; for (let x = -3.4; x <= 3.4001; x += 0.1) curve += `${px(x).toFixed(1)},${py(f(x)).toFixed(1)} `;
+  return `<svg viewBox="0 0 340 156" role="img" aria-label="仮説検定の棄却域：両裾の赤い領域が棄却域、中央が採択域" class="g3-fig-svg">
+    <polygon points="${build(-3.4, -c)}" fill="#dc2626" fill-opacity="0.45" /><polygon points="${build(-c, c)}" fill="var(--primary)" fill-opacity="0.12" /><polygon points="${build(c, 3.4)}" fill="#dc2626" fill-opacity="0.45" />
+    <polyline points="${curve.trim()}" fill="none" stroke="#475569" stroke-width="1.8" />
+    <line x1="${px(-3.4)}" y1="${yb}" x2="${px(3.4)}" y2="${yb}" stroke="#94a3b8" stroke-width="1" />
+    <line x1="${px(-c)}" y1="${yb}" x2="${px(-c)}" y2="${py(f(c)) - 4}" stroke="#b91c1c" stroke-width="1.3" stroke-dasharray="3 2" />
+    <line x1="${px(c)}" y1="${yb}" x2="${px(c)}" y2="${py(f(c)) - 4}" stroke="#b91c1c" stroke-width="1.3" stroke-dasharray="3 2" />
+    <text x="${cxc}" y="${py(0.42)}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--primary-hover)">採択域</text>
+    <text x="${cxc}" y="${py(0.42) + 12}" text-anchor="middle" font-size="8" fill="#64748b">H₀ を棄却しない（95%）</text>
+    <text x="${px(-2.7)}" y="${py(0.05) - 4}" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">棄却域</text>
+    <text x="${px(2.7)}" y="${py(0.05) - 4}" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">棄却域</text>
+    <text x="${px(-c)}" y="${yb + 13}" text-anchor="middle" font-size="8.5" fill="#334155">−臨界値</text>
+    <text x="${px(c)}" y="${yb + 13}" text-anchor="middle" font-size="8.5" fill="#334155">＋臨界値</text>
+    <text x="${px(-2.7)}" y="${yb + 13}" text-anchor="middle" font-size="7.5" fill="#b91c1c">2.5%</text>
+    <text x="${px(2.7)}" y="${yb + 13}" text-anchor="middle" font-size="7.5" fill="#b91c1c">2.5%</text>
+  </svg>`;
+}
+function graphtypesSvg(): string {
+  const cols = ['#12864b', '#f0913a', '#5b8def', '#e0607e'];
+  const pie = (cx: number, cy: number, r: number) => {
+    const segs = [0.45, 0.35, 0.2]; let a0 = -Math.PI / 2; let out = '';
+    segs.forEach((s, i) => { const a1 = a0 + s * 2 * Math.PI; const x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0), x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1); const large = s > 0.5 ? 1 : 0; out += `<path d="M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${r},${r} 0 ${large} 1 ${x1.toFixed(1)},${y1.toFixed(1)} Z" fill="${cols[i]}" fill-opacity="0.75" />`; a0 = a1; });
+    return out;
+  };
+  const bars = [26, 40, 32, 52].map((h, i) => `<rect x="${12 + i * 13}" y="${72 - h}" width="9" height="${h}" rx="1.5" fill="var(--primary)" fill-opacity="0.75" />`).join('');
+  const linePts = [[182, 60], [196, 44], [210, 52], [224, 30], [238, 36]];
+  const lineDots = linePts.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="2.4" fill="var(--primary)" />`).join('');
+  const scatterPts = [[286, 58], [296, 50], [300, 60], [308, 42], [316, 48], [322, 34], [330, 40], [292, 62], [312, 54]];
+  const scatterDots = scatterPts.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="2.3" fill="var(--primary)" fill-opacity="0.7" />`).join('');
+  return `<svg viewBox="0 0 344 104" role="img" aria-label="代表的なグラフ：棒グラフ・円グラフ・折れ線グラフ・散布図" class="g3-fig-svg">
+    <g>${bars}<line x1="10" y1="72" x2="70" y2="72" stroke="#cbd5e1" stroke-width="1" /><text x="40" y="94" text-anchor="middle" font-size="9" font-weight="700" fill="#475569">棒グラフ</text><text x="40" y="104" text-anchor="middle" font-size="7.5" fill="#94a3b8">量の比較</text></g>
+    <g>${pie(126, 46, 26)}<text x="126" y="94" text-anchor="middle" font-size="9" font-weight="700" fill="#475569">円グラフ</text><text x="126" y="104" text-anchor="middle" font-size="7.5" fill="#94a3b8">構成比</text></g>
+    <g><polyline points="182,60 196,44 210,52 224,30 238,36" fill="none" stroke="var(--primary)" stroke-width="2.2" />${lineDots}<line x1="180" y1="72" x2="240" y2="72" stroke="#cbd5e1" stroke-width="1" /><text x="210" y="94" text-anchor="middle" font-size="9" font-weight="700" fill="#475569">折れ線</text><text x="210" y="104" text-anchor="middle" font-size="7.5" fill="#94a3b8">時間の変化</text></g>
+    <g>${scatterDots}<line x1="282" y1="72" x2="336" y2="72" stroke="#cbd5e1" stroke-width="1" /><line x1="282" y1="72" x2="282" y2="30" stroke="#cbd5e1" stroke-width="1" /><text x="309" y="94" text-anchor="middle" font-size="9" font-weight="700" fill="#475569">散布図</text><text x="309" y="104" text-anchor="middle" font-size="7.5" fill="#94a3b8">2変数の関係</text></g>
+  </svg>`;
+}
+function histshapesSvg(): string {
+  const panels: { label: string; h: (i: number) => number }[] = [
+    { label: '左右対称（山型）', h: (i) => Math.exp(-((i - 3.5) ** 2) / 4) },
+    { label: '右裾が長い（右歪み）', h: (i) => Math.exp(-((i - 1.5) ** 2) / 2.2) + 0.15 * Math.exp(-((i - 5) ** 2) / 6) },
+    { label: '左裾が長い（左歪み）', h: (i) => Math.exp(-((i - 5.5) ** 2) / 2.2) + 0.15 * Math.exp(-((i - 2) ** 2) / 6) },
+    { label: '双峰型（2つの山）', h: (i) => Math.exp(-((i - 1.5) ** 2) / 1.6) + Math.exp(-((i - 5.5) ** 2) / 1.6) },
+  ];
+  const bins = 8, pw = 74, gap = 10, ph = 60, baseY = 74, x0 = 4;
+  let out = '';
+  panels.forEach((p, pi) => {
+    const px = x0 + pi * (pw + gap);
+    const hs = Array.from({ length: bins }, (_, i) => p.h(i));
+    const mx = Math.max(...hs);
+    hs.forEach((hv, i) => { const bw = pw / bins, bh = (hv / mx) * ph; out += `<rect x="${px + i * bw + 0.6}" y="${baseY - bh}" width="${bw - 1.2}" height="${bh}" fill="var(--primary)" fill-opacity="0.7" />`; });
+    out += `<line x1="${px}" y1="${baseY}" x2="${px + pw}" y2="${baseY}" stroke="#cbd5e1" stroke-width="1" /><text x="${px + pw / 2}" y="${baseY + 13}" text-anchor="middle" font-size="8.5" fill="#475569">${p.label}</text>`;
+  });
+  return `<svg viewBox="0 0 340 92" role="img" aria-label="ヒストグラムの4つの形：左右対称・右歪み・左歪み・双峰" class="g3-fig-svg">${out}</svg>`;
+}
+function deviationSvg(): string {
+  const x0 = 30, x1 = 314, axisY = 62;
+  const X = (v: number) => x0 + ((v - 6) / 8) * (x1 - x0);
+  const vals = [6, 8, 10, 12, 14], devs = ['−4', '−2', '0', '+2', '+4'], mean = 10, Xm = X(mean);
+  const dots = vals.map((v, i) => {
+    const x = X(v); const zero = v === mean; const neg = v < mean;
+    const col = zero ? '#64748b' : neg ? '#5b8def' : '#e0607e';
+    return `<g><circle cx="${x}" cy="${axisY}" r="3.4" fill="var(--primary)" /><text x="${x}" y="${axisY + 15}" text-anchor="middle" font-size="9" fill="#475569">${v}</text><text x="${x}" y="${axisY - 9}" text-anchor="middle" font-size="9.5" font-weight="700" fill="${col}">${devs[i]}</text></g>`;
+  }).join('');
+  return `<svg viewBox="0 0 344 94" role="img" aria-label="6,8,10,12,14 の各データと平均10との偏差" class="g3-fig-svg">
+    <line x1="${x0 - 6}" y1="${axisY}" x2="${x1 + 6}" y2="${axisY}" stroke="#cbd5e1" stroke-width="1.2" />
+    <line x1="${Xm}" y1="24" x2="${Xm}" y2="${axisY + 18}" stroke="#64748b" stroke-width="1.4" stroke-dasharray="3 2" />
+    <text x="${Xm}" y="17" text-anchor="middle" font-size="9.5" font-weight="700" fill="#64748b">平均 10</text>${dots}
+  </svg>`;
+}
+function skewmeanSvg(): string {
+  const x0 = 22, pw = 300, baseY = 84, top = 22;
+  const f = (t: number) => t * t * Math.exp(-1.1 * t);
+  const N = 80, tmax = 7;
+  const fs = Array.from({ length: N + 1 }, (_, k) => f((k / N) * tmax));
+  const mx = Math.max(...fs);
+  const X = (t: number) => x0 + (t / tmax) * pw;
+  const Y = (v: number) => baseY - (v / mx) * (baseY - top);
+  const pts = fs.map((v, k) => `${X((k / N) * tmax).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+  const vline = (t: number, color: string, label: string, ly: number) => { const x = X(t); return `<g><line x1="${x}" y1="${ly + 4}" x2="${x}" y2="${baseY}" stroke="${color}" stroke-width="1.7" stroke-dasharray="3 2" /><text x="${x}" y="${ly}" text-anchor="middle" font-size="9.5" font-weight="700" fill="${color}">${label}</text></g>`; };
+  return `<svg viewBox="0 0 344 112" role="img" aria-label="右に歪んだ分布での最頻値・中央値・平均の位置関係" class="g3-fig-svg">
+    <polygon points="${X(0).toFixed(1)},${baseY} ${pts} ${X(tmax).toFixed(1)},${baseY}" fill="var(--primary)" fill-opacity="0.1" />
+    <polyline points="${pts}" fill="none" stroke="var(--primary)" stroke-width="2" />
+    <line x1="${x0}" y1="${baseY}" x2="${x0 + pw}" y2="${baseY}" stroke="#cbd5e1" stroke-width="1" />
+    ${vline(1.82, '#12864b', '最頻値', 14)}${vline(2.30, '#5b8def', '中央値', 31)}${vline(2.73, '#e0607e', '平均', 14)}
+    <text x="${x0 + pw}" y="99" text-anchor="end" font-size="8" fill="#94a3b8">値 →（右に長い裾）</text>
+  </svg>`;
+}
+function ogiveSvg(): string {
+  const x0 = 46, y0 = 90, pw = 268, ph = 62;
+  const X = (s: number) => x0 + ((s - 40) / 60) * pw;
+  const Y = (c: number) => y0 - c * ph;
+  const data: [number, number][] = [[40, 0], [50, 0.08], [60, 0.30], [70, 0.62], [80, 0.86], [90, 0.97], [100, 1]];
+  const line = data.map(([s, c]) => `${X(s).toFixed(1)},${Y(c).toFixed(1)}`).join(' ');
+  const medS = 66;
+  const dots = data.map(([s, c]) => `<circle cx="${X(s)}" cy="${Y(c)}" r="2.2" fill="var(--primary)" />`).join('');
+  return `<svg viewBox="0 0 344 112" role="img" aria-label="累積相対度数グラフ（オージャイブ）からの中央値の読み取り" class="g3-fig-svg">
+    <line x1="${x0}" y1="${y0}" x2="${x0 + pw}" y2="${y0}" stroke="#cbd5e1" stroke-width="1" /><line x1="${x0}" y1="${y0}" x2="${x0}" y2="${y0 - ph - 4}" stroke="#cbd5e1" stroke-width="1" />
+    <line x1="${x0}" y1="${Y(0.5)}" x2="${X(medS)}" y2="${Y(0.5)}" stroke="#e0607e" stroke-width="1.3" stroke-dasharray="3 2" />
+    <line x1="${X(medS)}" y1="${Y(0.5)}" x2="${X(medS)}" y2="${y0}" stroke="#e0607e" stroke-width="1.3" stroke-dasharray="3 2" />
+    <polyline points="${line}" fill="none" stroke="var(--primary)" stroke-width="2" />${dots}
+    <text x="${x0 - 5}" y="${Y(0.5) + 3}" text-anchor="end" font-size="8.5" font-weight="700" fill="#e0607e">0.5</text>
+    <text x="${x0 - 5}" y="${Y(1) + 3}" text-anchor="end" font-size="8" fill="#94a3b8">1.0</text>
+    <text x="${x0 - 5}" y="${y0 + 3}" text-anchor="end" font-size="8" fill="#94a3b8">0</text>
+    <text x="${X(medS)}" y="${y0 + 12}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#e0607e">中央値≈66</text>
+    <text x="${x0 + pw}" y="${y0 + 12}" text-anchor="end" font-size="8" fill="#94a3b8">点数 →</text>
+    <text x="${x0 - 8}" y="${y0 - ph - 8}" text-anchor="start" font-size="8" fill="#94a3b8">累積相対度数</text>
+  </svg>`;
+}
+function samplingSvgG3(): string {
+  const panels = [{ title: '単純無作為', cx: 8 }, { title: '層化', cx: 116 }, { title: 'クラスター', cx: 224 }];
+  const pw = 96, py = 22, ph = 94;
+  const rnd = mulberryRndG3(3);
+  let out = '';
+  panels.forEach((p) => {
+    out += `<text x="${p.cx + pw / 2}" y="14" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">${p.title}</text>`;
+    out += `<rect x="${p.cx}" y="${py}" width="${pw}" height="${ph}" rx="6" fill="none" stroke="#cbd5e1" stroke-width="1" />`;
+    if (p.title === '層化') for (let b = 0; b < 3; b++) out += `<rect x="${p.cx}" y="${py + b * (ph / 3)}" width="${pw}" height="${ph / 3}" fill="${b % 2 ? 'var(--primary)' : '#f59e0b'}" fill-opacity="0.06" />`;
+    if (p.title === 'クラスター') { out += `<rect x="${p.cx + 4}" y="${py + 6}" width="40" height="38" rx="4" fill="var(--primary)" fill-opacity="0.14" stroke="var(--primary)" stroke-width="1.2" />`; out += `<rect x="${p.cx + pw / 2 + 4}" y="${py + ph / 2 - 2}" width="40" height="38" rx="4" fill="var(--primary)" fill-opacity="0.14" stroke="var(--primary)" stroke-width="1.2" />`; }
+    for (let i = 0; i < 26; i++) {
+      const dx = p.cx + 8 + rnd() * (pw - 16), dy = py + 8 + rnd() * (ph - 16);
+      let picked = false;
+      if (p.title === '単純無作為') picked = rnd() < 0.28;
+      else if (p.title === '層化') picked = rnd() < 0.28;
+      else picked = (dx > p.cx + 4 && dx < p.cx + 44 && dy > py + 6 && dy < py + 44) || (dx > p.cx + pw / 2 + 4 && dy > py + ph / 2 - 2);
+      out += `<circle cx="${dx.toFixed(1)}" cy="${dy.toFixed(1)}" r="2.4" fill="${picked ? 'var(--primary)' : '#cbd5e1'}" />`;
+    }
+  });
+  return `<svg viewBox="0 0 328 136" role="img" aria-label="標本抽出法：単純無作為・層化・クラスターの違い" class="g3-fig-svg">${out}<text x="164" y="132" text-anchor="middle" font-size="9" fill="#64748b">濃い点＝標本に選ばれた個体</text></svg>`;
+}
+function timeseriesSvgG3(): string {
+  const N = 24, x0 = 30, y0 = 16, plotW = 288, plotH = 116;
+  const rnd = mulberryRndG3(7);
+  const raw: number[] = [];
+  for (let t = 0; t < N; t++) raw.push(1 + 0.05 * t + 0.6 * Math.sin((2 * Math.PI * t) / 12) + (rnd() - 0.5) * 0.7);
+  const half = 2;
+  const ma = raw.map((_, t) => { let s = 0, c = 0; for (let j = -half; j <= half; j++) { if (t + j >= 0 && t + j < N) { s += raw[t + j]; c++; } } return s / c; });
+  const all = raw.concat(ma), mn = Math.min(...all), mx = Math.max(...all);
+  const sx = (t: number) => x0 + (t / (N - 1)) * plotW;
+  const sy = (v: number) => y0 + plotH - ((v - mn) / (mx - mn)) * plotH;
+  const rawPoly = raw.map((v, t) => `${sx(t).toFixed(1)},${sy(v).toFixed(1)}`).join(' ');
+  const maPoly = ma.map((v, t) => `${sx(t).toFixed(1)},${sy(v).toFixed(1)}`).join(' ');
+  const dots = raw.map((v, t) => `<circle cx="${sx(t)}" cy="${sy(v)}" r="1.7" fill="#94a3b8" />`).join('');
+  return `<svg viewBox="0 0 328 182" role="img" aria-label="時系列：ぎざぎざの生データと、なめらかな移動平均のトレンド線" class="g3-fig-svg">
+    <line x1="${x0}" y1="${y0 + plotH}" x2="${x0 + plotW}" y2="${y0 + plotH}" stroke="#cbd5e1" stroke-width="1" />
+    <polyline points="${rawPoly}" fill="none" stroke="#94a3b8" stroke-width="1.3" />${dots}
+    <polyline points="${maPoly}" fill="none" stroke="var(--primary)" stroke-width="2.8" />
+    <line x1="${x0}" y1="${y0 + plotH + 16}" x2="${x0 + 18}" y2="${y0 + plotH + 16}" stroke="#94a3b8" stroke-width="1.3" />
+    <text x="${x0 + 22}" y="${y0 + plotH + 19}" font-size="9.5" fill="#64748b">生データ（ノイズ）</text>
+    <line x1="${x0 + 150}" y1="${y0 + plotH + 16}" x2="${x0 + 168}" y2="${y0 + plotH + 16}" stroke="var(--primary)" stroke-width="2.8" />
+    <text x="${x0 + 172}" y="${y0 + plotH + 19}" font-size="9.5" fill="var(--primary)">移動平均＝トレンド</text>
+  </svg>`;
+}
+
+const G3_FIGURES: Record<string, string> = {
+  'ci': `<figure class="g3-figure">${ciSvgG3()}<figcaption class="g3-fig-cap">「95%信頼区間」の正しい意味。同じ調査を何度も行うと、標本ごとに少しずつ違う区間ができる。このうち<strong>約95%が母平均 μ を含み、約5%（20回に1回ほど）は外す（赤）</strong>。だから「この1本の区間に μ が入る確率が95%」ではなく「この作り方をくり返すと95%の区間が μ を含む」が正確な言い方。</figcaption></figure>`,
+  'rejection': `<figure class="g3-figure">${rejectionSvg()}<figcaption class="g3-fig-cap">有意水準5%の両側検定のイメージ。分布の両裾にある赤い部分が<strong>棄却域</strong>（各2.5%）。検定統計量がこの赤い領域に入るほど「偶然では起こりにくい」ので、帰無仮説 H₀ を棄却する。中央の広い部分（採択域）に入れば「偶然の範囲」として H₀ を棄却しない。臨界値がその境目。</figcaption></figure>`,
+  'graphtypes': `<figure class="g3-figure">${graphtypesSvg()}<figcaption class="g3-fig-cap">グラフは「何を伝えたいか」で選ぶ。<strong>棒グラフ</strong>は量の大小をくらべる、<strong>円グラフ</strong>は全体に占める割合（構成比）、<strong>折れ線</strong>は時間による変化やトレンド、<strong>散布図</strong>は2つの量の関係を見るのに向く。目的に合わないグラフを選ぶと誤解のもとになる。</figcaption></figure>`,
+  'boxplot': `<figure class="g3-figure"><svg viewBox="0 0 360 116" role="img" aria-label="箱ひげ図：最小値・Q1・中央値・Q3・最大値と外れ値。箱の長さがIQR" class="g3-fig-svg">
+    <line x1="60" y1="60" x2="110" y2="60" stroke="#64748b" stroke-width="1.5" /><line x1="200" y1="60" x2="250" y2="60" stroke="#64748b" stroke-width="1.5" />
+    <line x1="60" y1="47" x2="60" y2="73" stroke="#64748b" stroke-width="1.5" /><line x1="250" y1="47" x2="250" y2="73" stroke="#64748b" stroke-width="1.5" />
+    <rect x="110" y="40" width="90" height="40" fill="var(--primary)" fill-opacity="0.15" stroke="var(--primary)" stroke-width="1.6" />
+    <line x1="150" y1="40" x2="150" y2="80" stroke="var(--primary)" stroke-width="2.6" />
+    <circle cx="300" cy="60" r="4" fill="none" stroke="#dc2626" stroke-width="1.6" />
+    <line x1="110" y1="30" x2="200" y2="30" stroke="#94a3b8" stroke-width="1" /><line x1="110" y1="30" x2="110" y2="36" stroke="#94a3b8" stroke-width="1" /><line x1="200" y1="30" x2="200" y2="36" stroke="#94a3b8" stroke-width="1" />
+    <text x="155" y="23" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">IQR = Q₃ − Q₁</text>
+    <text x="60" y="101" text-anchor="middle" font-size="10" fill="#64748b">最小値</text><text x="110" y="101" text-anchor="middle" font-size="11" font-weight="700" fill="var(--primary)">Q₁</text><text x="150" y="101" text-anchor="middle" font-size="10" font-weight="700" fill="var(--primary)">中央値</text><text x="200" y="101" text-anchor="middle" font-size="11" font-weight="700" fill="var(--primary)">Q₃</text><text x="250" y="101" text-anchor="middle" font-size="10" fill="#64748b">最大値</text><text x="300" y="101" text-anchor="middle" font-size="10" fill="#b91c1c">外れ値</text>
+  </svg><figcaption class="g3-fig-cap">箱ひげ図の読み方。箱の左端が Q₁、右端が Q₃ で、箱の長さが四分位範囲 IQR ＝ Q₃−Q₁（中央50%の散らばり）。箱の中の線が中央値。ひげは外れ値を除いた最小値・最大値まで伸び、その外側の点（赤）が外れ値。平均と標準偏差では見えない「分布の形・外れ値」が一目でわかる。</figcaption></figure>`,
+  'histshapes': `<figure class="g3-figure">${histshapesSvg()}<figcaption class="g3-fig-cap">ヒストグラムの形で分布の性質が読める。<strong>左右対称</strong>は平均付近に集中（標準的）。<strong>右歪み</strong>は少数の大きな値が裾を引く（年収など）。<strong>左歪み</strong>はその逆（簡単な試験）。<strong>双峰型</strong>は山が2つ＝別グループ（男女など）が混ざっているサイン。</figcaption></figure>`,
+  'deviation': `<figure class="g3-figure">${deviationSvg()}<figcaption class="g3-fig-cap">各データと平均10との差が<strong>偏差</strong>（点の上の数）。平均より小さい側が負・大きい側が正で、左右にちょうど打ち消し合うため<strong>偏差の合計は0</strong>になる。だから二乗してから平均する——それが分散。</figcaption></figure>`,
+  'skewmean': `<figure class="g3-figure">${skewmeanSvg()}<figcaption class="g3-fig-cap">右に歪んだ分布（少数の大きな値が右の裾を作る）では、山の頂上が<strong>最頻値</strong>、真ん中が<strong>中央値</strong>、裾に引っぱられて右に寄るのが<strong>平均</strong>。この順で「最頻値 ≤ 中央値 ≤ 平均」になる。左右対称の分布なら三つは同じ位置に重なる。</figcaption></figure>`,
+  'ogive': `<figure class="g3-figure">${ogiveSvg()}<figcaption class="g3-fig-cap">累積相対度数グラフ（オージャイブ）。横軸は点数（階級の上限）、縦軸はそこまでに全体の何割が入るか。<strong>縦軸の 0.5 から水平にたどり、曲線と交わった点の横軸が中央値</strong>（この例では約66点）。「70点以下は何％か」なども曲線から直接読み取れる。</figcaption></figure>`,
+  'sampling': `<figure class="g3-figure">${samplingSvgG3()}<figcaption class="g3-fig-cap"><strong>単純無作為抽出</strong>は母集団全体から等確率でばらばらに選ぶ。<strong>層化抽出</strong>は似た者どうしの層（例：年代）に分けて各層から選び、偏りを抑える。<strong>クラスター抽出</strong>は集団（例：学校・地区）に分け、選んだ集団を丸ごと調べる（コストは低いが精度は下がりやすい）。</figcaption></figure>`,
+  'timeseries': `<figure class="g3-figure">${timeseriesSvgG3()}<figcaption class="g3-fig-cap">生データ（灰）は短期のノイズで上下にぎざぎざ揺れて、長期の傾向が見えにくい。各点を「前後数点の平均」に置きかえる移動平均（色つき）を取ると、ノイズが打ち消し合ってなめらかになり、右肩上がりのトレンドがはっきり見える。</figcaption></figure>`,
+  'venn': `<figure class="g3-figure"><svg viewBox="0 0 320 172" role="img" aria-label="加法定理のベン図：A∪B は A と B を足して重なり A∩B を引く" class="g3-fig-svg">
+    <circle cx="124" cy="84" r="62" fill="var(--primary)" fill-opacity="0.16" stroke="var(--primary)" stroke-width="1.8" /><circle cx="196" cy="84" r="62" fill="#f59e0b" fill-opacity="0.14" stroke="#d97706" stroke-width="1.8" />
+    <text x="86" y="62" text-anchor="middle" font-size="17" font-weight="800" fill="var(--primary)">A</text><text x="234" y="62" text-anchor="middle" font-size="17" font-weight="800" fill="#b45309">B</text>
+    <text x="160" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">A∩B</text><text x="160" y="94" text-anchor="middle" font-size="8.5" fill="#64748b">（重なり）</text>
+    <text x="160" y="162" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">P(A∪B) ＝ P(A) ＋ P(B) − P(A∩B)</text>
+  </svg><figcaption class="g3-fig-cap">「A または B」（A∪B）の確率は、A と B をそのまま足すと重なり A∩B を<strong>二重に数えて</strong>しまう。だから重なりの分 P(A∩B) を1回引く——これが加法定理。A と B が同時に起こらない（排反）なら重なりが無いので、そのまま足せる。</figcaption></figure>`,
+};
+
 function mdToHtml(content: string): string {
   const lines = content.split('\n');
   const out: string[] = [];
   let i = 0;
   while (i < lines.length) {
     const t = lines[i].trim();
+    const figKeyG3 = t.match(/^\[\[([a-z0-9-]+)\]\]$/);
+    if (figKeyG3 && G3_FIGURES[figKeyG3[1]]) { out.push(G3_FIGURES[figKeyG3[1]]); i++; continue; }
     if (t === '' || /^\[\[.*?\]\]$/.test(t)) { i++; continue; }
     if (/^---+$/.test(t)) { out.push('<hr style="border:0;border-top:1px solid #ddd;margin:18px 0">'); i++; continue; }
     if (t.startsWith('#### ')) { out.push(`<h4 style="font-size:1rem;margin:16px 0 6px">${inlineHtml(t.slice(5))}</h4>`); i++; continue; }
