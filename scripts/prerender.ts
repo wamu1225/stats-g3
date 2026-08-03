@@ -357,12 +357,18 @@ for (const mod of modules) {
   const pageUrl = `${BASE_URL}/${mod.id}/`;
   const pageTitle = `${mod.title} | 統計検定 3級 学習リファレンス`;
 
-  // クイズスニペット（最初の3問・静的HTMLにも本文として出す）
+  // クイズスニペット（最初の3問・静的HTMLにも本文として出す）。数式はrenderMathで実描画
+  // （2026-08-04・stats-pre1/g2で同型の欠落=$...$未対応を発見・本サイトは現状該当データ無しだが同じ穴を予防）
   const quizSnippet = mod.quiz.slice(0, 3).map((q, qi) => {
     const correctAnswer = q.options[q.correctAnswer];
+    const renderInline = (t: string) => t.split(/(\$\$[\s\S]+?\$\$|\$[^$\n]+\$)/g).map((tok) => {
+      if (tok.startsWith('$$') && tok.endsWith('$$') && tok.length >= 4) return renderMath(tok.slice(2, -2), true);
+      if (tok.startsWith('$') && tok.endsWith('$') && tok.length >= 2) return renderMath(tok.slice(1, -1), false);
+      return escHtml(tok);
+    }).join('').replace(/\*\*(.*?)\*\*/g, '$1');
     return `<div style="margin-bottom:12px;padding:12px;background:#f8fafc;border-radius:6px;border-left:3px solid #2563eb">
-  <p style="margin:0 0 6px;font-weight:600;color:#1e3a5f">Q${qi + 1}. ${q.question.replace(/\*\*(.*?)\*\*/g, '$1')}</p>
-  <p style="margin:0;color:#444;font-size:0.92rem">A. ${correctAnswer.replace(/\*\*(.*?)\*\*/g, '$1')}</p>
+  <p style="margin:0 0 6px;font-weight:600;color:#1e3a5f">Q${qi + 1}. ${renderInline(q.question)}</p>
+  <p style="margin:0;color:#444;font-size:0.92rem">A. ${renderInline(correctAnswer)}</p>
 </div>`;
   }).join('\n');
   const quizSnippetHtml = `<section style="margin-top:28px">
