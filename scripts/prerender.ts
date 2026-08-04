@@ -251,6 +251,22 @@ const G3_FIGURES: Record<string, string> = {
   </svg><figcaption class="g3-fig-cap">「A または B」（A∪B）の確率は、A と B をそのまま足すと重なり A∩B を<strong>二重に数えて</strong>しまう。だから重なりの分 P(A∩B) を1回引く——これが加法定理。A と B が同時に起こらない（排反）なら重なりが無いので、そのまま足せる。</figcaption></figure>`,
 };
 
+// 行頭の絵文字マーカーは装飾でなくテキストラベルへ（2026-08-05・O-2-8：
+// 生の絵文字グリフはOS/フォント依存で描画が不安定・アクセシビリティ上も弱い。
+// 「識別に効くか」は保ったまま絵文字自体を落とす＝色彩系サイトが既に採用しているパターンに合わせる）。
+const LINE_MARKERS: Record<string, string> = {
+  '💡': 'ヒント',
+  '🎯': '試験ポイント',
+  '⚠️': '注意',
+  '📌': 'まとめ',
+  '📖': '発展',
+};
+// 見出し（### ⚠️ よくある誤解 等）は見出し文自体が既に意味を伝えるため、絵文字だけ剥がす（ラベル追加はしない）。
+function stripLeadingMarker(text: string): string {
+  const markerKey = Object.keys(LINE_MARKERS).find((mk) => text.startsWith(mk));
+  return markerKey ? text.slice(markerKey.length).trim() : text;
+}
+
 function mdToHtml(content: string): string {
   const lines = content.split('\n');
   const out: string[] = [];
@@ -261,9 +277,9 @@ function mdToHtml(content: string): string {
     if (figKeyG3 && G3_FIGURES[figKeyG3[1]]) { out.push(G3_FIGURES[figKeyG3[1]]); i++; continue; }
     if (t === '' || /^\[\[.*?\]\]$/.test(t)) { i++; continue; }
     if (/^---+$/.test(t)) { out.push('<hr style="border:0;border-top:1px solid #ddd;margin:18px 0">'); i++; continue; }
-    if (t.startsWith('#### ')) { out.push(`<h4 style="font-size:1rem;margin:16px 0 6px">${inlineHtml(t.slice(5))}</h4>`); i++; continue; }
-    if (t.startsWith('### ')) { out.push(`<h3 style="font-size:1.05rem;margin:18px 0 6px">${inlineHtml(t.slice(4))}</h3>`); i++; continue; }
-    if (t.startsWith('## ')) { out.push(`<h2 style="font-size:1.2rem;margin:22px 0 8px;border-left:4px solid #2563eb;padding-left:10px">${inlineHtml(t.slice(3))}</h2>`); i++; continue; }
+    if (t.startsWith('#### ')) { out.push(`<h4 style="font-size:1rem;margin:16px 0 6px">${inlineHtml(stripLeadingMarker(t.slice(5)))}</h4>`); i++; continue; }
+    if (t.startsWith('### ')) { out.push(`<h3 style="font-size:1.05rem;margin:18px 0 6px">${inlineHtml(stripLeadingMarker(t.slice(4)))}</h3>`); i++; continue; }
+    if (t.startsWith('## ')) { out.push(`<h2 style="font-size:1.2rem;margin:22px 0 8px;border-left:4px solid #2563eb;padding-left:10px">${inlineHtml(stripLeadingMarker(t.slice(3)))}</h2>`); i++; continue; }
     if (t.startsWith('|')) {
       const rows: string[] = [];
       while (i < lines.length && lines[i].trim().startsWith('|')) { rows.push(lines[i].trim()); i++; }
@@ -288,6 +304,11 @@ function mdToHtml(content: string): string {
       while (i < lines.length && /^[-*]\s/.test(lines[i].trim())) { items.push(lines[i].trim().replace(/^[-*]\s/, '')); i++; }
       out.push('<ul style="padding-left:20px">' + items.map((it) => `<li>${inlineHtml(it)}</li>`).join('') + '</ul>');
       continue;
+    }
+    const markerKey = Object.keys(LINE_MARKERS).find((mk) => t.startsWith(mk));
+    if (markerKey) {
+      const rest = t.slice(markerKey.length).trim();
+      out.push(`<p style="margin:0 0 12px"><strong style="color:#2563eb">${LINE_MARKERS[markerKey]}：</strong>${inlineHtml(rest)}</p>`); i++; continue;
     }
     out.push(`<p style="margin:0 0 12px">${inlineHtml(t)}</p>`); i++;
   }
