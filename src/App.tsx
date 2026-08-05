@@ -1,5 +1,5 @@
 // stats-g3/src/App.tsx
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import './App.css';
 import { modules } from './data/modules';
 import { comprehensiveQuizQuestions } from './data/comprehensiveQuiz';
@@ -56,6 +56,10 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [progress, setProgress] = useState<Progress>(loadProgress);
+  // モジュール内で式ごとに繰り返されていた同一記号（x, n等）の解説重複を防ぐため、
+  // モジュール表示中に既に解説した記号を記録し、切り替え時にリセットする。
+  const shownSymbolsRef = useRef<Set<string>>(new Set());
+  useEffect(() => { shownSymbolsRef.current = new Set(); }, [activeModuleId]);
 
   // Random quiz state
   const [rqQuestions, setRqQuestions] = useState<{ q: typeof modules[0]['quiz'][0]; moduleTitle: string; moduleId: string }[]>([]);
@@ -185,7 +189,7 @@ function App() {
           {parts.map((part, i) => {
             if (!part) return null;
             const key = `inline-${i}`;
-            if (part.startsWith('$$') && part.endsWith('$$')) return <MathDisplay key={key} formula={part.slice(2, -2)} block={true} />;
+            if (part.startsWith('$$') && part.endsWith('$$')) return <MathDisplay key={key} formula={part.slice(2, -2)} block={true} shownSymbols={shownSymbolsRef.current} />;
             if (part.startsWith('$') && part.endsWith('$')) return <MathDisplay key={key} formula={part.slice(1, -1)} />;
             if (part.startsWith('**') && part.endsWith('**')) return <strong key={key}>{parseInline(part.slice(2, -2))}</strong>;
             // [ラベル](URL) — 主に study-apps.com 内の姉妹サイトへ渡すための記法。

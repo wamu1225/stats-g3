@@ -6,6 +6,9 @@ import { Info } from 'lucide-react';
 interface Props {
   formula: string;
   block?: boolean;
+  /** このモジュール内で既に解説済みの記号（再掲を防ぐ）。渡された場合、初出の記号だけをガイドに表示し、
+   *  表示した記号をこのSetへ書き足す。モジュール切り替え時に呼び出し側でリセットすること。 */
+  shownSymbols?: Set<string>;
 }
 
 const symbolGuide: Record<string, { label: string; desc: string }> = {
@@ -20,7 +23,7 @@ const symbolGuide: Record<string, { label: string; desc: string }> = {
   '\\epsilon': { label: 'ε (イプシロン)', desc: '誤差項。' }
 };
 
-export const MathDisplay: React.FC<Props> = ({ formula, block }) => {
+export const MathDisplay: React.FC<Props> = ({ formula, block, shownSymbols }) => {
   const html = useMemo(() => {
     try {
       return katex.renderToString(formula, {
@@ -43,6 +46,9 @@ export const MathDisplay: React.FC<Props> = ({ formula, block }) => {
       ? formula.includes(s)
       : new RegExp(`(^|[^a-zA-Z])${s}([^a-zA-Z]|$)`).test(strippedFormula)
   );
+  // 同じモジュール内で既に解説した記号は再掲しない（式ごとに同じ「x: 観測値」等が繰り返される重複を解消）。
+  const newSymbols = shownSymbols ? activeSymbols.filter(s => !shownSymbols.has(s)) : activeSymbols;
+  newSymbols.forEach(s => shownSymbols?.add(s));
 
   if (!block) {
     return (
@@ -60,12 +66,12 @@ export const MathDisplay: React.FC<Props> = ({ formula, block }) => {
         dangerouslySetInnerHTML={{ __html: html }} 
       />
       
-      {activeSymbols.length > 0 && (
-        <div className="symbol-guide" style={{ 
-          marginTop: '1rem', 
-          background: '#f8fafc', 
-          padding: '0.75rem', 
-          borderRadius: '0.5rem', 
+      {newSymbols.length > 0 && (
+        <div className="symbol-guide" style={{
+          marginTop: '1rem',
+          background: '#f8fafc',
+          padding: '0.75rem',
+          borderRadius: '0.5rem',
           fontSize: '0.75rem',
           border: '1px dashed #cbd5e1',
           textAlign: 'left'
@@ -74,7 +80,7 @@ export const MathDisplay: React.FC<Props> = ({ formula, block }) => {
             <Info size={14} /> 記号の解説
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.5rem' }}>
-            {activeSymbols.map(s => (
+            {newSymbols.map(s => (
               <div key={s}>
                 <span style={{ fontWeight: 600, color: 'var(--text)' }}>{symbolGuide[s].label}</span>: 
                 <span style={{ color: 'var(--text-muted)' }}> {symbolGuide[s].desc}</span>
