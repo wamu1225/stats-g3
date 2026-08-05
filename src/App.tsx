@@ -574,7 +574,7 @@ function App() {
             if (part.startsWith('[[interactive:')) {
               const typeMatch = part.match(/\[\[interactive:(.*?)\]\]/);
               if (typeMatch) {
-                const type = typeMatch[1] as 'normal' | 't' | 'chi2' | 'f' | 'pca' | 'regression' | 'logistic' | 'mcmc' | 'gibbs' | 'update' | 'overfit' | 'outlier' | 'multico';
+                const type = typeMatch[1] as 'normal' | 'ci' | 't' | 'chi2' | 'f' | 'pca' | 'regression' | 'logistic' | 'mcmc' | 'gibbs' | 'update' | 'overfit' | 'outlier' | 'multico';
                 return <InteractiveGraph key={key} type={type} renderContent={parseInline} />;
               }
             }
@@ -659,7 +659,13 @@ function App() {
       const markerKey = Object.keys(LINE_MARKERS).find((mk) => trimmedLine.startsWith(mk));
       if (markerKey) {
         const rest = trimmedLine.slice(markerKey.length).trim();
-        result.push(<p key={key} className="content-p"><strong style={{ color: '#2563eb' }}>{LINE_MARKERS[markerKey]}：</strong>{parseInlineContent(rest)}</p>);
+        // 本文が自前の太字ラベルで始まっていれば、そちらを使いマーカー由来のラベルは出さない。
+        // これを入れる前は「試験ポイント：試験ポイント：」「試験ポイント：試験頻出パターン：」のように
+        // ラベルが二重に出ていた（全サイトで63か所）。本文側の方が具体的なので本文を優先する。
+        const own = rest.match(/^\*\*([^*]+[：:])\*\*\s*/);
+        const label = own ? own[1].replace(/[：:]$/, '') : LINE_MARKERS[markerKey];
+        const body = own ? rest.slice(own[0].length) : rest;
+        result.push(<p key={key} className="content-p"><strong style={{ color: '#2563eb' }}>{label}：</strong>{parseInlineContent(body)}</p>);
         return;
       }
       result.push(<p key={key} className="content-p">{parseInlineContent(line)}</p>);

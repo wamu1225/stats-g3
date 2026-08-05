@@ -40,6 +40,77 @@ function NormalGraph() {
   );
 }
 
+// --- 信頼区間の意味 ---
+// 初学者が最も取り違えるのは「95%の確率で母平均がこの区間に入る」という読み方。
+// 母平均は動かない定数で、標本ごとに動くのは区間の方。
+// 20回の標本抽出を並べ、母平均の線を外す区間が出ることを見せる。
+function ConfidenceIntervalGraph() {
+  const MU = 168, SIGMA = 6;
+  const [n, setN] = useState(30);
+  const [seed, setSeed] = useState(0);
+
+  // Box-Muller。seed から決まる擬似乱数なので、同じ seed なら同じ図になる（再現可能）。
+  const draw = useCallback((k: number, size: number) => {
+    let s = (k * 9301 + 49297) % 233280;
+    const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+    let sum = 0;
+    for (let i = 0; i < size; i++) {
+      const u1 = Math.max(rnd(), 1e-9), u2 = rnd();
+      sum += MU + SIGMA * Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+    }
+    return sum / size;
+  }, []);
+
+  const se = SIGMA / Math.sqrt(n);
+  const half = 1.96 * se;
+  const trials = Array.from({ length: 20 }, (_, i) => {
+    const xbar = draw(seed * 1000 + i * 37 + 11, n);
+    return { xbar, lo: xbar - half, hi: xbar + half, hit: xbar - half <= MU && MU <= xbar + half };
+  });
+  const missed = trials.filter((t) => !t.hit).length;
+
+  const W = 460, rowH = 15, padT = 26, padB = 30, padL = 30, padR = 14;
+  const H = padT + rowH * 20 + padB;
+  const span = Math.max(6, 1.96 * (SIGMA / Math.sqrt(10)) + 2);
+  const X = (v: number) => padL + ((v - (MU - span)) / (2 * span)) * (W - padL - padR);
+
+  return (
+    <div className="interactive-graph">
+      <div className="slider-row">
+        <label>標本サイズ n = {n}</label>
+        <input type="range" min="10" max="120" step="10" value={n} onChange={(e) => setN(Number(e.target.value))} />
+        <button className="btn" style={{ width: 'auto', padding: '0.35rem 0.9rem', fontSize: '0.85rem' }} onClick={() => setSeed((s) => s + 1)}>
+          20回とり直す
+        </button>
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label="20回の標本から作った95%信頼区間と母平均の関係">
+        <line x1={X(MU)} y1={padT - 8} x2={X(MU)} y2={H - padB + 4} stroke="#b91c1c" strokeWidth="1.8" />
+        <text x={X(MU)} y={padT - 13} textAnchor="middle" fontSize="11" fontWeight="700" fill="#b91c1c">母平均 μ = {MU}cm（動かない）</text>
+        {trials.map((t, i) => {
+          const y = padT + i * rowH + rowH / 2;
+          const c = t.hit ? '#0f766e' : '#b91c1c';
+          return (
+            <g key={i}>
+              <line x1={X(t.lo)} y1={y} x2={X(t.hi)} y2={y} stroke={c} strokeWidth={t.hit ? 2 : 3} />
+              <line x1={X(t.lo)} y1={y - 3.5} x2={X(t.lo)} y2={y + 3.5} stroke={c} strokeWidth="1.5" />
+              <line x1={X(t.hi)} y1={y - 3.5} x2={X(t.hi)} y2={y + 3.5} stroke={c} strokeWidth="1.5" />
+              <circle cx={X(t.xbar)} cy={y} r="2.4" fill={c} />
+              <text x={6} y={y + 3.5} fontSize="9" fill="#888">{i + 1}</text>
+            </g>
+          );
+        })}
+        <text x={W / 2} y={H - 8} textAnchor="middle" fontSize="11" fill="#555">身長（cm）／点は標本平均、横棒が95%信頼区間</text>
+      </svg>
+      <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.7 }}>
+        20回のうち <strong>{20 - missed}回</strong> が母平均をとらえ、<strong style={{ color: '#b91c1c' }}>{missed}回</strong> は外しました。
+        動いているのは<strong>区間の方</strong>で、母平均は一本の線から動きません。
+        「95%」は<strong>この手続きを繰り返したときに当たる割合</strong>であって、目の前の1本の区間に母平均が入る確率ではありません。
+        n を大きくすると区間は細くなりますが、外す割合はおよそ5%のままです。
+      </p>
+    </div>
+  );
+}
+
 // --- 二項分布 ---
 function BinomialGraph() {
   const [n, setN] = useState(10);
@@ -159,6 +230,7 @@ function ScatterGraph() {
 
 export const InteractiveGraph: React.FC<Props> = ({ type }) => {
   switch (type) {
+    case 'ci': return <ConfidenceIntervalGraph />;
     case 'normal': return <NormalGraph />;
     case 'binomial': return <BinomialGraph />;
     case 'histogram': return <HistogramGraph />;
