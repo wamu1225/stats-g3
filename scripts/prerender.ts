@@ -3,6 +3,7 @@ import * as path from 'path';
 import sharp from 'sharp';
 import katex from 'katex';
 import { modules } from '../src/data/modules';
+import { chapterNames } from '../src/data/chapters';
 import { buildUsecaseHtml } from '../src/data/usecaseGuide';
 import { glossary } from '../src/data/glossary';
 
@@ -308,7 +309,11 @@ function mdToHtml(content: string): string {
     const markerKey = Object.keys(LINE_MARKERS).find((mk) => t.startsWith(mk));
     if (markerKey) {
       const rest = t.slice(markerKey.length).trim();
-      out.push(`<p style="margin:0 0 12px"><strong style="color:#2563eb">${LINE_MARKERS[markerKey]}：</strong>${inlineHtml(rest)}</p>`); i++; continue;
+      // App.tsx と同じ規則：本文が自前の太字ラベルで始まるならそちらを優先し、ラベルの二重表示を防ぐ。
+      const own = rest.match(/^\*\*([^*]+[：:])\*\*\s*/);
+      const label = own ? own[1].replace(/[：:]$/, '') : LINE_MARKERS[markerKey];
+      const body = own ? rest.slice(own[0].length) : rest;
+      out.push(`<p style="margin:0 0 12px"><strong style="color:#2563eb">${label}：</strong>${inlineHtml(body)}</p>`); i++; continue;
     }
     out.push(`<p style="margin:0 0 12px">${inlineHtml(t)}</p>`); i++;
   }
@@ -421,16 +426,28 @@ for (const mod of modules) {
 </article>`;
 
   modHtml = modHtml.replace('<div id="root"></div>', `<div id="root">${seoContentHtml}</div>`);
-  const modJsonLd = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'LearningResource',
-    'name': mod.title,
-    'description': mod.description,
-    'url': pageUrl,
-    'inLanguage': 'ja',
-    'learningResourceType': 'Article',
-    'provider': { '@type': 'Organization', 'name': 'study-apps.com', 'url': 'https://study-apps.com' }
-  });
+  // O-2-10（2026-08-05）：下層ページにBreadcrumbListが欠落していた（LearningResourceのみ）。
+  const modJsonLd = JSON.stringify([
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'ホーム', 'item': `${BASE_URL}/` },
+        { '@type': 'ListItem', 'position': 2, 'name': chapterNames[mod.chapter] ?? `第${mod.chapter}章`, 'item': `${BASE_URL}/` },
+        { '@type': 'ListItem', 'position': 3, 'name': mod.title, 'item': pageUrl }
+      ]
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'LearningResource',
+      'name': mod.title,
+      'description': mod.description,
+      'url': pageUrl,
+      'inLanguage': 'ja',
+      'learningResourceType': 'Article',
+      'provider': { '@type': 'Organization', 'name': 'study-apps.com', 'url': 'https://study-apps.com' }
+    }
+  ]);
   modHtml = modHtml.replace('</head>', `<script type="application/ld+json">${modJsonLd}</script>\n  </head>`);
 
   fs.writeFileSync(path.join(modDir, 'index.html'), modHtml);
