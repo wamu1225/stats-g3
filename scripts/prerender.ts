@@ -6,6 +6,7 @@ import { modules } from '../src/data/modules';
 import { chapterNames } from '../src/data/chapters';
 import { buildUsecaseHtml } from '../src/data/usecaseGuide';
 import { glossary } from '../src/data/glossary';
+import { EXAM_CONFIG } from '../src/data/examConfig';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const INDEX_HTML_PATH = path.join(DIST_DIR, 'index.html');
@@ -501,26 +502,66 @@ ${glossaryTermsHtml}
     bodyHtml: `<div style="background:#eff6ff;border-bottom:1px solid #bfdbfe;padding:10px 16px;font-size:0.88rem;text-align:center;margin-bottom:16px;border-radius:6px;max-width:860px;margin-left:auto;margin-right:auto"><a href="https://study-apps.com/" style="color:#1e3a8a;text-decoration:none;font-weight:600">← study-apps.com 学習サイト集トップへ</a></div><article id="static-fallback" style="font-family:sans-serif;line-height:1.7;max-width:860px;margin:0 auto;padding:24px 16px">
   <nav style="margin-bottom:16px"><a href="/stats-g3/" style="color:#2563eb;text-decoration:none">← ホームへ戻る</a></nav>
   <h1 style="font-size:1.6rem;font-weight:700;border-bottom:2px solid #2563eb;padding-bottom:8px;margin-bottom:20px">試験ガイド</h1>
-  <p style="color:#555;margin-bottom:24px">統計検定3級の試験概要・出題範囲・学習の進め方を解説します。</p>
-  <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 8px">試験概要</h2>
-  <p style="color:#444">統計検定3級は、データの基本的な整理・分析・解釈の能力を問う試験です。高校数学程度の知識で受験できます。試験時間は60分、出題形式はマークシート（多肢選択式）です。</p>
-  <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 8px">主な出題範囲</h2>
-  <ul style="color:#444;padding-left:20px">
-    <li>データの整理（度数分布・ヒストグラム・代表値・散布度）</li>
-    <li>データの可視化（グラフの読み取り・解釈）</li>
-    <li>散布図・相関・クロス集計</li>
-    <li>確率の基礎（確率の定義・加法定理・乗法定理）</li>
-    <li>確率分布（二項分布・正規分布・期待値・分散）</li>
-    <li>中心極限定理と標本分布</li>
-    <li>推定（区間推定・信頼区間）</li>
-    <li>仮説検定（t検定・比率の検定）</li>
-    <li>回帰分析（単回帰・相関係数）</li>
-  </ul>
-  <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 8px">合格基準</h2>
-  <p style="color:#444">概ね正答率70%以上が合格の目安とされています（試験回によって調整あり）。</p>
-  <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 8px">推奨学習時間</h2>
-  <p style="color:#444">高校数学の基礎がある場合：30〜60時間程度。初学者の場合：60〜100時間を目安に計画的に学習しましょう。</p>
-  <p style="margin-top:24px;font-size:0.85rem;color:#888">※本ページの情報は個人による学習支援目的のものです。最新の試験情報は必ず公式サイトでご確認ください。</p>
+  <p style="color:#555;margin-bottom:24px">統計検定3級の試験概要・学習戦略・推奨リソースをまとめています。</p>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 10px">試験の概要</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-bottom:12px">
+    <tbody>
+      <tr style="border-bottom:1px solid #eee"><td style="padding:6px 0;color:#64748b">実施方式</td><td style="padding:6px 0;text-align:right;font-weight:600">CBT（Computer Based Testing）— 全国のテストセンターで通年受験可</td></tr>
+      <tr style="border-bottom:1px solid #eee"><td style="padding:6px 0;color:#64748b">出題形式</td><td style="padding:6px 0;text-align:right;font-weight:600">多肢選択式（コンピュータ画面上で解答）</td></tr>
+      <tr style="border-bottom:1px solid #eee"><td style="padding:6px 0;color:#64748b">問題数 / 試験時間</td><td style="padding:6px 0;text-align:right;font-weight:600">${EXAM_CONFIG.questionCount} / ${EXAM_CONFIG.duration}分（1問あたり約2分）</td></tr>
+      <tr style="border-bottom:1px solid #eee"><td style="padding:6px 0;color:#64748b">合格基準</td><td style="padding:6px 0;text-align:right;font-weight:600">${EXAM_CONFIG.passingScoreLabel}（概ね${EXAM_CONFIG.passingQuestions}正答が目安）</td></tr>
+      <tr style="border-bottom:1px solid #eee"><td style="padding:6px 0;color:#64748b">受験料</td><td style="padding:6px 0;text-align:right;font-weight:600">一般 6,000円 / 学割 4,000円（税込）</td></tr>
+      <tr style="border-bottom:1px solid #eee"><td style="padding:6px 0;color:#64748b">電卓</td><td style="padding:6px 0;text-align:right;font-weight:600">持ち込み可（四則演算・ルート・メモリのある一般電卓。関数電卓は不可）</td></tr>
+      <tr><td style="padding:6px 0;color:#64748b">再受験</td><td style="padding:6px 0;text-align:right;font-weight:600">前回受験終了から最短1週間後に可</td></tr>
+    </tbody>
+  </table>
+  <p style="color:#166534;background:#f0fdf4;border-radius:8px;padding:10px 12px;font-size:0.88rem">3級は「統計リテラシーの入口」を問う試験。公式の丸暗記より、<strong>「なぜその数値が使われるのか」という概念の理解</strong>が合格への近道です。</p>
+  <p style="font-size:0.8rem;color:#94a3b8">※ 受験料・試験形式は変更される場合があります。最新情報は<a href="https://www.toukei-kentei.jp/" target="_blank" rel="noopener noreferrer" style="color:#2563eb">統計検定公式サイト</a>でご確認ください。</p>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">必要な学習時間の目安</h2>
+  <p style="color:#444"><strong>完全初学者（文系・数学未履修）</strong>：30〜60時間（1〜2ヶ月）。中学・高校数学の復習も含む。</p>
+  <p style="color:#444"><strong>高校数学既習者</strong>：15〜30時間（2〜4週間）。「データの分析」を理解済みの場合。</p>
+  <p style="color:#444"><strong>理系・統計実務経験者</strong>：5〜15時間（1週間程度）。用語の厳密な定義確認と電卓操作が中心。</p>
+  <p style="color:#64748b;font-size:0.88rem">※ 平日30〜60分・休日2時間のペースで1〜2ヶ月が標準的。短期集中（1日6時間×5日）でも合格ラインに到達可能ですが、定着度を考えると継続学習が推奨です。</p>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">4段階の学習フェーズ</h2>
+  <p style="color:#444"><strong>①全体像の把握（鳥瞰）</strong>：まず公式テキストや統計WEBを、計算を飛ばして1周通読する。「統計学で何ができるのか」というビッグピクチャーを掴むことに注力。細かな公式の暗記はこの段階では不要。</p>
+  <p style="color:#444"><strong>②現状診断（過去問演習）</strong>：早い段階で過去問を1回分解いて、今の実力と弱点を把握する。CBT特有の「画面で問題を読みながら、手元の紙で計算する」リズムを体感しておくことが重要。</p>
+  <p style="color:#444"><strong>③弱点補強と概念の深化</strong>：過去問で間違えた箇所を重点的に再学習。「標準偏差は何を意味するのか」「相関係数が0でも関係がないわけではない」など、数式を言葉で説明できるレベルまで深める。</p>
+  <p style="color:#444"><strong>④アウトプットの高速化</strong>：公式問題集を繰り返し演習して、1問2分以内で解けるスピードを身につける。電卓のメモリ機能も反射的に使えるよう練習しておく。時間不足が最大の敵。</p>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">推奨書籍</h2>
+  <p style="color:#444"><strong>改訂版 統計検定3級対応 データの分析</strong>★★★★★必須：公式テキスト。試験範囲を網羅。辞書的に使うのが◎。まず通読して全体像を掴む。</p>
+  <p style="color:#444"><strong>統計検定3級・4級 公式問題集（CBT対応版）</strong>★★★★★必須：唯一の公式問題集。解説が試験の「読み方」を教えてくれる。3周が目安。</p>
+  <p style="color:#444"><strong>マンガでわかる統計学</strong>★★★★☆入門：概念の直感的理解に最適。数式への抵抗感がある人の入口として有効。挫折防止に。</p>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">おすすめリソース</h2>
+  <p style="color:#444"><strong>統計WEB「統計学の時間」（BC Learning）</strong>：初学者のための定番サイト。ステップ形式で3級の全範囲をわかりやすく解説。「聖書」と呼ぶ受験生も多い。</p>
+  <p style="color:#444"><strong>Udemy「統計学入門コース」</strong>：約5.5時間の視聴で3級に必要な統計学を体系的にインプットできる。耳と目で学べるため、テキストが苦手な人に特に有効。</p>
+  <p style="color:#444"><strong>オモワカ統計 / データサイエンスLab.</strong>（YouTube）：電卓の操作テクニックや、試験頻出ポイントを解説。隙間時間の活用に最適。</p>
+  <p style="color:#444"><strong>生成AI（ChatGPT / Claude）</strong>：「中学生でもわかるように数式なしで説明して」と依頼すると抽象的な概念の理解が加速。24時間対応の個別指導として活用できる。</p>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">重要出題分野</h2>
+  <p style="color:#444"><strong>［最重要］グラフの読み取りと統計量の計算</strong>：ヒストグラム・箱ひげ図・散布図の読み取り、平均・標準偏差・四分位範囲の計算。毎回必ず出題される基礎中の基礎。</p>
+  <p style="color:#444"><strong>［最重要］確率の計算</strong>：加法定理・条件付き確率・独立性・組合せの計算。素直な計算問題が多く確実に得点したいエリア。</p>
+  <p style="color:#444"><strong>［重要］正規分布・標準化</strong>：Z = (X−μ)/σ の計算と標準正規分布表の読み取り。「μ±σの範囲に約68%」などの経験則も問われる。</p>
+  <p style="color:#444"><strong>［重要］データの尺度と変数の種類</strong>：名義・順序・間隔・比例尺度の区分。それぞれの尺度で使える統計量（代表値・散布度）の適切な選択。</p>
+  <p style="color:#444"><strong>［重要］相関係数と回帰直線</strong>：相関係数 r の値域・性質・因果との区別、回帰係数の解釈と予測計算。擬似相関・外挿の危険性も頻出。</p>
+  <p style="color:#444"><strong>［標準］時系列データと指数</strong>：4変動成分（趨勢・循環・季節・不規則）の識別と移動平均の計算。指数の読み方。</p>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">本番に向けた実践アドバイス</h2>
+  <p style="color:#444"><strong>1問2分のペース配分</strong>：60分・30問で1問平均2分。グラフ読み取りや定義問題など計算不要な問題を素早く片付け、計算問題に時間を残す。詰まったらフラグを付けて次へ進む。</p>
+  <p style="color:#444"><strong>電卓のメモリ機能を練習する</strong>：M+で偏差の二乗を加算し、MRで合計を呼び出すと分散の計算が大幅に速くなる。MCでリセットを忘れずに。本番前に必ず操作練習をしておく。</p>
+  <p style="color:#444"><strong>CBTの画面操作に慣れる</strong>：統計数値表は別ウィンドウで開く形式。画面と手元の計算用紙を往復しながら解くリズムを事前に練習しておく。試験開始時に文字サイズ調整も忘れずに。</p>
+  <p style="color:#444"><strong>用語の定義を正確に覚える</strong>：「信頼区間は母平均が含まれる確率ではない」「排反と独立は別の概念」など、紛らわしい定義の引っかけ問題が多い。言葉の意味を正確に押さえておく。</p>
+  <p style="color:#444"><strong>CBT会場の環境に動じない準備をする</strong>：テストセンターは様々な試験の受験者が混在するマルチ会場。他の受験者の入退室やキーボード操作音が気になることがある。日常の学習を静かすぎる環境だけで行わず、ある程度の雑音下でも集中する練習をしておくと本番に強くなる。</p>
+  <p style="color:#166534;background:#f0fdf4;border-radius:8px;padding:10px 12px;font-size:0.88rem">このサイトの学習リファレンスは、3級の試験範囲に沿って構成されています。各モジュールの理解度チェックで定着を確認しながら進めましょう。</p>
+
+  <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">合格後の展望</h2>
+  <p style="color:#444"><strong>2級へのステップアップ</strong>：3級合格後は速やかに2級への挑戦を検討したい。2級では、3級で学んだ「記述統計」を土台として、母集団のパラメータを標本から推論する「推測統計（仮説検定・区間推定）」が本格的に導入される。3級の内容を「他者に教えられるレベル」まで理解していれば、2級の学習効率は飛躍的に高まる。</p>
+  <p style="color:#444"><strong>実務への応用と意思決定の質的向上</strong>：統計学の真価は検定合格そのものではなく、実社会の不確実な事象を「確率と統計」というレンズを通してクリアにすることにある。標準偏差や相関係数の概念を売上分析や顧客行動の把握に適用し、エビデンスに基づく提案（Evidence-Based Management）を実践することが資格取得の真の目的である。</p>
+
   <p style="margin-top:16px"><a href="/stats-g3/" style="color:#2563eb">← ホームへ戻る</a></p>
 </article>`
   },
@@ -580,17 +621,22 @@ ${glossaryTermsHtml}
   <section style="margin-bottom:24px">
     <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:8px">1. サイトについて</h2>
     <p style="color:#444">本サイト「統計検定 3級 学習リファレンス」は、統計検定3級の学習を支援することを目的とした個人運営のサイトです。</p>
+    <p style="color:#444">本サイトは、統計質保証推進協会および日本統計学会の公式サイトではありません。試験の出題範囲・申込方法・合否については、必ず公式サイトをご確認ください。本サイトのコンテンツは学習目的で作成されたものであり、内容の正確性・完全性を保証するものではありません。</p>
   </section>
   <section style="margin-bottom:24px">
     <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:8px">2. Google Analytics の利用について</h2>
-    <p style="color:#444">本サイトでは、アクセス状況を把握するために <strong>Google Analytics</strong>（Google LLC 提供）を使用しています。閲覧したページのURL・滞在時間・使用デバイス・おおまかな地域情報などがCookieを通じてGoogleのサーバーに送信されます。個人を特定する情報は収集しません。</p>
+    <p style="color:#444">本サイトでは、アクセス状況を把握するために <strong>Google Analytics</strong>（Google LLC 提供）を使用しています。</p>
+    <p style="color:#444"><strong>送信される情報の例：</strong>閲覧したページのURL・滞在時間・使用デバイス・おおまかな地域情報（IPアドレスから推定）など。これらの情報はCookieを通じてGoogleのサーバーに送信されます。個人を特定する情報は収集しません。</p>
     <p style="color:#444"><strong>利用目的：</strong>コンテンツ改善のためのアクセス分析</p>
+    <p style="color:#444"><strong>オプトアウト：</strong><a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" style="color:#2563eb">Google アナリティクス オプトアウト アドオン</a>をインストールすることで、データ送信を無効にできます。</p>
+    <p style="color:#444">Googleのプライバシーポリシーは<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style="color:#2563eb">こちら</a>をご参照ください。</p>
   </section>
   <section style="margin-bottom:24px">
     <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:8px">3. Google AdSense の利用について</h2>
-    <p style="color:#444">本サイトでは、広告配信のために <strong>Google AdSense</strong>（Google LLC 提供）を使用しています。閲覧履歴・Cookieに保存された識別情報などが広告のパーソナライズに使用されます。</p>
+    <p style="color:#444">本サイトでは、広告配信のために <strong>Google AdSense</strong>（Google LLC 提供）を使用しています。</p>
+    <p style="color:#444"><strong>送信される情報の例：</strong>閲覧履歴・Cookieに保存された識別情報など。これらは広告のパーソナライズ（行動ターゲティング）に使用されます。</p>
     <p style="color:#444"><strong>利用目的：</strong>サイト運営費用の確保</p>
-    <p style="color:#444"><a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color:#2563eb">広告設定ページ</a>でパーソナライズ広告を無効にできます。</p>
+    <p style="color:#444"><strong>オプトアウト：</strong><a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color:#2563eb">広告設定ページ</a>でパーソナライズ広告を無効にできます。また、<a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" style="color:#2563eb">Digital Advertising Alliance</a> のオプトアウトツールもご利用いただけます。</p>
   </section>
   <section style="margin-bottom:24px">
     <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:8px">4. Cookieについて</h2>
@@ -598,11 +644,15 @@ ${glossaryTermsHtml}
   </section>
   <section style="margin-bottom:24px">
     <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:8px">5. 学習進捗データについて</h2>
-    <p style="color:#444">クイズの得点・完了状況は、お使いのブラウザの <strong>ローカルストレージ</strong> にのみ保存されます。このデータは外部サーバーへ送信されることはなく、運営者も閲覧できません。</p>
+    <p style="color:#444">クイズの得点・完了状況は、お使いのブラウザの <strong>ローカルストレージ</strong> にのみ保存されます。このデータは外部サーバーへ送信されることはなく、運営者も閲覧できません。ブラウザのデータ削除により消去されます。</p>
+  </section>
+  <section style="margin-bottom:24px">
+    <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:8px">6. コンテンツの免責事項</h2>
+    <p style="color:#444">本サイトの解説・問題・公式は学習目的で作成されており、内容の正確性を保証するものではありません。本サイトの情報を利用したことによるいかなる損害についても、運営者は責任を負いかねます。また、本サイトは統計検定への合格を保証するものではありません。</p>
   </section>
   <section>
-    <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:8px">6. コンテンツの免責事項</h2>
-    <p style="color:#444">本サイトの解説・問題・公式は学習目的で作成されており、内容の正確性を保証するものではありません。本サイトの情報を利用したことによるいかなる損害についても、運営者は責任を負いかねます。</p>
+    <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:8px">7. 本ポリシーの変更</h2>
+    <p style="color:#444">本ポリシーは予告なく変更される場合があります。変更後のポリシーはこのページへの掲載をもって効力を生じます。</p>
   </section>
   <p style="margin-top:32px"><a href="/stats-g3/" style="color:#2563eb">← ホームへ戻る</a></p>
 </article>`
