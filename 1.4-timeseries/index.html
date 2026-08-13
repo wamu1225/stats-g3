@@ -41,7 +41,7 @@
         }
       })();
     </script>
-    <script type="module" crossorigin src="../assets/index-CRnETI4R.js"></script>
+    <script type="module" crossorigin src="../assets/index-y2cgabEA.js"></script>
     <link rel="modulepreload" crossorigin href="../assets/rolldown-runtime-COnpUsM8.js">
     <link rel="modulepreload" crossorigin href="../assets/motion-Ml2aNURp.js">
     <link rel="modulepreload" crossorigin href="../assets/react-DL9wba-t.js">
@@ -56,7 +56,7 @@
   <h1 style="font-size:1.6rem;font-weight:700;border-bottom:2px solid #2563eb;padding-bottom:8px;margin-bottom:12px">時系列データと変化の読み方</h1>
   <p style="color:#555;margin-bottom:20px;font-size:1.05rem">時系列グラフの読み方、移動平均、指数の基本を学びます。</p>
   <div style="color:#333"><p style="margin:0 0 12px"><strong style="color:#2563eb">ヒント：</strong><strong>このモジュールで学ぶこと</strong></p>
-<p style="margin:0 0 12px">「今月の売上は先月より10万円増えた——これは良いことか？」単純な増減だけでは判断できないことがあります。例えば12月は毎年売上が増える（季節変動）かもしれないし、長期的には下落トレンドかもしれません。時系列データとは「時間の順序を持つデータ」のことで、その読み方には通常のデータ分析とは異なる工夫が必要です。このモジュールでは、時系列グラフの読み取り、移動平均による平滑化、指数の使い方を学びます。</p>
+<p style="margin:0 0 12px">「今月の売上は先月より10万円増えた。これは良いことか？」単純な増減だけでは判断できないことがあります。例えば12月は毎年売上が増える（季節変動）かもしれないし、長期的には下落トレンドかもしれません。時系列データとは「時間の順序を持つデータ」のことで、その読み方には通常のデータ分析とは異なる工夫が必要です。このモジュールでは、時系列グラフの読み取り、移動平均による平滑化、指数の使い方を学びます。</p>
 <hr style="border:0;border-top:1px solid #ddd;margin:18px 0">
 <h3 style="font-size:1.05rem;margin:18px 0 6px">1. 時系列データとは：時間順序を持つデータ</h3>
 <p style="margin:0 0 12px"><strong>時系列データ</strong>とは、同一の対象について時間の経過とともに繰り返し測定したデータです。株価・気温・GDP・人口など、時間とともに変化する多くの現象が時系列データです。</p>
@@ -64,7 +64,7 @@
 <ul style="padding-left:20px"><li><strong>順序に意味がある</strong>：データは時間順に並んでおり、並べ替えると意味が失われる</li><li><strong>隣接する観測値が関連しやすい</strong>：昨日の気温と今日の気温には関連がある（系列相関）</li><li><strong>複数の変動成分が重なっている</strong>：長期的なトレンドに、季節変動や不規則変動が重なる</li></ul>
 <hr style="border:0;border-top:1px solid #ddd;margin:18px 0">
 <h3 style="font-size:1.05rem;margin:18px 0 6px">2. 時系列グラフの読み方：4つの変動成分</h3>
-<p style="margin:0 0 12px">「12月だけ売上が高い」「毎年少しずつ伸びている」「コロナ禍で突然落ちた」——時系列グラフにはこれらの異なる「動き」が同時に重なっています。原因が混在したまま全体のグラフを読もうとすると混乱します。そこで変動を原因ごとに「分解」して考えると整理しやすくなります。時系列データは以下の4つの成分に分解できます。</p>
+<p style="margin:0 0 12px">「12月だけ売上が高い」「毎年少しずつ伸びている」「コロナ禍で突然落ちた」時系列グラフにはこれらの異なる「動き」が同時に重なっています。原因が混在したまま全体のグラフを読もうとすると混乱します。そこで変動を原因ごとに「分解」して考えると整理しやすくなります。時系列データは以下の4つの成分に分解できます。</p>
 <ul style="padding-left:20px"><li><strong>趨勢変動（トレンド）</strong>：長期的な増加・減少の傾向。「日本の人口は長期的に減少トレンドにある」</li><li><strong>季節変動</strong>：1年を周期として繰り返すパターン。「エアコンの売上は夏に増え冬に減る」「アイスクリームの消費は夏に高い」</li><li><strong>循環変動</strong>：数年単位で繰り返す景気サイクルのような変動（試験では季節変動ほど重視されない）</li><li><strong>不規則変動（残差）</strong>：上記のどれでも説明できない、偶発的な変動</li></ul>
 <p style="margin:0 0 12px"><strong style="color:#2563eb">試験ポイント：</strong>「この折れ線グラフはどの変動を示しているか」という読み取り問題が頻出です。毎年同じ時期に同じ形のパターンが繰り返されていれば「季節変動」、長期的な方向性があれば「趨勢変動（トレンド）」と判断します。</p>
 <hr style="border:0;border-top:1px solid #ddd;margin:18px 0">
