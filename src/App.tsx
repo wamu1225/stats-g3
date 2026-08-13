@@ -432,7 +432,7 @@ function App() {
                     })}
                   </svg>
                   <figcaption className="g3-fig-cap">
-                    各データと平均10との差が<strong>偏差</strong>（点の上の数）。平均より小さい側が負・大きい側が正で、左右にちょうど打ち消し合うため<strong>偏差の合計は0</strong>になる。だから二乗してから平均する——それが分散。
+                    各データと平均10との差が<strong>偏差</strong>（点の上の数）。平均より小さい側が負・大きい側が正で、左右にちょうど打ち消し合うため<strong>偏差の合計は0</strong>になる。だから二乗してから平均する。それが分散。
                   </figcaption>
                 </figure>
               );
@@ -571,7 +571,7 @@ function App() {
                   <text x={160} y={162} textAnchor="middle" fontSize={11} fontWeight={700} fill="#334155">P(A∪B) ＝ P(A) ＋ P(B) − P(A∩B)</text>
                 </svg>
                 <figcaption className="g3-fig-cap">
-                  「A または B」（A∪B）の確率は、A と B をそのまま足すと重なり A∩B を<strong>二重に数えて</strong>しまう。だから重なりの分 P(A∩B) を1回引く——これが加法定理。A と B が同時に起こらない（排反）なら重なりが無いので、そのまま足せる。
+                  「A または B」（A∪B）の確率は、A と B をそのまま足すと重なり A∩B を<strong>二重に数えて</strong>しまう。だから重なりの分 P(A∩B) を1回引く。これが加法定理。A と B が同時に起こらない（排反）なら重なりが無いので、そのまま足せる。
                 </figcaption>
               </figure>
             );
