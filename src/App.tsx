@@ -575,6 +575,56 @@ function App() {
                 </figcaption>
               </figure>
             );
+            if (part === '[[proportion-se]]') {
+              // 母比率のSE使い分け：信頼区間はp̂中心、検定はp₀中心（本文の例 n=200, p̂=0.55, p0=0.50 と同じ数値を使う）
+              const panelW = 150, panelH = 90, baseY = 118, topY = 20;
+              const vMin = 0.30, vMax = 0.70;
+              const toX = (px0: number, v: number) => px0 + ((v - vMin) / (vMax - vMin)) * panelW;
+              const bell = (center: number, spread: number) => {
+                const pts: string[] = [];
+                for (let i = 0; i <= 40; i++) {
+                  const v = vMin + (i / 40) * (vMax - vMin);
+                  const h = Math.exp(-((v - center) ** 2) / (2 * spread ** 2));
+                  pts.push(`${vMin + (i / 40) * (vMax - vMin)},${h}`);
+                }
+                return pts;
+              };
+              const toPath = (px0: number, center: number, spread: number) => {
+                const pts = bell(center, spread).map((p) => {
+                  const [v, h] = p.split(',').map(Number);
+                  return `${toX(px0, v)},${baseY - h * (baseY - topY)}`;
+                });
+                return `M ${toX(px0, vMin)},${baseY} L ${pts.join(' L ')} L ${toX(px0, vMax)},${baseY} Z`;
+              };
+              const pxA = 6, pxB = 184;
+              const seSpread = 0.05; // 図解用の見やすさ優先の幅（実際のSE=0.035とは厳密一致させない）
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 340 150" role="img" aria-label="信頼区間はp̂を中心に、検定はp0を中心に分布を考える" className="g3-fig-svg">
+                    {/* Panel A: 信頼区間 */}
+                    <path d={toPath(pxA, 0.55, seSpread)} fill="var(--primary)" fillOpacity={0.18} stroke="var(--primary)" strokeWidth={1.6} />
+                    <line x1={toX(pxA, 0.55)} y1={baseY} x2={toX(pxA, 0.55)} y2={topY} stroke="var(--primary)" strokeWidth={2} strokeDasharray="3,2" />
+                    <text x={toX(pxA, 0.55)} y={topY - 6} textAnchor="middle" fontSize={11} fontWeight={800} fill="var(--primary)">p̂=0.55</text>
+                    <line x1={pxA} y1={baseY} x2={pxA + panelW} y2={baseY} stroke="#94a3b8" strokeWidth={1} />
+                    <text x={pxA + panelW / 2} y={baseY + 16} textAnchor="middle" fontSize={11} fontWeight={700} fill="#334155">信頼区間：p̂ が中心</text>
+                    <text x={pxA + panelW / 2} y={baseY + 30} textAnchor="middle" fontSize={9} fill="#64748b">SE には手元の p̂ を使う</text>
+                    {/* Panel B: 検定 */}
+                    <path d={toPath(pxB, 0.50, seSpread)} fill="#f59e0b" fillOpacity={0.16} stroke="#d97706" strokeWidth={1.6} />
+                    <line x1={toX(pxB, 0.50)} y1={baseY} x2={toX(pxB, 0.50)} y2={topY} stroke="#d97706" strokeWidth={2} strokeDasharray="3,2" />
+                    <text x={toX(pxB, 0.50)} y={topY - 6} textAnchor="middle" fontSize={11} fontWeight={800} fill="#b45309">p₀=0.50</text>
+                    <line x1={toX(pxB, 0.55)} y1={baseY} x2={toX(pxB, 0.55)} y2={baseY - 14} stroke="#334155" strokeWidth={1.6} />
+                    <circle cx={toX(pxB, 0.55)} cy={baseY - 14} r={2.6} fill="#334155" />
+                    <text x={toX(pxB, 0.55)} y={baseY - 20} textAnchor="middle" fontSize={9} fontWeight={700} fill="#334155">観測値 p̂=0.55</text>
+                    <line x1={pxB} y1={baseY} x2={pxB + panelW} y2={baseY} stroke="#94a3b8" strokeWidth={1} />
+                    <text x={pxB + panelW / 2} y={baseY + 16} textAnchor="middle" fontSize={11} fontWeight={700} fill="#334155">検定：p₀ が中心</text>
+                    <text x={pxB + panelW / 2} y={baseY + 30} textAnchor="middle" fontSize={9} fill="#64748b">SE には仮定した p₀ を使う</text>
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    同じ標本データ（p̂=0.55）でも、目的が違えば分布の中心が変わる。<strong>信頼区間</strong>は「p が何かわからないから推定する」ので、分布の中心を手元の p̂ に置く（左）。<strong>検定</strong>は「H₀: p=p₀ が正しいと仮定した世界」を考えるので、分布の中心を仮定した p₀ に置く（右）。右の図で観測値 p̂ が中心からどれだけ離れているかが、検定統計量 z の大きさそのもの。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part.startsWith('[[interactive:')) {
               const typeMatch = part.match(/\[\[interactive:(.*?)\]\]/);
               if (typeMatch) {
