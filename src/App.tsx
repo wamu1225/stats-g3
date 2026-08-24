@@ -625,6 +625,54 @@ function App() {
                 </figure>
               );
             }
+            if (part === '[[residuals]]') {
+              // 最小二乗法：残差（縦の距離）とその二乗が最小化の対象であることを可視化
+              const toSx = (x: number) => 40 + (x / 10) * 260;
+              const toSy = (y: number) => 130 - (y / 10) * 110;
+              const lineY = (x: number) => 2 + 0.7 * x;
+              const points = [
+                { x: 1, y: 4 }, { x: 2, y: 3 }, { x: 3.5, y: 6 }, { x: 5, y: 4.5 },
+                { x: 6.5, y: 8 }, { x: 8, y: 6.5 }, { x: 9, y: 8.7 },
+              ];
+              // 最大の残差（絶対値）を1つ選び、二乗を表す正方形を添える
+              const biggest = points.reduce((a, b) => (Math.abs(b.y - lineY(b.x)) > Math.abs(a.y - lineY(a.x)) ? b : a));
+              const bigResid = biggest.y - lineY(biggest.x);
+              const sqSizePx = Math.abs(toSy(0) - toSy(Math.abs(bigResid)));
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 340 160" role="img" aria-label="各点から回帰直線までの縦の距離（残差）を最小二乗法は二乗して合計し最小化する" className="g3-fig-svg">
+                    <line x1={40} y1={130} x2={310} y2={130} stroke="#94a3b8" strokeWidth={1} />
+                    <line x1={40} y1={130} x2={40} y2={15} stroke="#94a3b8" strokeWidth={1} />
+                    <text x={175} y={148} textAnchor="middle" fontSize={10} fill="#64748b">X（説明変数）</text>
+                    <text x={16} y={72} textAnchor="middle" fontSize={10} fill="#64748b" transform="rotate(-90 16 72)">Y（目的変数）</text>
+                    <line x1={toSx(0)} y1={toSy(lineY(0))} x2={toSx(10)} y2={toSy(lineY(10))} stroke="var(--primary)" strokeWidth={2} />
+                    {points.map((p, i) => {
+                      const py = lineY(p.x);
+                      const isBig = p === biggest;
+                      return (
+                        <g key={i}>
+                          <line x1={toSx(p.x)} y1={toSy(p.y)} x2={toSx(p.x)} y2={toSy(py)} stroke="#dc2626" strokeWidth={1.4} strokeDasharray="3,2" />
+                          <circle cx={toSx(p.x)} cy={toSy(p.y)} r={3.4} fill={isBig ? '#dc2626' : '#334155'} />
+                        </g>
+                      );
+                    })}
+                    {/* 最大残差の二乗を表す正方形（残差の長さを1辺とする面積） */}
+                    <rect
+                      x={toSx(biggest.x)}
+                      y={Math.min(toSy(biggest.y), toSy(lineY(biggest.x)))}
+                      width={sqSizePx}
+                      height={sqSizePx}
+                      fill="#dc2626" fillOpacity={0.14} stroke="#dc2626" strokeWidth={1} strokeDasharray="2,2"
+                    />
+                    <text x={40} y={12} fontSize={9} fill="#64748b">直線：予測値 Ŷ</text>
+                    <text x={toSx(biggest.x) + sqSizePx + 4} y={toSy((biggest.y + lineY(biggest.x)) / 2)} fontSize={9} fontWeight={700} fill="#b91c1c">(Y−Ŷ)²</text>
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    赤い点線が<strong>残差</strong>＝実測値 Y と予測値 Ŷ（直線上の点）の縦の距離。最小二乗法はこの残差を<strong>1つずつ二乗してから全部足した合計</strong>（残差二乗和）を最小にするように直線を引く。二乗すると、プラスとマイナスの残差が打ち消し合わず、大きく外れた点（右の赤い正方形の例）ほど強く効くようになる。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part.startsWith('[[interactive:')) {
               const typeMatch = part.match(/\[\[interactive:(.*?)\]\]/);
               if (typeMatch) {
