@@ -625,6 +625,35 @@ function App() {
                 </figure>
               );
             }
+            if (part === '[[clt-stages]]') {
+              // CLT：母集団が歪んでいても n が増えると標本平均の分布が正規に近づき、幅も狭まる（イメージ図・実シミュレーションではない）
+              const stages: { label: string; h: number[] }[] = [
+                { label: '母集団（n=1）', h: [0.30, 0.60, 1.00, 0.70, 0.40, 0.25, 0.15] },
+                { label: 'n=2 の平均', h: [0.15, 0.40, 0.85, 1.00, 0.60, 0.30, 0.12] },
+                { label: 'n=5 の平均', h: [0.05, 0.25, 0.75, 1.00, 0.70, 0.30, 0.08] },
+                { label: 'n=30 の平均', h: [0.01, 0.08, 0.50, 1.00, 0.48, 0.08, 0.01] },
+              ];
+              const bins = 7, pw = 74, gap = 10, ph = 58, baseY = 72, x0 = 4;
+              const nodes: React.ReactNode[] = [];
+              stages.forEach((s, si) => {
+                const px = x0 + si * (pw + gap);
+                s.h.forEach((hv, i) => {
+                  const bw = pw / bins;
+                  const bh = hv * ph;
+                  nodes.push(<rect key={`${si}-${i}`} x={px + i * bw + 0.6} y={baseY - bh} width={bw - 1.2} height={bh} fill={si === 0 ? '#f59e0b' : 'var(--primary)'} fillOpacity={0.75} />);
+                });
+                nodes.push(<line key={`${si}-b`} x1={px} y1={baseY} x2={px + pw} y2={baseY} stroke="#cbd5e1" strokeWidth={1} />);
+                nodes.push(<text key={`${si}-l`} x={px + pw / 2} y={baseY + 13} textAnchor="middle" fontSize={8.5} fontWeight={700} fill="#475569">{s.label}</text>);
+              });
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox="0 0 340 90" role="img" aria-label="歪んだ母集団でもnが増えると標本平均の分布は正規分布に近づき幅も狭まる" className="g3-fig-svg">{nodes}</svg>
+                  <figcaption className="g3-fig-cap">
+                    左端（橙）は右に歪んだ<strong>母集団</strong>そのもの（n=1）。ここから n 個ずつ取って平均した標本平均の分布を並べると、n が増えるほど（1→2→5→30）<strong>形が左右対称の正規分布に近づき</strong>、同時に<strong>幅（ばらつき）も SE=σ/√n にしたがって狭まっていく</strong>のが分かる。母集団の形がどんなに歪んでいても、この収束は起こる（イメージ図。実データのシミュレーションではない）。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part === '[[residuals]]') {
               // 最小二乗法：残差（縦の距離）とその二乗が最小化の対象であることを可視化
               const toSx = (x: number) => 40 + (x / 10) * 260;
