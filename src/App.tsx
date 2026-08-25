@@ -575,6 +575,42 @@ function App() {
                 </figcaption>
               </figure>
             );
+            if (part === '[[corr-panels]]') {
+              // r別の散布図の並置：点の帯の太さの違いを見比べる（決定論的な擬似データ・実データではない）
+              const xs = [0.5, 1.4, 2.3, 3.1, 3.8, 4.6, 5.4, 6.2, 6.9, 7.7, 8.6, 9.5];
+              const noise = [0.3, -0.6, 0.8, -0.2, 0.5, -0.9, 0.1, 0.7, -0.4, 0.9, -0.7, 0.2];
+              const rValues = [0.9, 0.5, 0, -0.5, -0.9];
+              const panelW = 58, panelH = 58, gap = 8, x0 = 4, topY = 8;
+              const genPoints = (r: number) => xs.map((x, i) => {
+                const xn = (x - 5) / 5;
+                const yn = r * xn + Math.sqrt(1 - r * r) * noise[i];
+                return { x, y: 5 + yn * 4.2 };
+              });
+              const toSx = (px: number, v: number) => px + (v / 10) * panelW;
+              const toSy = (v: number) => topY + panelH - (v / 10) * panelH;
+              return (
+                <figure key={key} className="g3-figure">
+                  <svg viewBox={`0 0 ${x0 * 2 + rValues.length * panelW + (rValues.length - 1) * gap} ${topY + panelH + 22}`} role="img" aria-label="相関係数rの値ごとの散布図の見え方：r=0.9,0.5,0,-0.5,-0.9" className="g3-fig-svg">
+                    {rValues.map((r, ri) => {
+                      const px = x0 + ri * (panelW + gap);
+                      const pts = genPoints(r);
+                      return (
+                        <g key={ri}>
+                          <rect x={px} y={topY} width={panelW} height={panelH} fill="none" stroke="#e2e8f0" strokeWidth={1} />
+                          {pts.map((p, i) => (
+                            <circle key={i} cx={toSx(px, p.x)} cy={toSy(p.y)} r={2.2} fill="var(--primary)" fillOpacity={0.75} />
+                          ))}
+                          <text x={px + panelW / 2} y={topY + panelH + 14} textAnchor="middle" fontSize={10} fontWeight={700} fill="#334155">r = {r}</text>
+                        </g>
+                      );
+                    })}
+                  </svg>
+                  <figcaption className="g3-fig-cap">
+                    r が1（または−1）に近いほど点が細い帯に集まり、0に近いほど点がランダムな雲のように広がる。r=0.9 は右上がりの細い帯、r=0.5 は右上がりだが幅のある雲、r=0 は方向が見えない散らばり、r=−0.5・r=−0.9 は右下がりで同様に帯が細くなっていく。数値だけでなく、この「帯の太さ」の感覚をつかんでおくと散布図を見ただけで r のおおよその大きさが推測できる（イメージ図・実データではない）。
+                  </figcaption>
+                </figure>
+              );
+            }
             if (part === '[[proportion-se]]') {
               // 母比率のSE使い分け：信頼区間はp̂中心、検定はp₀中心（本文の例 n=200, p̂=0.55, p0=0.50 と同じ数値を使う）
               const panelW = 150, panelH = 90, baseY = 118, topY = 20;
