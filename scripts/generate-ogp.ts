@@ -18,7 +18,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
   <text x="80" y="280" font-family="'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif" font-size="44" font-weight="600" fill="#dbeafe">学習リファレンス</text>
 
   <text x="80" y="380" font-family="'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif" font-size="24" fill="#bfdbfe">高校レベルのデータ整理・確率・推測の基礎を</text>
-  <text x="80" y="416" font-family="'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif" font-size="24" fill="#bfdbfe">13モジュール+確認クイズで学べる無料サイト</text>
+  <text x="80" y="416" font-family="'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif" font-size="24" fill="#bfdbfe">14モジュール+確認クイズで学べる無料サイト</text>
 
   <line x1="80" y1="500" x2="700" y2="500" stroke="#60a5fa" stroke-width="2"/>
 

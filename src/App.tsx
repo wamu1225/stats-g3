@@ -1148,7 +1148,7 @@ function App() {
                     <span className="quiz-card-icon"><Shuffle size={20} /></span>
                     <span className="quiz-card-main">
                       <span className="toc-title">全範囲クイズ</span>
-                      <span className="module-desc">全13分野からランダム出題。総仕上げに。</span>
+                      <span className="module-desc">全{modules.length}分野からランダム出題。総仕上げに。</span>
                     </span>
                     {progress[COMPREHENSIVE_KEY] && (
                       <span className={`progress-badge ${progress[COMPREHENSIVE_KEY].score === progress[COMPREHENSIVE_KEY].total ? 'perfect' : ''}`}>

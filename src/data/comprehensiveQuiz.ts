@@ -9,20 +9,21 @@ export interface CQQuestion extends QuizQuestion {
 }
 
 export const comprehensiveQuizQuestions: CQQuestion[] = [
-  // ── 1.1 データの整理と要約 ─────────────────────────────────
+  // ── 1.1 データの代表値と尺度水準 ─────────────────────────────────
   {
     id: 'cq-1.1-01',
     moduleId: '1.1-descriptive',
-    moduleTitle: 'データの整理と要約',
+    moduleTitle: 'データの代表値と尺度水準',
     question: 'データ 3, 7, 7, 10, 100 の中央値と平均値の大小関係として正しいのはどれか。',
     options: ['平均値 > 中央値','中央値 > 平均値','中央値 = 平均値','比較できない'],
     correctAnswer: 0,
     explanation: '中央値は大小に並べたときの真ん中の値なので 7。平均値 = (3+7+7+10+100)/5 = 127/5 = 25.4。外れ値 100 が平均を大きく引き上げるため「平均値 > 中央値」になります。',
   },
+  // ── 1.6 散らばりの指標と箱ひげ図 ─────────────────────────────────
   {
-    id: 'cq-1.1-02',
-    moduleId: '1.1-descriptive',
-    moduleTitle: 'データの整理と要約',
+    id: 'cq-1.6-01',
+    moduleId: '1.6-dispersion',
+    moduleTitle: '散らばりの指標と箱ひげ図',
     question: 'IQR（四分位範囲）の特徴として正しいのはどれか。',
     options: ['外れ値に非常に敏感な指標である','上位25%と下位25%のデータには影響されない','標準偏差の平方根として求められる','全データの平均に基づく散らばりの指標である'],
     correctAnswer: 1,
