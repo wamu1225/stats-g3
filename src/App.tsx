@@ -461,7 +461,7 @@ function App() {
                     {vline(1.82, '#12864b', '最頻値', 16)}
                     {vline(2.30, '#5b8def', '中央値', 34)}
                     {vline(2.73, '#e0607e', '平均', 16)}
-                    <text x={x0 + pw} y={102} textAnchor="end" fontSize={11} fill="#64748b">値 →（右に長い裾）</text>
+                    <text x={x0 + pw} y={103} textAnchor="end" fontSize={13} fill="#64748b">値 →（右に長い裾）</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     右に歪んだ分布（少数の大きな値が右の裾を作る）では、山の頂上が<strong>最頻値</strong>、真ん中が<strong>中央値</strong>、裾に引っぱられて右に寄るのが<strong>平均</strong>。この順で「最頻値 ≤ 中央値 ≤ 平均」になる。左右対称の分布なら三つは同じ位置に重なる。
