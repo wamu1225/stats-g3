@@ -251,7 +251,7 @@ function App() {
                 <figure key={key} className="g3-figure">
                   <svg viewBox={`0 0 340 ${H + 20}`} role="img" aria-label="信頼区間の被覆：多数の95%信頼区間のうち約95%が母平均を含む" className="g3-fig-svg">
                     <line x1={muX} y1={top - 8} x2={muX} y2={H} stroke="#334155" strokeWidth={1.4} strokeDasharray="4 3" />
-                    <text x={muX} y={top - 12} textAnchor="middle" fontSize={10} fontWeight={700} fill="#334155">母平均 μ</text>
+                    <text x={muX} y={top - 13} textAnchor="middle" fontSize={13} fontWeight={700} fill="#334155">母平均 μ</text>
                     {bars.map((b, i) => {
                       const col = b.miss ? '#dc2626' : 'var(--primary)';
                       return (
@@ -263,7 +263,7 @@ function App() {
                         </g>
                       );
                     })}
-                    <text x={muX + 78} y={bars[6].y + 3} fontSize={8.5} fontWeight={700} fill="#b91c1c">← μを外した区間</text>
+                    <text x={muX + 78} y={bars[6].y + 4} fontSize={12} fontWeight={700} fill="#b91c1c">← μを外した区間</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     「95%信頼区間」の正しい意味。同じ調査を何度も行うと、標本ごとに少しずつ違う区間ができる。このうち<strong>約95%が母平均 μ を含み、約5%（20回に1回ほど）は外す（赤）</strong>。だから「この1本の区間に μ が入る確率が95%」ではなく「この作り方をくり返すと95%の区間が μ を含む」が正確な言い方。
@@ -287,7 +287,7 @@ function App() {
               for (let x = -3.4; x <= 3.4001; x += 0.1) curve += `${px(x).toFixed(1)},${py(f(x)).toFixed(1)} `;
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 340 156" role="img" aria-label="仮説検定の棄却域：両裾の赤い領域が棄却域、中央が採択域" className="g3-fig-svg">
+                  <svg viewBox="0 0 340 178" role="img" aria-label="仮説検定の棄却域：両裾の赤い領域が棄却域、中央が採択域" className="g3-fig-svg">
                     <polygon points={build(-3.4, -c)} fill="#dc2626" fillOpacity={0.45} />
                     <polygon points={build(-c, c)} fill="var(--primary)" fillOpacity={0.12} />
                     <polygon points={build(c, 3.4)} fill="#dc2626" fillOpacity={0.45} />
@@ -295,14 +295,14 @@ function App() {
                     <line x1={px(-3.4)} y1={yb} x2={px(3.4)} y2={yb} stroke="#94a3b8" strokeWidth={1} />
                     <line x1={px(-c)} y1={yb} x2={px(-c)} y2={py(f(c)) - 4} stroke="#b91c1c" strokeWidth={1.3} strokeDasharray="3 2" />
                     <line x1={px(c)} y1={yb} x2={px(c)} y2={py(f(c)) - 4} stroke="#b91c1c" strokeWidth={1.3} strokeDasharray="3 2" />
-                    <text x={cxc} y={py(0.42)} textAnchor="middle" fontSize={10.5} fontWeight={700} fill="var(--primary-hover)">採択域</text>
-                    <text x={cxc} y={py(0.42) + 12} textAnchor="middle" fontSize={8} fill="#64748b">H₀ を棄却しない（95%）</text>
-                    <text x={px(-2.7)} y={py(0.05) - 4} textAnchor="middle" fontSize={9} fontWeight={700} fill="#b91c1c">棄却域</text>
-                    <text x={px(2.7)} y={py(0.05) - 4} textAnchor="middle" fontSize={9} fontWeight={700} fill="#b91c1c">棄却域</text>
-                    <text x={px(-c)} y={yb + 13} textAnchor="middle" fontSize={8.5} fill="#334155">−臨界値</text>
-                    <text x={px(c)} y={yb + 13} textAnchor="middle" fontSize={8.5} fill="#334155">＋臨界値</text>
-                    <text x={px(-2.7)} y={yb + 13} textAnchor="middle" fontSize={7.5} fill="#b91c1c">2.5%</text>
-                    <text x={px(2.7)} y={yb + 13} textAnchor="middle" fontSize={7.5} fill="#b91c1c">2.5%</text>
+                    <text x={cxc} y={py(0.42)} textAnchor="middle" fontSize={13} fontWeight={700} fill="var(--primary-hover)">採択域</text>
+                    <text x={cxc} y={py(0.42) + 16} textAnchor="middle" fontSize={12} fill="#64748b">H₀を棄却しない（95%）</text>
+                    <text x={px(-2.7)} y={py(0.05) - 5} textAnchor="middle" fontSize={12} fontWeight={700} fill="#b91c1c">棄却域</text>
+                    <text x={px(2.7)} y={py(0.05) - 5} textAnchor="middle" fontSize={12} fontWeight={700} fill="#b91c1c">棄却域</text>
+                    <text x={px(-c)} y={yb + 18} textAnchor="middle" fontSize={12} fill="#334155">−臨界値</text>
+                    <text x={px(c)} y={yb + 18} textAnchor="middle" fontSize={12} fill="#334155">＋臨界値</text>
+                    <text x={px(-2.7)} y={yb + 33} textAnchor="middle" fontSize={12} fill="#b91c1c">2.5%</text>
+                    <text x={px(2.7)} y={yb + 33} textAnchor="middle" fontSize={12} fill="#b91c1c">2.5%</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     有意水準5%の両側検定のイメージ。分布の両裾にある赤い部分が<strong>棄却域</strong>（各2.5%）。検定統計量がこの赤い領域に入るほど「偶然では起こりにくい」ので、帰無仮説 H₀ を棄却する。中央の広い部分（採択域）に入れば「偶然の範囲」として H₀ を棄却しない。臨界値がその境目。
@@ -320,31 +320,31 @@ function App() {
               };
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 344 104" role="img" aria-label="代表的なグラフ：棒グラフ・円グラフ・折れ線グラフ・散布図" className="g3-fig-svg">
-                    {/* 棒グラフ */}
+                  <svg viewBox="0 0 344 208" role="img" aria-label="代表的なグラフ：棒グラフ・円グラフ・折れ線グラフ・散布図" className="g3-fig-svg">
+                    {/* 棒グラフ（左上） */}
                     <g>
-                      {[26, 40, 32, 52].map((h, i) => <rect key={i} x={12 + i * 13} y={72 - h} width={9} height={h} rx={1.5} fill="var(--primary)" fillOpacity={0.75} />)}
-                      <line x1={10} y1={72} x2={70} y2={72} stroke="#cbd5e1" strokeWidth={1} />
-                      <text x={40} y={94} textAnchor="middle" fontSize={9} fontWeight={700} fill="#475569">棒グラフ</text>
-                      <text x={40} y={104} textAnchor="middle" fontSize={7.5} fill="#94a3b8">量の比較</text>
+                      {[26, 40, 32, 52].map((h, i) => <rect key={i} x={22 + i * 13} y={72 - h} width={9} height={h} rx={1.5} fill="var(--primary)" fillOpacity={0.75} />)}
+                      <line x1={20} y1={72} x2={80} y2={72} stroke="#cbd5e1" strokeWidth={1} />
+                      <text x={50} y={96} textAnchor="middle" fontSize={14} fontWeight={700} fill="#475569">棒グラフ</text>
+                      <text x={50} y={112} textAnchor="middle" fontSize={13} fill="#64748b">量の比較</text>
                     </g>
-                    {/* 円グラフ */}
-                    <g>{pie(126, 46, 26)}<text x={126} y={94} textAnchor="middle" fontSize={9} fontWeight={700} fill="#475569">円グラフ</text><text x={126} y={104} textAnchor="middle" fontSize={7.5} fill="#94a3b8">構成比</text></g>
-                    {/* 折れ線 */}
+                    {/* 円グラフ（右上） */}
+                    <g>{pie(258, 46, 28)}<text x={258} y={96} textAnchor="middle" fontSize={14} fontWeight={700} fill="#475569">円グラフ</text><text x={258} y={112} textAnchor="middle" fontSize={13} fill="#64748b">構成比</text></g>
+                    {/* 折れ線（左下） */}
                     <g>
-                      <polyline points="182,60 196,44 210,52 224,30 238,36" fill="none" stroke="var(--primary)" strokeWidth={2.2} />
-                      {[[182, 60], [196, 44], [210, 52], [224, 30], [238, 36]].map((p, i) => <circle key={i} cx={p[0]} cy={p[1]} r={2.4} fill="var(--primary)" />)}
-                      <line x1={180} y1={72} x2={240} y2={72} stroke="#cbd5e1" strokeWidth={1} />
-                      <text x={210} y={94} textAnchor="middle" fontSize={9} fontWeight={700} fill="#475569">折れ線</text>
-                      <text x={210} y={104} textAnchor="middle" fontSize={7.5} fill="#94a3b8">時間の変化</text>
+                      <polyline points="22,152 36,136 50,144 64,122 78,128" fill="none" stroke="var(--primary)" strokeWidth={2.2} />
+                      {[[22, 152], [36, 136], [50, 144], [64, 122], [78, 128]].map((p, i) => <circle key={i} cx={p[0]} cy={p[1]} r={2.6} fill="var(--primary)" />)}
+                      <line x1={20} y1={164} x2={80} y2={164} stroke="#cbd5e1" strokeWidth={1} />
+                      <text x={50} y={188} textAnchor="middle" fontSize={14} fontWeight={700} fill="#475569">折れ線</text>
+                      <text x={50} y={204} textAnchor="middle" fontSize={13} fill="#64748b">時間の変化</text>
                     </g>
-                    {/* 散布図 */}
+                    {/* 散布図（右下） */}
                     <g>
-                      {[[286, 58], [296, 50], [300, 60], [308, 42], [316, 48], [322, 34], [330, 40], [292, 62], [312, 54]].map((p, i) => <circle key={i} cx={p[0]} cy={p[1]} r={2.3} fill="var(--primary)" fillOpacity={0.7} />)}
-                      <line x1={282} y1={72} x2={336} y2={72} stroke="#cbd5e1" strokeWidth={1} />
-                      <line x1={282} y1={72} x2={282} y2={30} stroke="#cbd5e1" strokeWidth={1} />
-                      <text x={309} y={94} textAnchor="middle" fontSize={9} fontWeight={700} fill="#475569">散布図</text>
-                      <text x={309} y={104} textAnchor="middle" fontSize={7.5} fill="#94a3b8">2変数の関係</text>
+                      {[[228, 150], [238, 142], [242, 152], [250, 134], [258, 140], [264, 126], [272, 132], [234, 154], [254, 146]].map((p, i) => <circle key={i} cx={p[0]} cy={p[1]} r={2.5} fill="var(--primary)" fillOpacity={0.7} />)}
+                      <line x1={224} y1={164} x2={278} y2={164} stroke="#cbd5e1" strokeWidth={1} />
+                      <line x1={224} y1={164} x2={224} y2={122} stroke="#cbd5e1" strokeWidth={1} />
+                      <text x={251} y={188} textAnchor="middle" fontSize={14} fontWeight={700} fill="#475569">散布図</text>
+                      <text x={251} y={204} textAnchor="middle" fontSize={13} fill="#64748b">2変数の関係</text>
                     </g>
                   </svg>
                   <figcaption className="g3-fig-cap">
@@ -355,24 +355,24 @@ function App() {
             }
             if (part === '[[boxplot]]') return (
               <figure key={key} className="g3-figure">
-                <svg viewBox="0 0 360 116" role="img" aria-label="箱ひげ図：最小値・Q1・中央値・Q3・最大値と外れ値。箱の長さがIQR" className="g3-fig-svg">
-                  <line x1={60} y1={60} x2={110} y2={60} stroke="#64748b" strokeWidth={1.5} />
-                  <line x1={200} y1={60} x2={250} y2={60} stroke="#64748b" strokeWidth={1.5} />
-                  <line x1={60} y1={47} x2={60} y2={73} stroke="#64748b" strokeWidth={1.5} />
-                  <line x1={250} y1={47} x2={250} y2={73} stroke="#64748b" strokeWidth={1.5} />
-                  <rect x={110} y={40} width={90} height={40} fill="var(--primary)" fillOpacity={0.15} stroke="var(--primary)" strokeWidth={1.6} />
-                  <line x1={150} y1={40} x2={150} y2={80} stroke="var(--primary)" strokeWidth={2.6} />
-                  <circle cx={300} cy={60} r={4} fill="none" stroke="#dc2626" strokeWidth={1.6} />
-                  <line x1={110} y1={30} x2={200} y2={30} stroke="#94a3b8" strokeWidth={1} />
-                  <line x1={110} y1={30} x2={110} y2={36} stroke="#94a3b8" strokeWidth={1} />
-                  <line x1={200} y1={30} x2={200} y2={36} stroke="#94a3b8" strokeWidth={1} />
-                  <text x={155} y={23} textAnchor="middle" fontSize={11} fontWeight={700} fill="#475569">IQR = Q₃ − Q₁</text>
-                  <text x={60} y={101} textAnchor="middle" fontSize={10} fill="#64748b">最小値</text>
-                  <text x={110} y={101} textAnchor="middle" fontSize={11} fontWeight={700} fill="var(--primary)">Q₁</text>
-                  <text x={150} y={101} textAnchor="middle" fontSize={10} fontWeight={700} fill="var(--primary)">中央値</text>
-                  <text x={200} y={101} textAnchor="middle" fontSize={11} fontWeight={700} fill="var(--primary)">Q₃</text>
-                  <text x={250} y={101} textAnchor="middle" fontSize={10} fill="#64748b">最大値</text>
-                  <text x={300} y={101} textAnchor="middle" fontSize={10} fill="#b91c1c">外れ値</text>
+                <svg viewBox="0 0 400 130" role="img" aria-label="箱ひげ図：最小値・Q1・中央値・Q3・最大値と外れ値。箱の長さがIQR" className="g3-fig-svg">
+                  <line x1={50} y1={62} x2={112} y2={62} stroke="#64748b" strokeWidth={1.5} />
+                  <line x1={222} y1={62} x2={284} y2={62} stroke="#64748b" strokeWidth={1.5} />
+                  <line x1={50} y1={47} x2={50} y2={77} stroke="#64748b" strokeWidth={1.5} />
+                  <line x1={284} y1={47} x2={284} y2={77} stroke="#64748b" strokeWidth={1.5} />
+                  <rect x={112} y={40} width={110} height={44} fill="var(--primary)" fillOpacity={0.15} stroke="var(--primary)" strokeWidth={1.6} />
+                  <line x1={167} y1={40} x2={167} y2={84} stroke="var(--primary)" strokeWidth={2.6} />
+                  <circle cx={344} cy={62} r={4.5} fill="none" stroke="#dc2626" strokeWidth={1.6} />
+                  <line x1={112} y1={30} x2={222} y2={30} stroke="#94a3b8" strokeWidth={1} />
+                  <line x1={112} y1={30} x2={112} y2={36} stroke="#94a3b8" strokeWidth={1} />
+                  <line x1={222} y1={30} x2={222} y2={36} stroke="#94a3b8" strokeWidth={1} />
+                  <text x={167} y={22} textAnchor="middle" fontSize={15} fontWeight={700} fill="#475569">IQR=Q₃−Q₁</text>
+                  <text x={50} y={112} textAnchor="middle" fontSize={15} fill="#64748b">最小値</text>
+                  <text x={112} y={112} textAnchor="middle" fontSize={15} fontWeight={700} fill="var(--primary)">Q₁</text>
+                  <text x={167} y={112} textAnchor="middle" fontSize={15} fontWeight={700} fill="var(--primary)">中央値</text>
+                  <text x={222} y={112} textAnchor="middle" fontSize={15} fontWeight={700} fill="var(--primary)">Q₃</text>
+                  <text x={284} y={112} textAnchor="middle" fontSize={15} fill="#64748b">最大値</text>
+                  <text x={344} y={112} textAnchor="middle" fontSize={15} fill="#b91c1c">外れ値</text>
                 </svg>
                 <figcaption className="g3-fig-cap">
                   箱ひげ図の読み方。箱の左端が Q₁、右端が Q₃ で、箱の長さが四分位範囲 IQR ＝ Q₃−Q₁（中央50%の散らばり）。箱の中の線が中央値。ひげは外れ値を除いた最小値・最大値まで伸び、その外側の点（赤）が外れ値。平均と標準偏差では見えない「分布の形・外れ値」が一目でわかる。
@@ -386,23 +386,25 @@ function App() {
                 { label: '左裾が長い（左歪み）', h: (i) => Math.exp(-((i - 5.5) ** 2) / 2.2) + 0.15 * Math.exp(-((i - 2) ** 2) / 6) },
                 { label: '双峰型（2つの山）', h: (i) => Math.exp(-((i - 1.5) ** 2) / 1.6) + Math.exp(-((i - 5.5) ** 2) / 1.6) },
               ];
-              const bins = 8, pw = 74, gap = 10, ph = 60, baseY = 74, x0 = 4;
+              const bins = 8, pw = 155, gap = 12, ph = 50, x0 = 6, rowGap = 90;
               const nodes: React.ReactNode[] = [];
               panels.forEach((p, pi) => {
-                const px = x0 + pi * (pw + gap);
+                const col = pi % 2, row = Math.floor(pi / 2);
+                const px = x0 + col * (pw + gap);
+                const baseY = 60 + row * rowGap;
                 const hs = Array.from({ length: bins }, (_, i) => p.h(i));
                 const mx = Math.max(...hs);
                 hs.forEach((hv, i) => {
                   const bw = pw / bins;
                   const bh = (hv / mx) * ph;
-                  nodes.push(<rect key={`${pi}-${i}`} x={px + i * bw + 0.6} y={baseY - bh} width={bw - 1.2} height={bh} fill="var(--primary)" fillOpacity={0.7} />);
+                  nodes.push(<rect key={`${pi}-${i}`} x={px + i * bw + 0.8} y={baseY - bh} width={bw - 1.6} height={bh} fill="var(--primary)" fillOpacity={0.7} />);
                 });
                 nodes.push(<line key={`${pi}-b`} x1={px} y1={baseY} x2={px + pw} y2={baseY} stroke="#cbd5e1" strokeWidth={1} />);
-                nodes.push(<text key={`${pi}-l`} x={px + pw / 2} y={baseY + 13} textAnchor="middle" fontSize={8.5} fill="#475569">{p.label}</text>);
+                nodes.push(<text key={`${pi}-l`} x={px + pw / 2} y={baseY + 20} textAnchor="middle" fontSize={13} fill="#475569">{p.label}</text>);
               });
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 340 92" role="img" aria-label="ヒストグラムの4つの形：左右対称・右歪み・左歪み・双峰" className="g3-fig-svg">{nodes}</svg>
+                  <svg viewBox="0 0 340 190" role="img" aria-label="ヒストグラムの4つの形：左右対称・右歪み・左歪み・双峰" className="g3-fig-svg">{nodes}</svg>
                   <figcaption className="g3-fig-cap">
                     ヒストグラムの形で分布の性質が読める。<strong>左右対称</strong>は平均付近に集中（標準的）。<strong>右歪み</strong>は少数の大きな値が裾を引く（年収など）。<strong>左歪み</strong>はその逆（簡単な試験）。<strong>双峰型</strong>は山が2つ＝別グループ（男女など）が混ざっているサイン。
                   </figcaption>
@@ -417,17 +419,17 @@ function App() {
               const mean = 10, Xm = X(mean);
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 344 94" role="img" aria-label="6,8,10,12,14 の各データと平均10との偏差" className="g3-fig-svg">
+                  <svg viewBox="0 0 344 100" role="img" aria-label="6,8,10,12,14 の各データと平均10との偏差" className="g3-fig-svg">
                     <line x1={x0 - 6} y1={axisY} x2={x1 + 6} y2={axisY} stroke="#cbd5e1" strokeWidth={1.2} />
                     <line x1={Xm} y1={24} x2={Xm} y2={axisY + 18} stroke="#64748b" strokeWidth={1.4} strokeDasharray="3 2" />
-                    <text x={Xm} y={17} textAnchor="middle" fontSize={9.5} fontWeight={700} fill="#64748b">平均 10</text>
+                    <text x={Xm} y={17} textAnchor="middle" fontSize={13} fontWeight={700} fill="#64748b">平均10</text>
                     {vals.map((v, i) => {
                       const x = X(v); const zero = v === mean; const neg = v < mean;
                       const col = zero ? '#64748b' : neg ? '#5b8def' : '#e0607e';
                       return (<g key={i}>
                         <circle cx={x} cy={axisY} r={3.4} fill="var(--primary)" />
-                        <text x={x} y={axisY + 15} textAnchor="middle" fontSize={9} fill="#475569">{v}</text>
-                        <text x={x} y={axisY - 9} textAnchor="middle" fontSize={9.5} fontWeight={700} fill={col}>{devs[i]}</text>
+                        <text x={x} y={axisY + 19} textAnchor="middle" fontSize={13} fill="#475569">{v}</text>
+                        <text x={x} y={axisY - 11} textAnchor="middle" fontSize={13} fontWeight={700} fill={col}>{devs[i]}</text>
                       </g>);
                     })}
                   </svg>
@@ -448,18 +450,18 @@ function App() {
               const pts = fs.map((v, k) => `${X((k / N) * tmax).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
               const vline = (t: number, color: string, label: string, ly: number) => {
                 const x = X(t);
-                return (<g key={label}><line x1={x} y1={ly + 4} x2={x} y2={baseY} stroke={color} strokeWidth={1.7} strokeDasharray="3 2" /><text x={x} y={ly} textAnchor="middle" fontSize={9.5} fontWeight={700} fill={color}>{label}</text></g>);
+                return (<g key={label}><line x1={x} y1={ly + 4} x2={x} y2={baseY} stroke={color} strokeWidth={1.7} strokeDasharray="3 2" /><text x={x} y={ly} textAnchor="middle" fontSize={13} fontWeight={700} fill={color}>{label}</text></g>);
               };
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 344 112" role="img" aria-label="右に歪んだ分布での最頻値・中央値・平均の位置関係" className="g3-fig-svg">
+                  <svg viewBox="0 0 344 116" role="img" aria-label="右に歪んだ分布での最頻値・中央値・平均の位置関係" className="g3-fig-svg">
                     <polygon points={`${X(0).toFixed(1)},${baseY} ${pts} ${X(tmax).toFixed(1)},${baseY}`} fill="var(--primary)" fillOpacity={0.1} />
                     <polyline points={pts} fill="none" stroke="var(--primary)" strokeWidth={2} />
                     <line x1={x0} y1={baseY} x2={x0 + pw} y2={baseY} stroke="#cbd5e1" strokeWidth={1} />
-                    {vline(1.82, '#12864b', '最頻値', 14)}
-                    {vline(2.30, '#5b8def', '中央値', 31)}
-                    {vline(2.73, '#e0607e', '平均', 14)}
-                    <text x={x0 + pw} y={99} textAnchor="end" fontSize={8} fill="#94a3b8">値 →（右に長い裾）</text>
+                    {vline(1.82, '#12864b', '最頻値', 16)}
+                    {vline(2.30, '#5b8def', '中央値', 34)}
+                    {vline(2.73, '#e0607e', '平均', 16)}
+                    <text x={x0 + pw} y={102} textAnchor="end" fontSize={11} fill="#64748b">値 →（右に長い裾）</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     右に歪んだ分布（少数の大きな値が右の裾を作る）では、山の頂上が<strong>最頻値</strong>、真ん中が<strong>中央値</strong>、裾に引っぱられて右に寄るのが<strong>平均</strong>。この順で「最頻値 ≤ 中央値 ≤ 平均」になる。左右対称の分布なら三つは同じ位置に重なる。
@@ -476,19 +478,19 @@ function App() {
               const medS = 66;
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 344 112" role="img" aria-label="累積相対度数グラフ（オージャイブ）からの中央値の読み取り" className="g3-fig-svg">
+                  <svg viewBox="0 0 344 122" role="img" aria-label="累積相対度数グラフ（オージャイブ）からの中央値の読み取り" className="g3-fig-svg">
                     <line x1={x0} y1={y0} x2={x0 + pw} y2={y0} stroke="#cbd5e1" strokeWidth={1} />
                     <line x1={x0} y1={y0} x2={x0} y2={y0 - ph - 4} stroke="#cbd5e1" strokeWidth={1} />
                     <line x1={x0} y1={Y(0.5)} x2={X(medS)} y2={Y(0.5)} stroke="#e0607e" strokeWidth={1.3} strokeDasharray="3 2" />
                     <line x1={X(medS)} y1={Y(0.5)} x2={X(medS)} y2={y0} stroke="#e0607e" strokeWidth={1.3} strokeDasharray="3 2" />
                     <polyline points={line} fill="none" stroke="var(--primary)" strokeWidth={2} />
                     {data.map(([s, c], i) => <circle key={i} cx={X(s)} cy={Y(c)} r={2.2} fill="var(--primary)" />)}
-                    <text x={x0 - 5} y={Y(0.5) + 3} textAnchor="end" fontSize={8.5} fontWeight={700} fill="#e0607e">0.5</text>
-                    <text x={x0 - 5} y={Y(1) + 3} textAnchor="end" fontSize={8} fill="#94a3b8">1.0</text>
-                    <text x={x0 - 5} y={y0 + 3} textAnchor="end" fontSize={8} fill="#94a3b8">0</text>
-                    <text x={X(medS)} y={y0 + 12} textAnchor="middle" fontSize={9.5} fontWeight={700} fill="#e0607e">中央値≈66</text>
-                    <text x={x0 + pw} y={y0 + 12} textAnchor="end" fontSize={8} fill="#94a3b8">点数 →</text>
-                    <text x={x0 - 8} y={y0 - ph - 8} textAnchor="start" fontSize={8} fill="#94a3b8">累積相対度数</text>
+                    <text x={x0 - 6} y={Y(0.5) + 4} textAnchor="end" fontSize={13} fontWeight={700} fill="#e0607e">0.5</text>
+                    <text x={x0 - 6} y={Y(1) + 4} textAnchor="end" fontSize={12} fill="#64748b">1.0</text>
+                    <text x={x0 - 6} y={y0 + 4} textAnchor="end" fontSize={12} fill="#64748b">0</text>
+                    <text x={X(medS)} y={y0 + 16} textAnchor="middle" fontSize={14} fontWeight={700} fill="#e0607e">中央値≈66</text>
+                    <text x={x0 + pw} y={y0 + 16} textAnchor="end" fontSize={12} fill="#64748b">点数 →</text>
+                    <text x={x0 - 8} y={y0 - ph - 10} textAnchor="start" fontSize={12} fill="#64748b">累積相対度数</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     累積相対度数グラフ（オージャイブ）。横軸は点数（階級の上限）、縦軸はそこまでに全体の何割が入るか。<strong>縦軸の 0.5 から水平にたどり、曲線と交わった点の横軸が中央値</strong>（この例では約66点）。「70点以下は何％か」なども曲線から直接読み取れる。
@@ -503,7 +505,7 @@ function App() {
               const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
               const nodes: React.ReactNode[] = [];
               panels.forEach((p) => {
-                nodes.push(<text key={p.title + 't'} x={p.cx + pw / 2} y={14} textAnchor="middle" fontSize={10} fontWeight={700} fill="#334155">{p.title}</text>);
+                nodes.push(<text key={p.title + 't'} x={p.cx + pw / 2} y={16} textAnchor="middle" fontSize={13} fontWeight={700} fill="#334155">{p.title}</text>);
                 nodes.push(<rect key={p.title + 'r'} x={p.cx} y={py} width={pw} height={ph} rx={6} fill="none" stroke="#cbd5e1" strokeWidth={1} />);
                 if (p.title === '層化') for (let b = 0; b < 3; b++) nodes.push(<rect key={p.title + 'b' + b} x={p.cx} y={py + b * (ph / 3)} width={pw} height={ph / 3} fill={b % 2 ? 'var(--primary)' : '#f59e0b'} fillOpacity={0.06} />);
                 if (p.title === 'クラスター') { nodes.push(<rect key={p.title + 'k0'} x={p.cx + 4} y={py + 6} width={40} height={38} rx={4} fill="var(--primary)" fillOpacity={0.14} stroke="var(--primary)" strokeWidth={1.2} />); nodes.push(<rect key={p.title + 'k1'} x={p.cx + pw / 2 + 4} y={py + ph / 2 - 2} width={40} height={38} rx={4} fill="var(--primary)" fillOpacity={0.14} stroke="var(--primary)" strokeWidth={1.2} />); }
@@ -518,9 +520,9 @@ function App() {
               });
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 328 136" role="img" aria-label="標本抽出法：単純無作為・層化・クラスターの違い" className="g3-fig-svg">
+                  <svg viewBox="0 0 328 140" role="img" aria-label="標本抽出法：単純無作為・層化・クラスターの違い" className="g3-fig-svg">
                     {nodes}
-                    <text x={164} y={132} textAnchor="middle" fontSize={9} fill="#64748b">濃い点＝標本に選ばれた個体</text>
+                    <text x={164} y={135} textAnchor="middle" fontSize={12} fill="#64748b">濃い点＝標本に選ばれた個体</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     <strong>単純無作為抽出</strong>は母集団全体から等確率でばらばらに選ぶ。<strong>層化抽出</strong>は似た者どうしの層（例：年代）に分けて各層から選び、偏りを抑える。<strong>クラスター抽出</strong>は集団（例：学校・地区）に分け、選んだ集団を丸ごと調べる（コストは低いが精度は下がりやすい）。
@@ -543,15 +545,15 @@ function App() {
               const maPoly = ma.map((v, t) => `${sx(t).toFixed(1)},${sy(v).toFixed(1)}`).join(' ');
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 328 182" role="img" aria-label="時系列：ぎざぎざの生データと、なめらかな移動平均のトレンド線" className="g3-fig-svg">
+                  <svg viewBox="0 0 328 220" role="img" aria-label="時系列：ぎざぎざの生データと、なめらかな移動平均のトレンド線" className="g3-fig-svg">
                     <line x1={x0} y1={y0 + plotH} x2={x0 + plotW} y2={y0 + plotH} stroke="#cbd5e1" strokeWidth={1} />
                     <polyline points={rawPoly} fill="none" stroke="#94a3b8" strokeWidth={1.3} />
                     {raw.map((v, t) => <circle key={t} cx={sx(t)} cy={sy(v)} r={1.7} fill="#94a3b8" />)}
                     <polyline points={maPoly} fill="none" stroke="var(--primary)" strokeWidth={2.8} />
-                    <line x1={x0} y1={y0 + plotH + 16} x2={x0 + 18} y2={y0 + plotH + 16} stroke="#94a3b8" strokeWidth={1.3} />
-                    <text x={x0 + 22} y={y0 + plotH + 19} fontSize={9.5} fill="#64748b">生データ（ノイズ）</text>
-                    <line x1={x0 + 150} y1={y0 + plotH + 16} x2={x0 + 168} y2={y0 + plotH + 16} stroke="var(--primary)" strokeWidth={2.8} />
-                    <text x={x0 + 172} y={y0 + plotH + 19} fontSize={9.5} fill="var(--primary)">移動平均＝トレンド</text>
+                    <line x1={x0} y1={y0 + plotH + 20} x2={x0 + 18} y2={y0 + plotH + 20} stroke="#94a3b8" strokeWidth={1.3} />
+                    <text x={x0 + 22} y={y0 + plotH + 25} fontSize={13} fill="#64748b">生データ（ノイズ）</text>
+                    <line x1={x0} y1={y0 + plotH + 44} x2={x0 + 18} y2={y0 + plotH + 44} stroke="var(--primary)" strokeWidth={2.8} />
+                    <text x={x0 + 22} y={y0 + plotH + 49} fontSize={13} fill="var(--primary)">移動平均＝トレンド</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     生データ（灰）は短期のノイズで上下にぎざぎざ揺れて、長期の傾向が見えにくい。各点を「前後数点の平均」に置きかえる移動平均（色つき）を取ると、ノイズが打ち消し合ってなめらかになり、右肩上がりのトレンドがはっきり見える。
@@ -566,9 +568,9 @@ function App() {
                   <circle cx={196} cy={84} r={62} fill="#f59e0b" fillOpacity={0.14} stroke="#d97706" strokeWidth={1.8} />
                   <text x={86} y={62} textAnchor="middle" fontSize={17} fontWeight={800} fill="var(--primary)">A</text>
                   <text x={234} y={62} textAnchor="middle" fontSize={17} fontWeight={800} fill="#b45309">B</text>
-                  <text x={160} y={80} textAnchor="middle" fontSize={11} fontWeight={700} fill="#334155">A∩B</text>
-                  <text x={160} y={94} textAnchor="middle" fontSize={8.5} fill="#64748b">（重なり）</text>
-                  <text x={160} y={162} textAnchor="middle" fontSize={11} fontWeight={700} fill="#334155">P(A∪B) ＝ P(A) ＋ P(B) − P(A∩B)</text>
+                  <text x={160} y={80} textAnchor="middle" fontSize={12} fontWeight={700} fill="#334155">A∩B</text>
+                  <text x={160} y={96} textAnchor="middle" fontSize={12} fill="#64748b">（重なり）</text>
+                  <text x={160} y={162} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#334155">P(A∪B)＝P(A)＋P(B)−P(A∩B)</text>
                 </svg>
                 <figcaption className="g3-fig-cap">
                   「A または B」（A∪B）の確率は、A と B をそのまま足すと重なり A∩B を<strong>二重に数えて</strong>しまう。だから重なりの分 P(A∩B) を1回引く。これが加法定理。A と B が同時に起こらない（排反）なら重なりが無いので、そのまま足せる。
@@ -590,7 +592,7 @@ function App() {
               const toSy = (v: number) => topY + panelH - (v / 10) * panelH;
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox={`0 0 ${x0 * 2 + rValues.length * panelW + (rValues.length - 1) * gap} ${topY + panelH + 22}`} role="img" aria-label="相関係数rの値ごとの散布図の見え方：r=0.9,0.5,0,-0.5,-0.9" className="g3-fig-svg">
+                  <svg viewBox={`0 0 ${x0 * 2 + rValues.length * panelW + (rValues.length - 1) * gap} ${topY + panelH + 26}`} role="img" aria-label="相関係数rの値ごとの散布図の見え方：r=0.9,0.5,0,-0.5,-0.9" className="g3-fig-svg">
                     {rValues.map((r, ri) => {
                       const px = x0 + ri * (panelW + gap);
                       const pts = genPoints(r);
@@ -600,7 +602,7 @@ function App() {
                           {pts.map((p, i) => (
                             <circle key={i} cx={toSx(px, p.x)} cy={toSy(p.y)} r={2.2} fill="var(--primary)" fillOpacity={0.75} />
                           ))}
-                          <text x={px + panelW / 2} y={topY + panelH + 14} textAnchor="middle" fontSize={10} fontWeight={700} fill="#334155">r = {r}</text>
+                          <text x={px + panelW / 2} y={topY + panelH + 16} textAnchor="middle" fontSize={13} fontWeight={700} fill="#334155">r={r}</text>
                         </g>
                       );
                     })}
@@ -636,24 +638,24 @@ function App() {
               const seSpread = 0.05; // 図解用の見やすさ優先の幅（実際のSE=0.035とは厳密一致させない）
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 340 150" role="img" aria-label="信頼区間はp̂を中心に、検定はp0を中心に分布を考える" className="g3-fig-svg">
+                  <svg viewBox="0 0 340 158" role="img" aria-label="信頼区間はp̂を中心に、検定はp0を中心に分布を考える" className="g3-fig-svg">
                     {/* Panel A: 信頼区間 */}
                     <path d={toPath(pxA, 0.55, seSpread)} fill="var(--primary)" fillOpacity={0.18} stroke="var(--primary)" strokeWidth={1.6} />
                     <line x1={toX(pxA, 0.55)} y1={baseY} x2={toX(pxA, 0.55)} y2={topY} stroke="var(--primary)" strokeWidth={2} strokeDasharray="3,2" />
-                    <text x={toX(pxA, 0.55)} y={topY - 6} textAnchor="middle" fontSize={11} fontWeight={800} fill="var(--primary)">p̂=0.55</text>
+                    <text x={toX(pxA, 0.55)} y={topY - 6} textAnchor="middle" fontSize={13} fontWeight={800} fill="var(--primary)">p̂=0.55</text>
                     <line x1={pxA} y1={baseY} x2={pxA + panelW} y2={baseY} stroke="#94a3b8" strokeWidth={1} />
-                    <text x={pxA + panelW / 2} y={baseY + 16} textAnchor="middle" fontSize={11} fontWeight={700} fill="#334155">信頼区間：p̂ が中心</text>
-                    <text x={pxA + panelW / 2} y={baseY + 30} textAnchor="middle" fontSize={9} fill="#64748b">SE には手元の p̂ を使う</text>
+                    <text x={pxA + panelW / 2} y={baseY + 17} textAnchor="middle" fontSize={12} fontWeight={700} fill="#334155">信頼区間：p̂が中心</text>
+                    <text x={pxA + panelW / 2} y={baseY + 33} textAnchor="middle" fontSize={12} fill="#64748b">SEには手元のp̂を使う</text>
                     {/* Panel B: 検定 */}
                     <path d={toPath(pxB, 0.50, seSpread)} fill="#f59e0b" fillOpacity={0.16} stroke="#d97706" strokeWidth={1.6} />
                     <line x1={toX(pxB, 0.50)} y1={baseY} x2={toX(pxB, 0.50)} y2={topY} stroke="#d97706" strokeWidth={2} strokeDasharray="3,2" />
-                    <text x={toX(pxB, 0.50)} y={topY - 6} textAnchor="middle" fontSize={11} fontWeight={800} fill="#b45309">p₀=0.50</text>
+                    <text x={toX(pxB, 0.50)} y={topY - 6} textAnchor="middle" fontSize={13} fontWeight={800} fill="#b45309">p₀=0.50</text>
                     <line x1={toX(pxB, 0.55)} y1={baseY} x2={toX(pxB, 0.55)} y2={baseY - 14} stroke="#334155" strokeWidth={1.6} />
                     <circle cx={toX(pxB, 0.55)} cy={baseY - 14} r={2.6} fill="#334155" />
-                    <text x={toX(pxB, 0.55)} y={baseY - 20} textAnchor="middle" fontSize={9} fontWeight={700} fill="#334155">観測値 p̂=0.55</text>
+                    <text x={toX(pxB, 0.55)} y={baseY - 21} textAnchor="middle" fontSize={12} fontWeight={700} fill="#334155">観測値p̂=0.55</text>
                     <line x1={pxB} y1={baseY} x2={pxB + panelW} y2={baseY} stroke="#94a3b8" strokeWidth={1} />
-                    <text x={pxB + panelW / 2} y={baseY + 16} textAnchor="middle" fontSize={11} fontWeight={700} fill="#334155">検定：p₀ が中心</text>
-                    <text x={pxB + panelW / 2} y={baseY + 30} textAnchor="middle" fontSize={9} fill="#64748b">SE には仮定した p₀ を使う</text>
+                    <text x={pxB + panelW / 2} y={baseY + 17} textAnchor="middle" fontSize={12} fontWeight={700} fill="#334155">検定：p₀が中心</text>
+                    <text x={pxB + panelW / 2} y={baseY + 33} textAnchor="middle" fontSize={12} fill="#64748b">SEには仮定したp₀を使う</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     同じ標本データ（p̂=0.55）でも、目的が違えば分布の中心が変わる。<strong>信頼区間</strong>は「p が何かわからないから推定する」ので、分布の中心を手元の p̂ に置く（左）。<strong>検定</strong>は「H₀: p=p₀ が正しいと仮定した世界」を考えるので、分布の中心を仮定した p₀ に置く（右）。右の図で観測値 p̂ が中心からどれだけ離れているかが、検定統計量 z の大きさそのもの。
@@ -664,12 +666,12 @@ function App() {
             if (part === '[[clt-stages]]') {
               // CLT：母集団が歪んでいても n が増えると標本平均の分布が正規に近づき、幅も狭まる（イメージ図・実シミュレーションではない）
               const stages: { label: string; h: number[] }[] = [
-                { label: '母集団（n=1）', h: [0.30, 0.60, 1.00, 0.70, 0.40, 0.25, 0.15] },
-                { label: 'n=2 の平均', h: [0.15, 0.40, 0.85, 1.00, 0.60, 0.30, 0.12] },
-                { label: 'n=5 の平均', h: [0.05, 0.25, 0.75, 1.00, 0.70, 0.30, 0.08] },
-                { label: 'n=30 の平均', h: [0.01, 0.08, 0.50, 1.00, 0.48, 0.08, 0.01] },
+                { label: '母集団', h: [0.30, 0.60, 1.00, 0.70, 0.40, 0.25, 0.15] },
+                { label: 'n=2', h: [0.15, 0.40, 0.85, 1.00, 0.60, 0.30, 0.12] },
+                { label: 'n=5', h: [0.05, 0.25, 0.75, 1.00, 0.70, 0.30, 0.08] },
+                { label: 'n=30', h: [0.01, 0.08, 0.50, 1.00, 0.48, 0.08, 0.01] },
               ];
-              const bins = 7, pw = 74, gap = 10, ph = 58, baseY = 72, x0 = 4;
+              const bins = 7, pw = 74, gap = 10, ph = 54, baseY = 68, x0 = 4;
               const nodes: React.ReactNode[] = [];
               stages.forEach((s, si) => {
                 const px = x0 + si * (pw + gap);
@@ -679,11 +681,11 @@ function App() {
                   nodes.push(<rect key={`${si}-${i}`} x={px + i * bw + 0.6} y={baseY - bh} width={bw - 1.2} height={bh} fill={si === 0 ? '#f59e0b' : 'var(--primary)'} fillOpacity={0.75} />);
                 });
                 nodes.push(<line key={`${si}-b`} x1={px} y1={baseY} x2={px + pw} y2={baseY} stroke="#cbd5e1" strokeWidth={1} />);
-                nodes.push(<text key={`${si}-l`} x={px + pw / 2} y={baseY + 13} textAnchor="middle" fontSize={8.5} fontWeight={700} fill="#475569">{s.label}</text>);
+                nodes.push(<text key={`${si}-l`} x={px + pw / 2} y={baseY + 17} textAnchor="middle" fontSize={14} fontWeight={700} fill="#475569">{s.label}</text>);
               });
               return (
                 <figure key={key} className="g3-figure">
-                  <svg viewBox="0 0 340 90" role="img" aria-label="歪んだ母集団でもnが増えると標本平均の分布は正規分布に近づき幅も狭まる" className="g3-fig-svg">{nodes}</svg>
+                  <svg viewBox="0 0 340 94" role="img" aria-label="歪んだ母集団でもnが増えると標本平均の分布は正規分布に近づき幅も狭まる" className="g3-fig-svg">{nodes}</svg>
                   <figcaption className="g3-fig-cap">
                     左端（橙）は右に歪んだ<strong>母集団</strong>そのもの（n=1）。ここから n 個ずつ取って平均した標本平均の分布を並べると、n が増えるほど（1→2→5→30）<strong>形が左右対称の正規分布に近づき</strong>、同時に<strong>幅（ばらつき）も SE=σ/√n にしたがって狭まっていく</strong>のが分かる。母集団の形がどんなに歪んでいても、この収束は起こる（イメージ図。実データのシミュレーションではない）。
                   </figcaption>
@@ -708,8 +710,8 @@ function App() {
                   <svg viewBox="0 0 340 160" role="img" aria-label="各点から回帰直線までの縦の距離（残差）を最小二乗法は二乗して合計し最小化する" className="g3-fig-svg">
                     <line x1={40} y1={130} x2={310} y2={130} stroke="#94a3b8" strokeWidth={1} />
                     <line x1={40} y1={130} x2={40} y2={15} stroke="#94a3b8" strokeWidth={1} />
-                    <text x={175} y={148} textAnchor="middle" fontSize={10} fill="#64748b">X（説明変数）</text>
-                    <text x={16} y={72} textAnchor="middle" fontSize={10} fill="#64748b" transform="rotate(-90 16 72)">Y（目的変数）</text>
+                    <text x={175} y={150} textAnchor="middle" fontSize={13} fill="#64748b">X（説明変数）</text>
+                    <text x={13} y={72} textAnchor="middle" fontSize={13} fill="#64748b" transform="rotate(-90 13 72)">Y（目的変数）</text>
                     <line x1={toSx(0)} y1={toSy(lineY(0))} x2={toSx(10)} y2={toSy(lineY(10))} stroke="var(--primary)" strokeWidth={2} />
                     {points.map((p, i) => {
                       const py = lineY(p.x);
@@ -729,8 +731,8 @@ function App() {
                       height={sqSizePx}
                       fill="#dc2626" fillOpacity={0.14} stroke="#dc2626" strokeWidth={1} strokeDasharray="2,2"
                     />
-                    <text x={40} y={12} fontSize={9} fill="#64748b">直線：予測値 Ŷ</text>
-                    <text x={toSx(biggest.x) + sqSizePx + 4} y={toSy((biggest.y + lineY(biggest.x)) / 2)} fontSize={9} fontWeight={700} fill="#b91c1c">(Y−Ŷ)²</text>
+                    <text x={40} y={13} fontSize={13} fill="#64748b">直線：予測値Ŷ</text>
+                    <text x={toSx(biggest.x) + sqSizePx + 4} y={toSy((biggest.y + lineY(biggest.x)) / 2)} fontSize={13} fontWeight={700} fill="#b91c1c">(Y−Ŷ)²</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     赤い点線が<strong>残差</strong>＝実測値 Y と予測値 Ŷ（直線上の点）の縦の距離。最小二乗法はこの残差を<strong>1つずつ二乗してから全部足した合計</strong>（残差二乗和）を最小にするように直線を引く。二乗すると、プラスとマイナスの残差が打ち消し合わず、大きく外れた点（右の赤い正方形の例）ほど強く効くようになる。

@@ -69,7 +69,7 @@ function ConfidenceIntervalGraph() {
   });
   const missed = trials.filter((t) => !t.hit).length;
 
-  const W = 460, rowH = 15, padT = 26, padB = 30, padL = 30, padR = 14;
+  const W = 360, rowH = 17, padT = 28, padB = 46, padL = 34, padR = 14;
   const H = padT + rowH * 20 + padB;
   const span = Math.max(6, 1.96 * (SIGMA / Math.sqrt(10)) + 2);
   const X = (v: number) => padL + ((v - (MU - span)) / (2 * span)) * (W - padL - padR);
@@ -85,7 +85,7 @@ function ConfidenceIntervalGraph() {
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label="20回の標本から作った95%信頼区間と母平均の関係">
         <line x1={X(MU)} y1={padT - 8} x2={X(MU)} y2={H - padB + 4} stroke="#b91c1c" strokeWidth="1.8" />
-        <text x={X(MU)} y={padT - 13} textAnchor="middle" fontSize="11" fontWeight="700" fill="#b91c1c">母平均 μ = {MU}cm（動かない）</text>
+        <text x={X(MU)} y={padT - 14} textAnchor="middle" fontSize="14" fontWeight="700" fill="#b91c1c">母平均 μ={MU}cm（動かない）</text>
         {trials.map((t, i) => {
           const y = padT + i * rowH + rowH / 2;
           const c = t.hit ? '#0f766e' : '#b91c1c';
@@ -95,11 +95,12 @@ function ConfidenceIntervalGraph() {
               <line x1={X(t.lo)} y1={y - 3.5} x2={X(t.lo)} y2={y + 3.5} stroke={c} strokeWidth="1.5" />
               <line x1={X(t.hi)} y1={y - 3.5} x2={X(t.hi)} y2={y + 3.5} stroke={c} strokeWidth="1.5" />
               <circle cx={X(t.xbar)} cy={y} r="2.4" fill={c} />
-              <text x={6} y={y + 3.5} fontSize="9" fill="#888">{i + 1}</text>
+              <text x={6} y={y + 4} fontSize="15" fill="#666">{i + 1}</text>
             </g>
           );
         })}
-        <text x={W / 2} y={H - 8} textAnchor="middle" fontSize="11" fill="#555">身長（cm）／点は標本平均、横棒が95%信頼区間</text>
+        <text x={W / 2} y={H - 30} textAnchor="middle" fontSize="14" fill="#555">身長（cm）</text>
+        <text x={W / 2} y={H - 10} textAnchor="middle" fontSize="14" fill="#555">点＝標本平均、横棒＝95%信頼区間</text>
       </svg>
       <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.7 }}>
         20回のうち <strong>{20 - missed}回</strong> が母平均をとらえ、<strong style={{ color: '#b91c1c' }}>{missed}回</strong> は外しました。
