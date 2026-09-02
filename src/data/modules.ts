@@ -23,12 +23,15 @@ export interface Module {
   interactiveType?: 'normal' | 't' | 'chi2' | 'f' | 'regression';
   keyFormulas?: KeyFormula[];
   quiz: QuizQuestion[];
+  /** この本文が最後に実質更新された日（git log -L で当該行範囲の最終コミット日を実測。書式のみの一括置換コミットは除外） */
+  updatedAt: string;
 }
 
 export const modules: Module[] = [
   // ── Chapter 1: データの記述 ──────────────────────────────
   {
     id: '1.1-descriptive',
+    updatedAt: '2026-08-26',
     title: 'データの代表値と尺度水準',
     chapter: 1,
     scope: '3級',
@@ -156,6 +159,7 @@ $$\\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i$$
   },
   {
     id: '1.6-dispersion',
+    updatedAt: '2026-08-26',
     title: '散らばりの指標と箱ひげ図',
     chapter: 1,
     scope: '3級',
@@ -304,6 +308,7 @@ $$\\text{外れ値の下限} = Q_1 - 1.5 \\times \\text{IQR}, \\qquad \\text{外
   },
   {
     id: '1.2-visualization',
+    updatedAt: '2026-07-27',
     title: 'データの可視化',
     chapter: 1,
     scope: '3級',
@@ -519,6 +524,7 @@ $$\\text{外れ値の下限} = Q_1 - 1.5 \\times \\text{IQR}, \\qquad \\text{外
   // ── Chapter 1: 2変数の関係の可視化 ────────────────────────────
   {
     id: '1.5-correlation',
+    updatedAt: '2026-08-26',
     title: '散布図・相関・クロス集計',
     chapter: 1,
     scope: '3級',
@@ -688,6 +694,7 @@ $r = 0.9$ なら「強い正の線形関係」、$r = 0.3$ なら「弱い正の
   // ── Chapter 1: データの収集・調査方法 ────────────────────────────
   {
     id: '1.3-data-collection',
+    updatedAt: '2026-07-27',
     title: 'データの収集と調査設計',
     chapter: 1,
     scope: '3級',
@@ -840,6 +847,7 @@ $r = 0.9$ なら「強い正の線形関係」、$r = 0.3$ なら「弱い正の
 
   {
     id: '1.4-timeseries',
+    updatedAt: '2026-07-27',
     title: '時系列データと変化の読み方',
     chapter: 1,
     scope: '3級',
@@ -1009,6 +1017,7 @@ $$\\text{指数} = \\frac{\\text{比較時の値}}{\\text{基準時の値}} \\ti
   // ── Chapter 2: 確率の基礎 ────────────────────────────────
   {
     id: '2.1-probability',
+    updatedAt: '2026-07-27',
     title: '確率の基礎',
     chapter: 2,
     scope: '3級',
@@ -1187,6 +1196,7 @@ $$P(A \\mid B) = P(A) \\quad \\text{つまり} \\quad P(A \\cap B) = P(A) \\cdot
   // ── Chapter 3: 確率分布 ──────────────────────────────────
   {
     id: '3.1-discrete',
+    updatedAt: '2026-07-27',
     title: '離散型確率分布',
     chapter: 3,
     scope: '3級',
@@ -1417,6 +1427,7 @@ $$P(X=k) = C(n,k)\\,p^k(1-p)^{n-k}$$
   },
   {
     id: '3.2-continuous',
+    updatedAt: '2026-07-27',
     title: '連続型確率分布',
     chapter: 3,
     scope: '3級',
@@ -1589,6 +1600,7 @@ $$P(X \\ge 180) = 1 - P(Z \\le 1.67) = 1 - 0.953 = 0.047 \\approx 4.7\\%$$
   // ── Chapter 3: 大数の法則・CLT ────────────────────────────────
   {
     id: '3.3-clt',
+    updatedAt: '2026-08-25',
     title: '中心極限定理と二項分布の正規近似',
     chapter: 3,
     scope: '3級',
@@ -1793,6 +1805,7 @@ $$Z = \\frac{60 - 50}{5} = 2.0$$
   // ── Chapter 4: 統計的推測 ────────────────────────────────
   {
     id: '4.1-estimation',
+    updatedAt: '2026-08-05',
     title: '推定',
     chapter: 4,
     scope: '3級',
@@ -1977,6 +1990,7 @@ $$\\bar{X} \\pm t_{n-1}(0.025)\\,\\frac{s}{\\sqrt{n}}$$
   },
   {
     id: '4.2-testing',
+    updatedAt: '2026-07-27',
     title: '仮説検定',
     chapter: 4,
     scope: '3級',
@@ -2141,6 +2155,7 @@ $t = (100 - 105) / (10/\\sqrt{25}) = -5 / 2 = -2.5$ となり、自由度 $n-1 =
   // ── Chapter 4: 母比率の推定・検定 ─────────────────────────
   {
     id: '4.4-proportion',
+    updatedAt: '2026-08-24',
     title: '母比率の推定・検定',
     chapter: 4,
     scope: '3級',
@@ -2293,6 +2308,7 @@ $$z = \\frac{0.55 - 0.50}{\\sqrt{0.5 \\times 0.5 / 200}} = \\frac{0.05}{0.0354} 
   // ── Chapter 5: 応用手法 ──────────────────────────────────
   {
     id: '5.1-regression',
+    updatedAt: '2026-08-25',
     title: '回帰分析',
     chapter: 5,
     scope: '3級',
