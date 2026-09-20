@@ -251,6 +251,23 @@ const G3_FIGURES: Record<string, string> = {
     <text x="160" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">A∩B</text><text x="160" y="94" text-anchor="middle" font-size="8.5" fill="#64748b">（重なり）</text>
     <text x="160" y="162" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">P(A∪B) ＝ P(A) ＋ P(B) − P(A∩B)</text>
   </svg><figcaption class="g3-fig-cap">「A または B」（A∪B）の確率は、A と B をそのまま足すと重なり A∩B を<strong>二重に数えて</strong>しまう。だから重なりの分 P(A∩B) を1回引く——これが加法定理。A と B が同時に起こらない（排反）なら重なりが無いので、そのまま足せる。</figcaption></figure>`,
+  'bayes-tree': `<figure class="g3-figure"><svg viewBox="0 0 380 290" role="img" aria-label="ベイズの定理の樹形図：病気1%・検査の感度90%・偽陽性率5%から、陽性と出た人のうち本当に病気の人の割合を求める" class="g3-fig-svg">
+    <circle cx="20" cy="115" r="4" fill="#334155" />
+    <line x1="20" y1="115" x2="110" y2="45" stroke="#94a3b8" stroke-width="1.5" /><line x1="20" y1="115" x2="110" y2="185" stroke="#94a3b8" stroke-width="1.5" />
+    <text x="60" y="70" text-anchor="middle" font-size="11" font-weight="700" fill="var(--primary)">病気 1%</text><text x="60" y="168" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">健康 99%</text>
+    <circle cx="110" cy="45" r="4" fill="var(--primary)" /><circle cx="110" cy="185" r="4" fill="#94a3b8" />
+    <line x1="110" y1="45" x2="230" y2="15" stroke="#94a3b8" stroke-width="1.5" /><line x1="110" y1="45" x2="230" y2="75" stroke="#94a3b8" stroke-width="1.5" />
+    <line x1="110" y1="185" x2="230" y2="155" stroke="#94a3b8" stroke-width="1.5" /><line x1="110" y1="185" x2="230" y2="215" stroke="#94a3b8" stroke-width="1.5" />
+    <text x="175" y="22" text-anchor="middle" font-size="10" fill="#334155">陽性 90%</text><text x="175" y="68" text-anchor="middle" font-size="10" fill="#94a3b8">陰性 10%</text>
+    <text x="175" y="162" text-anchor="middle" font-size="10" fill="#334155">陽性 5%</text><text x="175" y="208" text-anchor="middle" font-size="10" fill="#94a3b8">陰性 95%</text>
+    <circle cx="230" cy="15" r="5" fill="var(--primary)" /><text x="240" y="13" text-anchor="start" font-size="11" font-weight="800" fill="var(--primary)">0.9%</text><text x="240" y="25" text-anchor="start" font-size="8.5" fill="#64748b">（病気×陽性）</text>
+    <circle cx="230" cy="75" r="4" fill="#cbd5e1" /><text x="240" y="78" text-anchor="start" font-size="10" fill="#94a3b8">0.1%</text>
+    <circle cx="230" cy="155" r="5" fill="var(--primary)" /><text x="240" y="153" text-anchor="start" font-size="11" font-weight="800" fill="var(--primary)">4.95%</text><text x="240" y="165" text-anchor="start" font-size="8.5" fill="#64748b">（健康×陽性）</text>
+    <circle cx="230" cy="215" r="4" fill="#cbd5e1" /><text x="240" y="218" text-anchor="start" font-size="10" fill="#94a3b8">94.05%</text>
+    <text x="190" y="245" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">検査結果が「陽性」だった人（0.9%＋4.95%＝5.85%）の内訳</text>
+    <rect x="40" y="252" width="46.2" height="22" fill="var(--primary)" /><rect x="86.2" y="252" width="253.8" height="22" fill="#fca5a5" />
+    <text x="63" y="286" text-anchor="middle" font-size="9" font-weight="700" fill="var(--primary)">本当に病気 15.4%</text><text x="213" y="286" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">偽陽性（健康） 84.6%</text>
+  </svg><figcaption class="g3-fig-cap">病気の人が1%・検査の感度（病気を正しく陽性にする率）が90%・偽陽性率（健康なのに陽性になる率）が5%のとき、<strong>「陽性」の枝は2本ある</strong>（病気から来た枝と健康から来た枝）。陽性と出た人 5.85% のうち、本当に病気なのは 0.9%（15.4%）だけで、残り 84.6% は健康なのに陽性が出た偽陽性。<strong>珍しい病気ほど、陽性でも大半は偽陽性になる</strong>というのが、ベイズの定理が教える核心。</figcaption></figure>`,
 };
 
 // 行頭の絵文字マーカーは装飾でなくテキストラベルへ（2026-08-05・O-2-8：
