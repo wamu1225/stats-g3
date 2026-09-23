@@ -603,7 +603,7 @@ function App() {
                   <text x={240} y={159} textAnchor="start" fontSize={14} fontWeight={800} fill="var(--primary)">4.95%（健康×陽性）</text>
                   <circle cx={230} cy={215} r={4} fill="#cbd5e1" />
                   <text x={240} y={219} textAnchor="start" fontSize={13} fill="#94a3b8">94.05%</text>
-                  <text x={190} y={247} textAnchor="middle" fontSize={12.5} fontWeight={700} fill="#334155">検査結果が「陽性」だった人（0.9%＋4.95%＝5.85%）の内訳</text>
+                  <text x={190} y={247} textAnchor="middle" fontSize={14} fontWeight={700} fill="#334155">検査結果が「陽性」だった人（0.9%＋4.95%＝5.85%）の内訳</text>
                   <rect x={40} y={254} width={46.2} height={22} fill="var(--primary)" />
                   <rect x={86.2} y={254} width={253.8} height={22} fill="#fca5a5" />
                   <text x={63} y={288} textAnchor="middle" fontSize={14} fontWeight={700} fill="var(--primary)">本当に病気 15.4%</text>
