@@ -591,18 +591,18 @@ function App() {
                   <line x1={110} y1={45} x2={230} y2={75} stroke="#94a3b8" strokeWidth={1.5} />
                   <line x1={110} y1={185} x2={230} y2={155} stroke="#94a3b8" strokeWidth={1.5} />
                   <line x1={110} y1={185} x2={230} y2={215} stroke="#94a3b8" strokeWidth={1.5} />
-                  <text x={175} y={22} textAnchor="middle" fontSize={13} fill="#334155">陽性 90%</text>
-                  <text x={175} y={68} textAnchor="middle" fontSize={13} fill="#94a3b8">陰性 10%</text>
-                  <text x={175} y={162} textAnchor="middle" fontSize={13} fill="#334155">陽性 5%</text>
-                  <text x={175} y={208} textAnchor="middle" fontSize={13} fill="#94a3b8">陰性 95%</text>
+                  <text x={175} y={22} textAnchor="middle" fontSize={14} fill="#334155">陽性 90%</text>
+                  <text x={175} y={68} textAnchor="middle" fontSize={14} fill="#94a3b8">陰性 10%</text>
+                  <text x={175} y={162} textAnchor="middle" fontSize={14} fill="#334155">陽性 5%</text>
+                  <text x={175} y={208} textAnchor="middle" fontSize={14} fill="#94a3b8">陰性 95%</text>
                   <circle cx={230} cy={15} r={5} fill="var(--primary)" />
                   <text x={240} y={19} textAnchor="start" fontSize={14} fontWeight={800} fill="var(--primary)">0.9%（病気×陽性）</text>
                   <circle cx={230} cy={75} r={4} fill="#cbd5e1" />
-                  <text x={240} y={79} textAnchor="start" fontSize={13} fill="#94a3b8">0.1%</text>
+                  <text x={240} y={79} textAnchor="start" fontSize={14} fill="#94a3b8">0.1%</text>
                   <circle cx={230} cy={155} r={5} fill="var(--primary)" />
                   <text x={240} y={159} textAnchor="start" fontSize={14} fontWeight={800} fill="var(--primary)">4.95%（健康×陽性）</text>
                   <circle cx={230} cy={215} r={4} fill="#cbd5e1" />
-                  <text x={240} y={219} textAnchor="start" fontSize={13} fill="#94a3b8">94.05%</text>
+                  <text x={240} y={219} textAnchor="start" fontSize={14} fill="#94a3b8">94.05%</text>
                   <text x={190} y={247} textAnchor="middle" fontSize={14} fontWeight={700} fill="#334155">検査結果が「陽性」だった人（0.9%＋4.95%＝5.85%）の内訳</text>
                   <rect x={40} y={254} width={46.2} height={22} fill="var(--primary)" />
                   <rect x={86.2} y={254} width={253.8} height={22} fill="#fca5a5" />
