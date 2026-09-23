@@ -179,11 +179,11 @@ function ogiveSvg(): string {
     <line x1="${X(medS)}" y1="${Y(0.5)}" x2="${X(medS)}" y2="${y0}" stroke="#e0607e" stroke-width="1.3" stroke-dasharray="3 2" />
     <polyline points="${line}" fill="none" stroke="var(--primary)" stroke-width="2" />${dots}
     <text x="${x0 - 6}" y="${Y(0.5) + 4}" text-anchor="end" font-size="13" font-weight="700" fill="#e0607e">0.5</text>
-    <text x="${x0 - 6}" y="${Y(1) + 4}" text-anchor="end" font-size="12" fill="#64748b">1.0</text>
-    <text x="${x0 - 6}" y="${y0 + 4}" text-anchor="end" font-size="12" fill="#64748b">0</text>
+    <text x="${x0 - 6}" y="${Y(1) + 4}" text-anchor="end" font-size="13" fill="#64748b">1.0</text>
+    <text x="${x0 - 6}" y="${y0 + 4}" text-anchor="end" font-size="13" fill="#64748b">0</text>
     <text x="${X(medS)}" y="${y0 + 16}" text-anchor="middle" font-size="14" font-weight="700" fill="#e0607e">中央値≈66</text>
-    <text x="${x0 + pw}" y="${y0 + 16}" text-anchor="end" font-size="12" fill="#64748b">点数 →</text>
-    <text x="${x0 - 8}" y="${y0 - ph - 10}" text-anchor="start" font-size="12" fill="#64748b">累積相対度数</text>
+    <text x="${x0 + pw}" y="${y0 + 16}" text-anchor="end" font-size="13" fill="#64748b">点数 →</text>
+    <text x="${x0 - 8}" y="${y0 - ph - 10}" text-anchor="start" font-size="13" fill="#64748b">累積相対度数</text>
   </svg>`;
 }
 function samplingSvgG3(): string {

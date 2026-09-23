@@ -486,11 +486,11 @@ function App() {
                     <polyline points={line} fill="none" stroke="var(--primary)" strokeWidth={2} />
                     {data.map(([s, c], i) => <circle key={i} cx={X(s)} cy={Y(c)} r={2.2} fill="var(--primary)" />)}
                     <text x={x0 - 6} y={Y(0.5) + 4} textAnchor="end" fontSize={13} fontWeight={700} fill="#e0607e">0.5</text>
-                    <text x={x0 - 6} y={Y(1) + 4} textAnchor="end" fontSize={12} fill="#64748b">1.0</text>
-                    <text x={x0 - 6} y={y0 + 4} textAnchor="end" fontSize={12} fill="#64748b">0</text>
+                    <text x={x0 - 6} y={Y(1) + 4} textAnchor="end" fontSize={13} fill="#64748b">1.0</text>
+                    <text x={x0 - 6} y={y0 + 4} textAnchor="end" fontSize={13} fill="#64748b">0</text>
                     <text x={X(medS)} y={y0 + 16} textAnchor="middle" fontSize={14} fontWeight={700} fill="#e0607e">中央値≈66</text>
-                    <text x={x0 + pw} y={y0 + 16} textAnchor="end" fontSize={12} fill="#64748b">点数 →</text>
-                    <text x={x0 - 8} y={y0 - ph - 10} textAnchor="start" fontSize={12} fill="#64748b">累積相対度数</text>
+                    <text x={x0 + pw} y={y0 + 16} textAnchor="end" fontSize={13} fill="#64748b">点数 →</text>
+                    <text x={x0 - 8} y={y0 - ph - 10} textAnchor="start" fontSize={13} fill="#64748b">累積相対度数</text>
                   </svg>
                   <figcaption className="g3-fig-cap">
                     累積相対度数グラフ（オージャイブ）。横軸は点数（階級の上限）、縦軸はそこまでに全体の何割が入るか。<strong>縦軸の 0.5 から水平にたどり、曲線と交わった点の横軸が中央値</strong>（この例では約66点）。「70点以下は何％か」なども曲線から直接読み取れる。
