@@ -12,7 +12,7 @@ let errors = [];
 // Supported interactive types (Must match InteractiveGraph.tsx switch)
 // InteractiveGraph implements: normal, binomial, histogram, scatter, ci, plus aliases regression→scatter, t→normal.
 const validInteractiveTypes = [
-  'normal', 'binomial', 'histogram', 'scatter', 'ci', 'regression', 't'
+  'normal', 'binomial', 'histogram', 'scatter', 'ci', 'regression', 't', 'proportion-ci'
 ];
 
 const mathKeywords = [

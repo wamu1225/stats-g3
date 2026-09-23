@@ -112,6 +112,55 @@ function ConfidenceIntervalGraph() {
   );
 }
 
+// --- 母比率の信頼区間（サンプルサイズと幅の関係） ---
+function ProportionCIGraph() {
+  const STEPS = [50, 100, 200, 400, 800, 1600, 3200];
+  const [stepIdx, setStepIdx] = useState(2); // n=200（本文の例と同じ）
+  const PHAT = 0.4; // 本文の例（n=200, X=80）と揃える
+  const n = STEPS[stepIdx];
+
+  const se = Math.sqrt((PHAT * (1 - PHAT)) / n);
+  const half = 1.96 * se;
+  const baseN = 200;
+  const baseHalf = 1.96 * Math.sqrt((PHAT * (1 - PHAT)) / baseN);
+
+  const W = 360, H = 150, padL = 30, padR = 30, midY = 70;
+  const X = (v: number) => padL + (v * (W - padL - padR));
+
+  return (
+    <div className="interactive-graph">
+      <div className="slider-row">
+        <label>標本サイズ n = {n}</label>
+        <input
+          type="range"
+          min={0}
+          max={STEPS.length - 1}
+          step={1}
+          value={stepIdx}
+          onChange={(e) => setStepIdx(Number(e.target.value))}
+        />
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label="標本サイズnを変えたときの母比率95%信頼区間の幅の変化（p̂=0.4で固定）">
+        <line x1={padL} y1={midY + 34} x2={W - padR} y2={midY + 34} stroke="#cbd5e1" strokeWidth="1" />
+        {[0, 0.2, 0.4, 0.6, 0.8, 1].map((v) => (
+          <text key={v} x={X(v)} y={midY + 48} textAnchor="middle" fontSize="10" fill="#94a3b8">{v}</text>
+        ))}
+        {/* 参考：本文の例（n=200）の幅を薄く表示 */}
+        <line x1={X(PHAT - baseHalf)} y1={midY - 18} x2={X(PHAT + baseHalf)} y2={midY - 18} stroke="#cbd5e1" strokeWidth="6" strokeLinecap="round" />
+        <text x={W / 2} y={midY - 26} textAnchor="middle" fontSize="10" fill="#94a3b8">参考：本文の例（n=200）</text>
+        {/* 現在のn */}
+        <line x1={X(PHAT - half)} y1={midY} x2={X(PHAT + half)} y2={midY} stroke="var(--primary)" strokeWidth="10" strokeLinecap="round" />
+        <circle cx={X(PHAT)} cy={midY} r="3" fill="#16324a" />
+        <text x={X(PHAT)} y={midY + 20} textAnchor="middle" fontSize="11" fontWeight={700} fill="#16324a">p̂={PHAT}</text>
+      </svg>
+      <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.7 }}>
+        95%信頼区間：<strong>{PHAT.toFixed(2)} ± {half.toFixed(3)}</strong>（幅 {(2 * half).toFixed(3)}）。
+        n を <strong>4倍</strong> にスライドさせると、幅がちょうど<strong>半分</strong>になることを確かめてみましょう（SE ∝ 1/√n）。
+      </p>
+    </div>
+  );
+}
+
 // --- 二項分布 ---
 function BinomialGraph() {
   const [n, setN] = useState(10);
@@ -232,6 +281,7 @@ function ScatterGraph() {
 export const InteractiveGraph: React.FC<Props> = ({ type }) => {
   switch (type) {
     case 'ci': return <ConfidenceIntervalGraph />;
+    case 'proportion-ci': return <ProportionCIGraph />;
     case 'normal': return <NormalGraph />;
     case 'binomial': return <BinomialGraph />;
     case 'histogram': return <HistogramGraph />;
