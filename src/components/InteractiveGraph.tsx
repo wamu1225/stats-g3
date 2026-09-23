@@ -1,6 +1,6 @@
 // src/components/InteractiveGraph.tsx  (stats-g3)
 import React, { useState, useCallback } from 'react';
-import { XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, Area, AreaChart, BarChart, Bar, ScatterChart, Scatter, ZAxis } from 'recharts';
+import { XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, Area, AreaChart, BarChart, Bar, ScatterChart, Scatter, ZAxis, LineChart, Line } from 'recharts';
 
 interface Props {
   type: string;
@@ -161,6 +161,56 @@ function ProportionCIGraph() {
   );
 }
 
+// --- 大数の法則（サイコロで「3以下」が出る割合の収束） ---
+function LawOfLargeNumbersGraph() {
+  const STEPS = [10, 30, 100, 300, 1000];
+  const [stepIdx, setStepIdx] = useState(2);
+  const [seed, setSeed] = useState(1);
+  const n = STEPS[stepIdx];
+
+  const lcg = useCallback((s: number) => { let x = s; return () => { x = (1103515245 * x + 12345) % 2147483648; return x / 2147483648; }; }, []);
+
+  const data = React.useMemo(() => {
+    const rnd = lcg(seed * 7919 + 13);
+    let hits = 0;
+    const points: { trial: number; ratio: number }[] = [];
+    const sampleEvery = Math.max(1, Math.floor(n / 60)); // 描画点を間引く（最大60点程度）
+    for (let i = 1; i <= n; i++) {
+      const roll = Math.floor(rnd() * 6) + 1; // 1〜6
+      if (roll <= 3) hits++;
+      if (i % sampleEvery === 0 || i === n) points.push({ trial: i, ratio: parseFloat((hits / i).toFixed(3)) });
+    }
+    return points;
+  }, [n, seed, lcg]);
+
+  const finalRatio = data.length ? data[data.length - 1].ratio : 0;
+
+  return (
+    <div className="interactive-graph">
+      <div className="slider-row">
+        <label>サイコロを振る回数 n = {n}</label>
+        <input type="range" min={0} max={STEPS.length - 1} step={1} value={stepIdx} onChange={(e) => setStepIdx(Number(e.target.value))} />
+        <button className="btn" style={{ width: 'auto', padding: '0.35rem 0.9rem', fontSize: '0.85rem' }} onClick={() => setSeed((s) => s + 1)}>
+          振り直す
+        </button>
+      </div>
+      <ResponsiveContainer width="100%" height={200}>
+        <LineChart data={data} margin={{ top: 8, right: 12, left: -12, bottom: 0 }}>
+          <XAxis dataKey="trial" fontSize={11} />
+          <YAxis domain={[0, 1]} fontSize={11} />
+          <Tooltip formatter={(v) => Number(v).toFixed(3)} labelFormatter={(l) => `${l}回目まで`} />
+          <ReferenceLine y={0.5} stroke="#b91c1c" strokeDasharray="4 3" label={{ value: '理論値 0.5', position: 'insideTopRight', fontSize: 11, fill: '#b91c1c' }} />
+          <Line type="monotone" dataKey="ratio" stroke="var(--primary)" strokeWidth={2} dot={false} />
+        </LineChart>
+      </ResponsiveContainer>
+      <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.7 }}>
+        「3以下が出る」割合は理論上 <strong>0.5</strong> ですが、n = {n} 回では実際に <strong>{finalRatio}</strong> でした。
+        試行回数が少ないうちは大きく揺れますが、n を増やすほど理論値に近づいていきます（<strong>大数の法則</strong>）。
+      </p>
+    </div>
+  );
+}
+
 // --- 二項分布 ---
 function BinomialGraph() {
   const [n, setN] = useState(10);
@@ -282,6 +332,7 @@ export const InteractiveGraph: React.FC<Props> = ({ type }) => {
   switch (type) {
     case 'ci': return <ConfidenceIntervalGraph />;
     case 'proportion-ci': return <ProportionCIGraph />;
+    case 'lln': return <LawOfLargeNumbersGraph />;
     case 'normal': return <NormalGraph />;
     case 'binomial': return <BinomialGraph />;
     case 'histogram': return <HistogramGraph />;
