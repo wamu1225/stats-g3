@@ -14,6 +14,7 @@ import { ExamGuide } from './components/ExamGuide';
 import { buildUsecaseHtml } from './data/usecaseGuide';
 import { ChevronLeft, ChevronRight, Book, LayoutDashboard, ArrowRight, Search as SearchIcon, X, Lightbulb, Target, ArrowDown, Dumbbell, Trash2, FileText, Shuffle, CheckCircle2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sitePath, spaClick } from './utils/spaLink';
 
 const PROGRESS_KEY = 'stats-g3-progress';
 const COMPREHENSIVE_KEY = '__comprehensive__';
@@ -891,6 +892,11 @@ function App() {
   }, [searchQuery]);
 
   const activeModule = useMemo(() => modules.find(m => m.id === activeModuleId), [activeModuleId]);
+  const prevModule = useMemo(() => {
+    if (!activeModuleId) return null;
+    const idx = modules.findIndex(m => m.id === activeModuleId);
+    return idx > 0 ? modules[idx - 1] : null;
+  }, [activeModuleId]);
   const nextModule = useMemo(() => {
     if (!activeModuleId) return null;
     const idx = modules.findIndex(m => m.id === activeModuleId);
@@ -904,7 +910,7 @@ function App() {
   return (
     <div className="container" style={{ maxWidth: activeModuleId ? '800px' : view === 'glossary' ? '1000px' : '800px' }}>
       <header className="header">
-        <div className="masthead" onClick={() => updateModuleId(null)}>
+        <a className="masthead" href={sitePath(null)} onClick={spaClick(() => updateModuleId(null))}>
           <svg className="masthead-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
             <rect x={5} y={23} width={7.5} height={12} rx={2.2} fill="currentColor" fillOpacity={0.45} />
             <rect x={16.25} y={15} width={7.5} height={20} rx={2.2} fill="currentColor" fillOpacity={0.7} />
@@ -916,7 +922,7 @@ function App() {
             <h1 className="title">統計検定 <span className="title-lv">3級</span></h1>
             <p className="subtitle">はじめての統計・やさしい学習ノート</p>
           </div>
-        </div>
+        </a>
         {!activeModuleId && view === 'dashboard' && (
           <div className="hero-banner">
             <p className="hero-lead">グラフと図解で、統計の「第一歩」をやさしく。</p>
@@ -932,25 +938,25 @@ function App() {
 
       {!activeModuleId && (
         <nav style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', flexWrap: 'wrap' }}>
-          <button onClick={() => switchView('dashboard')} className={`nav-tab ${view === 'dashboard' ? 'active' : ''}`}>
+          <a href={sitePath(null)} onClick={spaClick(() => switchView('dashboard'))} className={`nav-tab ${view === 'dashboard' ? 'active' : ''}`}>
             <LayoutDashboard size={18} /> ロードマップ
             {completedCount > 0 && <span className="nav-progress-badge">{completedCount}/{totalModules}</span>}
-          </button>
-          <button onClick={() => switchView('glossary')} className={`nav-tab ${view === 'glossary' ? 'active' : ''}`}>
+          </a>
+          <a href={sitePath('glossary')} onClick={spaClick(() => switchView('glossary'))} className={`nav-tab ${view === 'glossary' ? 'active' : ''}`}>
             <Book size={18} /> 用語集
-          </button>
-          <button onClick={() => switchView('cheatsheet')} className={`nav-tab ${view === 'cheatsheet' ? 'active' : ''}`}>
+          </a>
+          <a href={sitePath('cheatsheet')} onClick={spaClick(() => switchView('cheatsheet'))} className={`nav-tab ${view === 'cheatsheet' ? 'active' : ''}`}>
             <FileText size={18} /> 公式集
-          </button>
-          <button onClick={startRandomQuiz} className={`nav-tab ${view === 'randomquiz' ? 'active' : ''}`}>
+          </a>
+          <a href={sitePath('randomquiz')} onClick={spaClick(startRandomQuiz)} className={`nav-tab ${view === 'randomquiz' ? 'active' : ''}`}>
             <Shuffle size={18} /> 全範囲クイズ
-          </button>
-          <button onClick={() => switchView('guide')} className={`nav-tab ${view === 'guide' ? 'active' : ''}`}>
+          </a>
+          <a href={sitePath('guide')} onClick={spaClick(() => switchView('guide'))} className={`nav-tab ${view === 'guide' ? 'active' : ''}`}>
             <Target size={18} /> 試験ガイド
-          </button>
-          <button onClick={() => switchView('usecase')} className={`nav-tab ${view === 'usecase' ? 'active' : ''}`}>
+          </a>
+          <a href={sitePath('usecase')} onClick={spaClick(() => switchView('usecase'))} className={`nav-tab ${view === 'usecase' ? 'active' : ''}`}>
             <Lightbulb size={18} /> 使い分けガイド
-          </button>
+          </a>
         </nav>
       )}
 
@@ -958,11 +964,24 @@ function App() {
         <AnimatePresence mode="wait">
           {activeModuleId ? (
             <motion.div key={activeModuleId} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}>
-              <button className="btn-back" onClick={() => updateModuleId(null)}><ChevronLeft size={18} /> 一覧に戻る</button>
+              <a className="btn-back" href={sitePath(null)} onClick={spaClick(() => updateModuleId(null))}><ChevronLeft size={18} /> 一覧に戻る</a>
               <div className="card">
                 <span className="badge-chapter">Chapter {activeModule?.chapter}</span>
                 <h2 style={{ marginTop: '0.5rem' }}>{parseContent(activeModule?.title || '')}</h2>
                 <div className="content-body">{activeModule && parseContent(activeModule.content)}</div>
+                <nav className="module-pager" aria-label="前後のモジュール">
+                  {prevModule && (
+                    <a className="btn module-pager-prev" href={sitePath(prevModule.id)} onClick={spaClick(() => updateModuleId(prevModule.id))}>
+                      <ChevronLeft size={16} /> 前のモジュール：{prevModule.title}
+                    </a>
+                  )}
+                  <a className="btn module-pager-list" href={sitePath(null)} onClick={spaClick(() => updateModuleId(null))}>モジュール一覧へ</a>
+                  {nextModule && (
+                    <a className="btn module-pager-next" href={sitePath(nextModule.id)} onClick={spaClick(() => updateModuleId(nextModule.id))}>
+                      次のモジュール：{nextModule.title} <ArrowRight size={16} />
+                    </a>
+                  )}
+                </nav>
               </div>
               <div style={{ marginTop: '2rem' }}>
                 <Quiz
@@ -981,13 +1000,13 @@ function App() {
                     </div>
                   )}
                   <div style={{ display: 'flex', gap: '1rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
-                    <button className="btn" onClick={() => updateModuleId(null)} style={{ flex: 1, background: '#f1f5f9', color: 'var(--text)', border: '1px solid #e2e8f0' }}>
+                    <a className="btn" href={sitePath(null)} onClick={spaClick(() => updateModuleId(null))} style={{ flex: 1, background: '#f1f5f9', color: 'var(--text)', border: '1px solid #e2e8f0' }}>
                       <ChevronLeft size={16} /> 一覧に戻る
-                    </button>
+                    </a>
                     {nextModule && (
-                      <button className="btn" onClick={() => updateModuleId(nextModule.id)} style={{ flex: 2 }}>
+                      <a className="btn" href={sitePath(nextModule.id)} onClick={spaClick(() => updateModuleId(nextModule.id))} style={{ flex: 2 }}>
                         次のモジュールへ：{nextModule.title} <ArrowRight size={16} />
-                      </button>
+                      </a>
                     )}
                   </div>
                 </div>
@@ -995,7 +1014,7 @@ function App() {
             </motion.div>
           ) : view === 'randomquiz' ? (
             <motion.div key="rq" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-              <button className="btn-back" onClick={() => switchView('dashboard')}><ChevronLeft size={18} /> 一覧に戻る</button>
+              <a className="btn-back" href={sitePath(null)} onClick={spaClick(() => switchView('dashboard'))}><ChevronLeft size={18} /> 一覧に戻る</a>
               {rqDone ? (
                 /* Results screen */
                 <div>
@@ -1029,9 +1048,9 @@ function App() {
                             <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', margin: '0 0 0.5rem' }}>復習が必要なモジュール：</p>
                             <div className="links-row">
                               {weak.map(([id, v]) => (
-                                <button key={id} className="btn-link" onClick={() => updateModuleId(id)}>
+                                <a key={id} className="btn-link" href={sitePath(id)} onClick={spaClick(() => updateModuleId(id))}>
                                   {v.title} <ArrowRight size={12} />
-                                </button>
+                                </a>
                               ))}
                             </div>
                           </div>
@@ -1111,9 +1130,9 @@ function App() {
                     <h3 className="content-h3" style={{ margin: '0.25rem 0 0' }}>{chapterNames[ch]}</h3>
                   </div>
                   {modules.filter(m => m.chapter === ch && m.keyFormulas && m.keyFormulas.length > 0).map(m => (
-                    <div key={m.id} className="card cs-module-card" onClick={() => updateModuleId(m.id)} style={{ cursor: 'pointer' }}>
+                    <div key={m.id} className="card cs-module-card card-linked">
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                        <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 800 }}>{m.title}</h4>
+                        <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 800 }}><a className="card-link" href={sitePath(m.id)} onClick={spaClick(() => updateModuleId(m.id))}>{m.title}</a></h4>
                         {progress[m.id] && (
                           <span className="progress-badge-small">
                             {progress[m.id].score}/{progress[m.id].total}点
@@ -1164,9 +1183,9 @@ function App() {
                         {g.mods.map((m) => {
                           const p = progress[m.id];
                           return (
-                            <button key={m.id} className="toc-row" onClick={() => updateModuleId(m.id)}>
+                            <div key={m.id} className="toc-row card-linked">
                               <span className="toc-main">
-                                <span className="toc-title">{parseContent(m.title)}</span>
+                                <span className="toc-title"><a className="card-link" href={sitePath(m.id)} onClick={spaClick(() => updateModuleId(m.id))}>{parseContent(m.title)}</a></span>
                                 <span className="module-desc">{parseContent(m.description)}</span>
                               </span>
                               {p && (
@@ -1175,7 +1194,7 @@ function App() {
                                 </span>
                               )}
                               <ChevronRight className="toc-chev" size={18} />
-                            </button>
+                            </div>
                           );
                         })}
                       </div>
@@ -1344,9 +1363,9 @@ function App() {
                             <p className="label-related">解説ページ：</p>
                             <div className="links-row">
                               {relatedModules.map(m => (
-                                <button key={m.id} className="btn-link" onClick={() => updateModuleId(m.id)}>
+                                <a key={m.id} className="btn-link" href={sitePath(m.id)} onClick={spaClick(() => updateModuleId(m.id))}>
                                   {parseContent(m.title)} <ArrowRight size={12} />
-                                </button>
+                                </a>
                               ))}
                             </div>
                           </div>
@@ -1365,8 +1384,8 @@ function App() {
           本サイトは個人による学習支援サイトであり、統計質保証推進協会および日本統計学会の公式サイトではありません。掲載内容は個人の見解に基づくものであり、公式の情報を保証するものではありません。
         </p>
         <div className="footer-links">
-          <button className="footer-link" onClick={() => switchView('about')}>サイトについて</button>
-          <button className="footer-link" onClick={() => switchView('privacy')}>プライバシーポリシー</button>
+          <a className="footer-link" href={sitePath('about')} onClick={spaClick(() => switchView('about'))}>サイトについて</a>
+          <a className="footer-link" href={sitePath('privacy')} onClick={spaClick(() => switchView('privacy'))}>プライバシーポリシー</a>
           <a className="footer-link" href="https://study-apps.com/editorial-policy/">編集方針</a>
           <a className="footer-link" href="https://forms.gle/ccMv7oKwz6ysDHBe6" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
         </div>

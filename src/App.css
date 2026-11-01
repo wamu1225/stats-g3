@@ -1085,3 +1085,22 @@ input[type="range"] {
     min-height: 32px;
   }
 }
+
+/* 画面遷移は <a href>（2026-11-01・stats-pre1 と同じ）。button 風・行風のリンクに下線と青字が付かないようにする */
+a.masthead, a.nav-tab, a.btn-back, a.btn, a.btn-link, a.footer-link { text-decoration: none; }
+a.masthead { color: inherit; }
+/* button は行の高さが normal なので、置き換えた a もそろえる */
+a.nav-tab, a.btn-back, a.btn, a.btn-link, a.footer-link { line-height: normal; }
+/* 行・カード全体を押せるまま、リンクの文字は題名だけにする */
+.card-linked { position: relative; }
+.card-linked a.card-link { color: inherit; text-decoration: none; }
+.card-linked a.card-link::after { content: ''; position: absolute; inset: 0; }
+.card-linked a.card-link:focus-visible { outline: none; }
+.card-linked:has(a.card-link:focus-visible) { outline: 2px solid var(--primary); outline-offset: 2px; }
+/* モジュール本文の下の前・一覧・次 */
+.module-pager { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+.module-pager .btn { flex: 1 1 200px; text-align: center; }
+.module-pager .module-pager-prev, .module-pager .module-pager-list { background: var(--bg-warm, #f1f5f9); color: var(--text); border: 1px solid var(--border); }
+.module-pager .module-pager-next { flex-basis: 100%; }
+/* button は既定で枠込みの幅なので、div に替えた行もそろえる */
+.toc-row.card-linked { box-sizing: border-box; }
