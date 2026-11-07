@@ -1389,6 +1389,7 @@ function App() {
           <a className="footer-link" href="https://study-apps.com/editorial-policy/">編集方針</a>
           <a className="footer-link" href="https://forms.gle/ccMv7oKwz6ysDHBe6" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
         </div>
+        <p className="footer-series">同じシリーズ：<a className="footer-link" href="https://study-apps.com/stats-g2/">統計検定 2級</a> <a className="footer-link" href="https://study-apps.com/stats-pre1/">統計検定 準1級</a></p>
         <p className="footer-copy">© {new Date().getFullYear()} 統計検定 3級 学習リファレンス</p>
       </footer>
     </div>

@@ -1104,3 +1104,6 @@ a.nav-tab, a.btn-back, a.btn, a.btn-link, a.footer-link { line-height: normal; }
 .module-pager .module-pager-next { flex-basis: 100%; }
 /* button は既定で枠込みの幅なので、div に替えた行もそろえる */
 .toc-row.card-linked { box-sizing: border-box; }
+
+/* 同じシリーズの ほかの級への入口（2026-11-07） */
+.footer-series { margin-top: 8px; font-size: 0.8rem; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 4px 12px; justify-content: center; align-items: center; }
