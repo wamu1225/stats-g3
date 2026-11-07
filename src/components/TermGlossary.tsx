@@ -33,9 +33,9 @@ export const TermText: React.FC<Props> = ({ termId, children, onNavigate, render
   if (!data) return <>{children}</>;
 
   const levelColor = {
-    '基礎': '#22c55e',
-    '中級': '#eab308',
-    '上級': '#ef4444'
+    '基礎': '#15803d',
+    '中級': '#a16207',
+    '上級': '#b91c1c'
   }[data.level];
 
   const relatedModules = modules.filter(m => m.content.includes(`[[term:${activeTermId}]]`));
