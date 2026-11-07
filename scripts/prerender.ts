@@ -3,6 +3,7 @@ import * as path from 'path';
 import sharp from 'sharp';
 import katex from 'katex';
 import { modules } from '../src/data/modules';
+import { comprehensiveQuizQuestions } from '../src/data/comprehensiveQuiz';
 import { chapterNames } from '../src/data/chapters';
 import { buildUsecaseHtml } from '../src/data/usecaseGuide';
 import { glossary } from '../src/data/glossary';
@@ -632,6 +633,21 @@ ${glossaryTermsHtml}
     <p style="color:#444">本サイトの解説・問題・公式は学習目的で作成されており、内容の正確性・完全性を保証するものではありません。本サイトの情報を利用したことによるいかなる損害についても、運営者は責任を負いかねます。また、本サイトは統計検定への合格を保証するものではありません。</p>
   </section>
   <p style="margin-top:32px"><a href="/stats-g3/" style="color:#2563eb">← ホームへ戻る</a></p>
+</article>`
+  },
+  randomquiz: {
+    title: '全範囲クイズ',
+    description: `統計検定3級の全範囲から${comprehensiveQuizQuestions.length}問をランダムな順で出題するクイズ。データの整理から確率・推定・検定まで横断して復習できます。`,
+    bodyHtml: `<div style="background:#eff6ff;border-bottom:1px solid #bfdbfe;padding:10px 16px;font-size:0.88rem;text-align:center;margin-bottom:16px;border-radius:6px;max-width:860px;margin-left:auto;margin-right:auto"><a href="https://study-apps.com/" style="color:#1e3a8a;text-decoration:none;font-weight:600">← study-apps.com 学習サイト集トップへ</a></div><article id="static-fallback" style="font-family:sans-serif;line-height:1.7;max-width:860px;margin:0 auto;padding:24px 16px">
+  <nav style="margin-bottom:16px"><a href="/stats-g3/" style="color:#2563eb;text-decoration:none">← ホームへ戻る</a></nav>
+  <h1 style="font-size:1.6rem;font-weight:700;border-bottom:2px solid #2563eb;padding-bottom:8px;margin-bottom:20px">全範囲クイズ</h1>
+  <p style="color:#555;margin-bottom:20px">統計検定3級の全範囲の${comprehensiveQuizQuestions.length}問を、モジュールをまたいでランダムな順で出題します。各問題に解説と出題元のモジュール名が付くので、まちがえた範囲へすぐ戻れます。</p>
+  <p style="color:#444">クイズを始めるには、JavaScript を有効にしてこのページを開いてください。</p>
+  <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 12px">出題するモジュール</h2>
+  <ul style="list-style:none;padding:0">
+    ${modules.map(m => `<li style="margin-bottom:6px"><a href="/stats-g3/${m.id}/" style="color:#2563eb;text-decoration:none;font-size:0.95rem">${escHtml(m.title)}</a></li>`).join('\n    ')}
+  </ul>
+  <p style="margin-top:24px"><a href="/stats-g3/" style="color:#2563eb">← ホームへ戻る</a></p>
 </article>`
   },
   privacy: {
