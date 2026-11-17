@@ -146,7 +146,7 @@ export const ExamGuide: React.FC = () => (
     <Section title="おすすめリソース">
       <ResourceItem name="統計WEB「統計学の時間」（BC Learning）" type="ウェブ" desc="初学者のための定番サイト。ステップ形式で3級の全範囲をわかりやすく解説。「聖書」と呼ぶ受験生も多い。" />
       <ResourceItem name="Udemy「統計学入門コース」" type="動画" desc="約5.5時間の視聴で3級に必要な統計学を体系的にインプットできる。耳と目で学べるため、テキストが苦手な人に特に有効。" />
-      <ResourceItem name="オモワカ統計 / データサイエンスLab." type="YouTube" desc="電卓の操作テクニックや、試験頻出ポイントを解説。隙間時間の活用に最適。" />
+      <ResourceItem name="オモワカ統計 / データサイエンスLab." type="YouTube" desc="電卓の操作テクニックや、3級の要点を解説。隙間時間の活用に最適。" />
       <ResourceItem name="生成AI（ChatGPT / Claude）" type="AI" desc="「中学生でもわかるように数式なしで説明して」と依頼すると抽象的な概念の理解が加速。24時間対応の個別指導として活用できる。" />
     </Section>
 
@@ -156,7 +156,7 @@ export const ExamGuide: React.FC = () => (
       <FieldItem priority="最重要" title="確率の計算" detail="加法定理・条件付き確率・独立性・組合せの計算。素直な計算問題が多く確実に得点したいエリア。" />
       <FieldItem priority="重要" title="正規分布・標準化" detail="Z = (X−μ)/σ の計算と標準正規分布表の読み取り。「μ±σの範囲に約68%」などの経験則も問われる。" />
       <FieldItem priority="重要" title="データの尺度と変数の種類" detail="名義・順序・間隔・比例尺度の区分。それぞれの尺度で使える統計量（代表値・散布度）の適切な選択。" />
-      <FieldItem priority="重要" title="相関係数と回帰直線" detail="相関係数 r の値域・性質・因果との区別、回帰係数の解釈と予測計算。擬似相関・外挿の危険性も頻出。" />
+      <FieldItem priority="重要" title="相関係数と回帰直線" detail="相関係数 r の値域・性質・因果との区別、回帰係数の解釈と予測計算。擬似相関・外挿の危険性も押さえておきます。" />
       <FieldItem priority="標準" title="時系列データと指数" detail="4変動成分（趨勢・循環・季節・不規則）の識別と移動平均の計算。指数の読み方。" />
     </Section>
 

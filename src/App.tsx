@@ -1234,7 +1234,7 @@ function App() {
                   <h3>コンテンツ構成</h3>
                   <ul>
                     <li><strong>学習モジュール（全10章）</strong>：確率分布・推定・検定・多変量解析・ベイズ統計・時系列分析など</li>
-                    <li><strong>用語集</strong>：3級頻出用語の解説</li>
+                    <li><strong>用語集</strong>：3級の範囲の用語の解説</li>
                     <li><strong>公式集</strong>：重要公式の一覧（印刷対応）</li>
                     <li><strong>全範囲クイズ</strong>：全モジュールからランダム出題</li>
                   </ul>
