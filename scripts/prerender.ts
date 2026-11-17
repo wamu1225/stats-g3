@@ -490,11 +490,11 @@ const glossaryTermsHtml = Object.values(glossary).slice(0, 30).map((t: { term: s
 const staticPageContents: Record<string, { title: string; description: string; bodyHtml: string }> = {
   glossary: {
     title: '用語集',
-    description: '統計検定3級の頻出用語を一覧で解説。平均・分散・標準偏差・確率分布・仮説検定など試験に出る統計用語を網羅。',
+    description: '統計検定3級の範囲の用語を一覧で解説。平均・分散・標準偏差・確率分布・仮説検定など試験に出る統計用語を網羅。',
     bodyHtml: `<div style="background:#eff6ff;border-bottom:1px solid #bfdbfe;padding:10px 16px;font-size:0.88rem;text-align:center;margin-bottom:16px;border-radius:6px;max-width:860px;margin-left:auto;margin-right:auto"><a href="https://study-apps.com/" style="color:#1e3a8a;text-decoration:none;font-weight:600">← study-apps.com 学習サイト集トップへ</a></div><article id="static-fallback" style="font-family:sans-serif;line-height:1.7;max-width:860px;margin:0 auto;padding:24px 16px">
   <nav style="margin-bottom:16px"><a href="/stats-g3/" style="color:#2563eb;text-decoration:none">← ホームへ戻る</a></nav>
   <h1 style="font-size:1.6rem;font-weight:700;border-bottom:2px solid #2563eb;padding-bottom:8px;margin-bottom:20px">用語集</h1>
-  <p style="color:#555;margin-bottom:24px">統計検定3級の頻出用語を一覧で解説します。平均・分散・標準偏差・確率分布・仮説検定など試験に出る統計用語を網羅しています。</p>
+  <p style="color:#555;margin-bottom:24px">統計検定3級の範囲の用語を一覧で解説します。平均・分散・標準偏差・確率分布・仮説検定など試験に出る統計用語を網羅しています。</p>
 ${glossaryTermsHtml}
 </article>`
   },
@@ -563,7 +563,7 @@ ${glossaryTermsHtml}
   <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">おすすめリソース</h2>
   <p style="color:#444"><strong>統計WEB「統計学の時間」（BC Learning）</strong>：初学者のための定番サイト。ステップ形式で3級の全範囲をわかりやすく解説。「聖書」と呼ぶ受験生も多い。</p>
   <p style="color:#444"><strong>Udemy「統計学入門コース」</strong>：約5.5時間の視聴で3級に必要な統計学を体系的にインプットできる。耳と目で学べるため、テキストが苦手な人に特に有効。</p>
-  <p style="color:#444"><strong>オモワカ統計 / データサイエンスLab.</strong>（YouTube）：電卓の操作テクニックや、試験頻出ポイントを解説。隙間時間の活用に最適。</p>
+  <p style="color:#444"><strong>オモワカ統計 / データサイエンスLab.</strong>（YouTube）：電卓の操作テクニックや、3級の要点を解説。隙間時間の活用に最適。</p>
   <p style="color:#444"><strong>生成AI（ChatGPT / Claude）</strong>：「中学生でもわかるように数式なしで説明して」と依頼すると抽象的な概念の理解が加速。24時間対応の個別指導として活用できる。</p>
 
   <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">重要出題分野</h2>
@@ -571,7 +571,7 @@ ${glossaryTermsHtml}
   <p style="color:#444"><strong>［最重要］確率の計算</strong>：加法定理・条件付き確率・独立性・組合せの計算。素直な計算問題が多く確実に得点したいエリア。</p>
   <p style="color:#444"><strong>［重要］正規分布・標準化</strong>：Z = (X−μ)/σ の計算と標準正規分布表の読み取り。「μ±σの範囲に約68%」などの経験則も問われる。</p>
   <p style="color:#444"><strong>［重要］データの尺度と変数の種類</strong>：名義・順序・間隔・比例尺度の区分。それぞれの尺度で使える統計量（代表値・散布度）の適切な選択。</p>
-  <p style="color:#444"><strong>［重要］相関係数と回帰直線</strong>：相関係数 r の値域・性質・因果との区別、回帰係数の解釈と予測計算。擬似相関・外挿の危険性も頻出。</p>
+  <p style="color:#444"><strong>［重要］相関係数と回帰直線</strong>：相関係数 r の値域・性質・因果との区別、回帰係数の解釈と予測計算。擬似相関・外挿の危険性も押さえておきます。</p>
   <p style="color:#444"><strong>［標準］時系列データと指数</strong>：4変動成分（趨勢・循環・季節・不規則）の識別と移動平均の計算。指数の読み方。</p>
 
   <h2 style="font-size:1.2rem;font-weight:700;margin:24px 0 10px">本番に向けた実践アドバイス</h2>
@@ -610,7 +610,7 @@ ${glossaryTermsHtml}
     <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:8px">コンテンツ構成</h2>
     <ul style="color:#444;padding-left:20px">
       <li><strong>学習モジュール</strong>：データの整理・確率・確率分布・推定・検定・回帰分析など</li>
-      <li><strong>用語集</strong>：3級頻出用語の解説</li>
+      <li><strong>用語集</strong>：3級の範囲の用語の解説</li>
       <li><strong>公式集</strong>：重要公式の一覧</li>
       <li><strong>確認クイズ</strong>：各モジュールの理解度確認</li>
     </ul>
